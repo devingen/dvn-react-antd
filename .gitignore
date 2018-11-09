@@ -1,0 +1,35 @@
+# Mac
+*.DS_Store
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+
+# Autoenv
+.activate
+
+# Protobufs
+*_pb2.py
+
+# Testing
+coverage
+.coverage
+
+# Python
+__pycache__/
+eggs/
+dist/
+build/
+*.egg-info/
+.env*
+nosetests.xml
+.noseids
+pylint.log
+pipdeptree.log
+
+# JS
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

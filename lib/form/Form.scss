@@ -1,0 +1,96 @@
+@import "./_Grid.scss";
+
+.dvn-form {
+  margin: 1rem 0;
+
+  &.horizontal {
+    .dvn-form-field {
+      .dvn-form-label {
+        text-align: right;
+        line-height: 2rem;
+
+        &.dvn-empty-label {
+          label {
+            &:after {
+              content: " ";
+            }
+          }
+        }
+
+        label {
+          b {
+            font-size: 1.1em;
+          }
+
+          span {
+            font-size: 0.9em;
+          }
+
+          &:after {
+            content: ":";
+            margin: 0 8px 0 2px;
+            position: relative;
+            top: -0.5px;
+          }
+        }
+      }
+
+      .dvn-form-label-right {
+        padding: 0.4rem 0.1rem;
+      }
+    }
+  }
+
+  &.vertical {
+    .dvn-form-field {
+      .dvn-form-label {
+        margin-bottom: 0.5rem;
+
+        label {
+          b {
+            font-size: 1.1em;
+          }
+
+          span {
+            font-size: 0.9em;
+          }
+
+          .description {
+            white-space: normal;
+            //max-width: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  .dvn-form-field {
+    margin-bottom: 0.5rem;
+
+    &.required {
+
+      > .dvn-form-label {
+        &:before {
+          display: inline-block;
+          margin-right: 4px;
+          content: "*";
+          line-height: 1;
+          color: #f5222d;
+        }
+      }
+    }
+
+    .dvn-form-label {
+      vertical-align: middle;
+      display: inline-block;
+      overflow: hidden;
+      // white-space: nowrap;
+    }
+  }
+
+  .dvn-form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}

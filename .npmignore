@@ -1,0 +1,7 @@
+lib/
+
+# Testing
+coverage
+.coverage
+
+.idea
