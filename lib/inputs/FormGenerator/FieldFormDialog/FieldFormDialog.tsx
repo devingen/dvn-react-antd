@@ -1,17 +1,19 @@
+import { Icon } from 'antd';
 import * as React from 'react';
+import { RatingStars } from "../../RatingStars";
+import { SingleChoice } from "../../SingleChoice";
+import { TextInput } from "../../TextInput";
 import FieldDisplay from '../FieldDisplays/FieldDisplay';
 import FieldForm from '../FieldForm/FieldForm';
+import * as FieldFormRating from '../FieldForm/FieldFormRating';
 import * as FieldFormSingleChoice from '../FieldForm/FieldFormSingleChoice';
 import * as FieldFormText from '../FieldForm/FieldFormText';
-import * as FieldFormRating from '../FieldForm/FieldFormRating';
-import { FieldTypes } from '../../models/FieldTypes';
 
 import './FieldFormDialog.css';
-import { Icon } from 'antd';
 
 export interface IProps {
   field?: any
-  fieldType: FieldTypes
+  fieldType: string
   onSave: (fieldData: any) => void
   onDismiss: () => void
   strings: any
@@ -21,37 +23,37 @@ export interface IState {
   field: any
 }
 
-function getEmptyFieldData(fieldType: FieldTypes): any {
+function getEmptyFieldData(fieldType: string): any {
   switch (fieldType) {
-    case FieldTypes.RatingStars:
+    case RatingStars.type:
       return FieldFormRating.emptyFieldData;
-    case FieldTypes.SingleChoice:
+    case SingleChoice.type:
       return FieldFormSingleChoice.emptyFieldData;
-    case FieldTypes.Text:
+    case TextInput.type:
       return FieldFormText.emptyFieldData;
   }
 }
 
 class FieldFormDialog extends React.Component<IProps, IState> {
-  
+
   public constructor(props: IProps) {
     super(props);
-    
+
     this.state = {
       field: props.field,
     };
   }
-  
+
   public render() {
     const { fieldType, onDismiss, onSave, strings } = this.props;
     const { field } = this.state;
-    
+
     return (
       <div className="field-form-dialog-container">
         <div className="field-form-dialog">
           <div className="left">
             <h2>{strings.field.preview}</h2>
-            
+
             <div className="input-container">
               <FieldDisplay
                 showControls={false}
@@ -69,7 +71,7 @@ class FieldFormDialog extends React.Component<IProps, IState> {
                 onClick={() => onDismiss()}
               />
             </div>
-            
+
             <div className="form-container">
               <FieldForm
                 strings={strings}

@@ -1,24 +1,22 @@
 import * as React from 'react';
-import { Input, Button, Form, Checkbox } from 'antd';
+import { Input, InputNumber, Button, Form, Checkbox } from 'antd';
+import { simpleTextDecorator } from '../utils';
 import { ICommonFieldProps } from './FieldForm';
-import { convertToUniqueAlphanumberic, simpleTextDecorator } from '../utils';
-import { FieldTypes } from '../../models/FieldTypes';
-import { FieldRatingStars } from "../../inputs/InputRatingStars";
+import { TextInput } from "../../../index";
 
-export const emptyFieldData: FieldRatingStars = {
+export const emptyFieldData: any = {
   id: '',
+  lines: 1,
+  linesMax: 3,
+  placeholder: '',
   required: true,
-  starCount: 5,
   title: '',
-  type: FieldTypes.RatingStars,
+  type: TextInput.type,
 };
 
-class FieldFormRating extends React.Component<ICommonFieldProps> {
-  
-  public static defaultProps: Partial<ICommonFieldProps> = {
-    data: undefined,
-    disabled: false,
-  };
+const FormItem = Form.Item;
+
+class DynamicFieldTextForm extends React.Component<ICommonFieldProps> {
   
   public handleSubmit() {
     this.props.form.validateFields((errors: any, values: any) => {
@@ -26,20 +24,11 @@ class FieldFormRating extends React.Component<ICommonFieldProps> {
         return;
       }
       
-      const data = {
+      const data: TextInput = {
         ...(this.props.data || emptyFieldData),
         ...values,
-        starCount: 5,
-        type: FieldTypes.RatingStars,
+        type: TextInput.type,
       };
-      
-      if (this.props.data) {
-        // use existing id of the component
-        data.id = this.props.data.id;
-      } else {
-        // generate id for the new component
-        data.id = convertToUniqueAlphanumberic(values.title);
-      }
       
       this.props.onSaveClick(data);
     });
@@ -51,7 +40,7 @@ class FieldFormRating extends React.Component<ICommonFieldProps> {
     
     return (
       <Form layout="horizontal" onSubmit={() => this.handleSubmit()}>
-        <Form.Item {...commonProps} label={strings.field.question}>
+        <FormItem {...commonProps} label={strings.field.question}>
           {simpleTextDecorator(getFieldDecorator,
             'title', strings.field.question, data ? data.title : '', true, 3, 100, [], strings)(
             <Input
@@ -61,9 +50,9 @@ class FieldFormRating extends React.Component<ICommonFieldProps> {
               disabled={disabled}
             />,
           )}
-        </Form.Item>
+        </FormItem>
         
-        <Form.Item {...commonProps} label={strings.field.description}>
+        <FormItem {...commonProps} label={strings.field.description}>
           {simpleTextDecorator(getFieldDecorator, 'description',
             strings.field.descriptionPlaceholder, data ? data.description : '', false, 3, 100, [], strings)(
             <Input
@@ -73,24 +62,47 @@ class FieldFormRating extends React.Component<ICommonFieldProps> {
               disabled={disabled}
             />,
           )}
-        </Form.Item>
-  
-        <Form.Item {...commonProps} label={strings.field.required}>
-          {getFieldDecorator('required', { initialValue: data ? data.required : true, valuePropName: 'checked',  })(
+        </FormItem>
+        
+        <FormItem {...commonProps} label={strings.field.required}>
+          {getFieldDecorator('required', { initialValue: data ? data.required : true, valuePropName: 'checked' })(
             <Checkbox disabled={disabled}>{strings.field.requiredDescription}</Checkbox>,
           )}
-        </Form.Item>
+        </FormItem>
         
-        {/*<Form.Item {...commonProps} label={strings.field.ratingStars.starCount}>
-          {getFieldDecorator('starCount', { initialValue: this.state.starCount })(
-            <InputNumber
-              min={5}
-              max={10}
-              placeholder={strings.field.ratingStars.starCount}
+        <FormItem {...commonProps} label={strings.field.textField.placeholder}>
+          {simpleTextDecorator(getFieldDecorator, 'placeholder',
+            strings.field.textField.placeholder, data ? data.placeholder : '', false, 3, 100, [], strings)(
+            <Input
+              type="text"
+              autoComplete="off"
+              placeholder={strings.field.textField.placeholderPlaceholder}
               disabled={disabled}
             />,
           )}
-        </Form.Item>*/}
+        </FormItem>
+        
+        <FormItem {...commonProps} label={strings.field.textField.lineCount}>
+          {getFieldDecorator('lines', { initialValue: data ? data.lines : 1 })(
+            <InputNumber
+              min={1}
+              max={10}
+              placeholder={strings.field.textField.lineCount}
+              disabled={disabled}
+            />,
+          )}
+        </FormItem>
+        
+        <FormItem {...commonProps} label={strings.field.textField.maxLineCount}>
+          {getFieldDecorator('linesMax', { initialValue: data ? data.linesMax : 3 })(
+            <InputNumber
+              min={1}
+              max={20}
+              placeholder={strings.field.textField.maxLineCount}
+              disabled={disabled}
+            />,
+          )}
+        </FormItem>
         
         <div style={{ textAlign: 'right' }}>
           <Button
@@ -113,4 +125,4 @@ export default Form.create({
       props.onChange({ ...(props.data || emptyFieldData), ...allValues });
     }
   },
-})(FieldFormRating);
+})(DynamicFieldTextForm);

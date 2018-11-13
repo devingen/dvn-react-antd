@@ -1,38 +1,13 @@
-import * as React from 'react';
 import { Radio, Select } from 'antd';
-import { IBaseInput, IBaseInputProps } from './IBaseInput';
-import { colors, metrics } from '../constants';
-import { BaseField } from "../models/BaseField";
-import { FieldTypes } from "../models/FieldTypes";
+import * as React from 'react';
+import { colors, metrics } from '../../constants';
+import { IBaseInput, IBaseInputProps } from '../IBaseInput';
+import { SingleChoice } from "./index";
 
-export class FieldSingleChoice extends BaseField {
-
-  public type: FieldTypes.SingleChoice;
-
-  public placeholder: string;
-
-  public inputType: 'radioButton' | 'select';
-
-  public options: any[];
+export interface IProps extends IBaseInputProps<SingleChoice, any[]> {
 }
 
-export class RadioButtonOption {
-  public label: string;
-  public value: string;
-}
-
-export interface IProps extends IBaseInputProps<FieldSingleChoice, RadioButtonOption[]> {
-}
-
-class InputSingleChoice extends React.Component<IProps> implements IBaseInput<RadioButtonOption[]> {
-  
-  constructor(props: IProps) {
-    super(props);
-    
-    this.state = {
-      value: props.value,
-    };
-  }
+export class InputSingleChoice extends React.Component<IProps> implements IBaseInput<any[]> {
   
   public render() {
     const { disabled, field, errors, value, onChange } = this.props;
@@ -118,5 +93,3 @@ class InputSingleChoice extends React.Component<IProps> implements IBaseInput<Ra
     );
   }
 }
-
-export default InputSingleChoice;

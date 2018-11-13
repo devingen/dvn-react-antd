@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Icon } from 'antd';
 import * as cn from 'classnames';
-import { generateInput } from '../../form/InputGenerator';
+import { generateInput } from '../../../form/InputGenerator';
 
 export interface IProps {
   field: any

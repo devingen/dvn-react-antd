@@ -1,4 +1,3 @@
-import { FieldTypes } from './FieldTypes';
 import { InterceptorConfig } from '../interceptors';
 
 export class BaseField {
@@ -7,7 +6,7 @@ export class BaseField {
   public id: string;
   
   // Type of the component.
-  public type: FieldTypes;
+  public type: string;
   
   // The question text. Must be present.
   public title: string;
@@ -31,10 +30,14 @@ export class BaseField {
   public onSubmit?: InterceptorConfig[];
   
   // Renders the custom component. Overrides the 'type'.
-  public render?: (
-    field: BaseField, value: any, errors: any[], disabled: boolean,
-    onFieldChange: (field: BaseField, value: any) => void,
-    onFieldBlur: (field: BaseField) => void,
-  ) => any;
+  public render?: InputGenerator;
 }
 
+export type InputGenerator = (
+  field: BaseField,
+  value: any,
+  errors: any[],
+  disabled: boolean,
+  onFieldChange: (field: BaseField, value: any) => void,
+  onFieldBlur: (field: BaseField) => void,
+) => any

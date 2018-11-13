@@ -1,6 +1,5 @@
 export { Form } from './form/Form';
-export { BaseField } from './models/BaseField';
-export { FieldTypes } from './models/FieldTypes';
-export { FieldMultipleChoice } from './inputs/InputMultipleChoice';
-export { FieldText } from './inputs/InputText';
-export { FieldSingleChoice } from './inputs/InputSingleChoice';
+export { MultipleChoice } from './inputs/MultipleChoice';
+export { SectionHeader } from './inputs/SectionHeader';
+export { SingleChoice } from './inputs/SingleChoice';
+export { TextInput } from './inputs/TextInput';

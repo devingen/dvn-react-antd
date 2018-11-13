@@ -1,5 +1,5 @@
 /* tslint:disable:no-empty-interface */
-import { BaseField } from '..';
+import { BaseField } from '../models/BaseField';
 
 export interface IBaseInput<V> {
   // setValue: (value: V) => void

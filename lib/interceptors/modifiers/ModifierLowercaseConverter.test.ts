@@ -1,6 +1,6 @@
+import { BaseField } from "../../models/BaseField";
 import { ModifierLowercaseConverter } from "./ModifierLowercaseConverter";
 import { FormContext } from "../../form/FormContext";
-import { BaseField } from "../..";
 import { InterceptorConfig } from "../index";
 
 describe('ModifierLowercaseConverter', () => {

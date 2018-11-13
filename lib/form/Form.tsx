@@ -1,11 +1,11 @@
 import * as React from 'react';
 import * as cn from 'classnames';
-import { BaseField } from '..';
 import { Button } from 'antd';
 
 import './Form.css';
 import { executeInterceptors, generateInterceptor } from '../interceptors/InterceptorGenerator';
 import { colors } from '../constants';
+import { BaseField } from "../models/BaseField";
 import { generateInput } from './InputGenerator';
 import { InterceptorHandler } from '../interceptors';
 import { FormContext } from './FormContext';

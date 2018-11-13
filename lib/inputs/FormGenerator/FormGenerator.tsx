@@ -1,23 +1,25 @@
-import * as React from 'react';
-import { Modal, Icon } from 'antd';
+import { Icon, Modal } from 'antd';
 import * as cn from 'classnames';
+import * as React from 'react';
+import { colors } from "../../constants";
+import { FormData } from "../../form/Form";
+import { IBaseInput, IBaseInputProps } from "../IBaseInput";
+import { RatingStars } from "../RatingStars";
+import { SingleChoice } from "../SingleChoice";
+import { TextInput } from "../TextInput";
+import { getStrings } from "./defaultStrings";
 
 import FieldDisplay from './FieldDisplays/FieldDisplay';
-import { IBaseInput, IBaseInputProps } from '../inputs/IBaseInput';
-import { BaseField } from '../models/BaseField';
-import { FieldTypes } from '../models/FieldTypes';
-import { FormData } from '../form/Form';
-import { colors } from '../constants';
-import { getStrings } from './defaultStrings';
-import FieldFormDialog from './FieldFormDialog/FieldFormDialog';
-import { swapArray } from './utils';
+import FieldFormDialog from "./FieldFormDialog/FieldFormDialog";
 
 import './FormGenerator.css';
+import { FormGenerator } from "./index";
+import { swapArray } from "./utils";
 
 export interface IAddQuestionOptionsProps {
   disabled: boolean
   options: any[]
-  onSelect: (type: FieldTypes) => void
+  onSelect: (type: string) => void
 }
 
 const AddQuestionOptions = ({ disabled, options, onSelect }: IAddQuestionOptionsProps) => (
@@ -42,32 +44,18 @@ const AddQuestionOptions = ({ disabled, options, onSelect }: IAddQuestionOptions
   </div>
 );
 
-export class FieldFormGenerator extends BaseField {
-  public type: FieldTypes.FormGenerator;
-  
-  public language: string;
-  public inline: boolean;
-  public strings: any;
-  
-  constructor(language: string, inline: boolean) {
-    super();
-    this.language = language;
-    this.inline = inline;
-  }
-}
-
-export interface IProps extends IBaseInputProps<FieldFormGenerator, FormData> {
+export interface IProps extends IBaseInputProps<FormGenerator, FormData> {
 }
 
 export interface IState {
   value: FormData
   componentBeingEdited: string
   fieldBeingEdited?: any
-  fieldType?: FieldTypes
+  fieldType?: string
   isAddingField: boolean
 }
 
-class FormGenerator extends React.Component<IProps, IState> implements IBaseInput<FormData> {
+export class InputFormGenerator extends React.Component<IProps, IState> implements IBaseInput<FormData> {
   
   constructor(props: IProps) {
     super(props);
@@ -238,15 +226,15 @@ class FormGenerator extends React.Component<IProps, IState> implements IBaseInpu
           options={[{
             icon: 'file-text',
             label: `+ ${strings.textField}`,
-            type: FieldTypes.Text,
+            type: TextInput.type,
           }, {
             icon: 'bars',
             label: `+ ${strings.singleChoice}`,
-            type: FieldTypes.SingleChoice,
+            type: SingleChoice.type,
           }, {
             icon: 'star-o',
             label: `+ ${strings.ratingStars}`,
-            type: FieldTypes.RatingStars,
+            type: RatingStars.type,
           }]}
           onSelect={type => this.setState({ isAddingField: true, fieldType: type })}
           disabled={disabled}
@@ -261,7 +249,4 @@ class FormGenerator extends React.Component<IProps, IState> implements IBaseInpu
       </div>
     );
   }
-  
 }
-
-export default FormGenerator;

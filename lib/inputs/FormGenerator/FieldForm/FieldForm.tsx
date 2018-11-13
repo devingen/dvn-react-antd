@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { RatingStars } from "../../RatingStars/index";
+import { SingleChoice } from "../../SingleChoice/index";
+import { TextInput } from "../../TextInput/index";
+import { BaseField } from '../../../models/BaseField';
+import { convertToUniqueAlphanumberic } from '../utils';
+import FieldFormRating from './FieldFormRating';
 import FieldFormSingleChoice from './FieldFormSingleChoice';
 import FieldFormText from './FieldFormText';
-import FieldFormRating from './FieldFormRating';
-import { FieldTypes } from '../../models/FieldTypes';
-import { convertToUniqueAlphanumberic } from '../utils';
-import { BaseField } from '../../models/BaseField';
 
 export interface IProps {
   fieldData?: any
@@ -60,7 +62,7 @@ class FieldForm extends React.Component<IProps> {
     return (
       <div style={{ padding: '1rem 0.5rem', background: '#f8f8f8' }}>
         
-        {type === FieldTypes.SingleChoice &&
+        {type === SingleChoice.type &&
         <FieldFormSingleChoice
           data={fieldData}
           disabled={disabled}
@@ -72,7 +74,7 @@ class FieldForm extends React.Component<IProps> {
         />
         }
         
-        {type === FieldTypes.Text &&
+        {type === TextInput.type &&
         <FieldFormText
           data={fieldData}
           strings={strings}
@@ -84,7 +86,7 @@ class FieldForm extends React.Component<IProps> {
         />
         }
         
-        {type === FieldTypes.RatingStars &&
+        {type === RatingStars.type &&
         <FieldFormRating
           data={fieldData}
           strings={strings}

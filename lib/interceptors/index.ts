@@ -1,5 +1,5 @@
 import { FormContext } from '../form/FormContext';
-import { BaseField } from '..';
+import { BaseField } from "../models/BaseField";
 
 export class InterceptorConfig {
   public id: string;

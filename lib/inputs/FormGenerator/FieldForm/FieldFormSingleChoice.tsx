@@ -1,22 +1,21 @@
 /* tslint:disable:no-empty */
 import * as React from 'react';
 import { Input, Select, Button, Form, Icon, Checkbox } from 'antd';
+import { SingleChoice } from "../../SingleChoice/index";
 import { convertToAlphanumeric, isNumeric, simpleTextDecorator, swapArray } from '../utils';
 import { ICommonFieldProps } from './FieldForm';
-import { FieldTypes } from '../../models/FieldTypes';
-import { FieldSingleChoice } from "../..";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-export const emptyFieldData: FieldSingleChoice = {
+export const emptyFieldData: SingleChoice = {
   id: '',
   inputType: 'radioButton',
   options: [],
   placeholder: '',
   required: true,
   title: '',
-  type: FieldTypes.SingleChoice,
+  type: SingleChoice.type,
 };
 
 class FieldFormSingleChoice extends React.Component<ICommonFieldProps> {
@@ -35,7 +34,7 @@ class FieldFormSingleChoice extends React.Component<ICommonFieldProps> {
       const data = {
         ...(this.props.data || emptyFieldData),
         ...values,
-        type: FieldTypes.SingleChoice,
+        type: SingleChoice.type,
       };
       this.props.onSaveClick(data);
     });

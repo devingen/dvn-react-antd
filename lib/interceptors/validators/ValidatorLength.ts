@@ -1,5 +1,5 @@
 import { FormContext } from '../../form/FormContext';
-import { BaseField } from '../..';
+import { BaseField } from "../../models/BaseField";
 import { HandlerResponse, InterceptorConfig, InterceptorHandler } from '../index';
 
 export class ValidatorLength extends InterceptorHandler {

@@ -1,13 +1,13 @@
-import { ValidatorNotEmpty } from './validators/ValidatorNotEmpty';
-import { ValidatorLength } from './validators/ValidatorLength';
-import { HandlerResponse, InterceptorConfig, InterceptorHandler } from './index';
-import { ModifierNonStandardCharRemover } from './modifiers/ModifierNonStandardCharRemover';
-import { ModifierLowercaseConverter } from './modifiers/ModifierLowercaseConverter';
-import { ModifierUppercaseConverter } from './modifiers/ModifierUppercaseConverter';
-import { ValidatorURL } from './validators/ValidatorURL';
-import { BaseField } from '..';
-import { ValidatorEmail } from './validators/ValidatorEmail';
 import { FormContext } from '../form/FormContext';
+import { BaseField } from "../models/BaseField";
+import { HandlerResponse, InterceptorConfig, InterceptorHandler } from './index';
+import { ModifierLowercaseConverter } from './modifiers/ModifierLowercaseConverter';
+import { ModifierNonStandardCharRemover } from './modifiers/ModifierNonStandardCharRemover';
+import { ModifierUppercaseConverter } from './modifiers/ModifierUppercaseConverter';
+import { ValidatorEmail } from './validators/ValidatorEmail';
+import { ValidatorLength } from './validators/ValidatorLength';
+import { ValidatorNotEmpty } from './validators/ValidatorNotEmpty';
+import { ValidatorURL } from './validators/ValidatorURL';
 
 export function generateInterceptor(field: BaseField, interceptorConfig: InterceptorConfig): InterceptorHandler | undefined {
   switch (interceptorConfig.id) {

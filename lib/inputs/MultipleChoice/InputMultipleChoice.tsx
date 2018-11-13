@@ -1,39 +1,22 @@
+import { Checkbox, Select, Tag } from 'antd';
 import * as React from 'react';
-import { Checkbox, Select } from 'antd';
-import { IBaseInput, IBaseInputProps } from './IBaseInput';
-import { colors, metrics } from '../constants';
-import { BaseField } from "../models/BaseField";
-import { FieldTypes } from "../models/FieldTypes";
+import { colors, metrics } from '../../constants';
+import { IBaseInput, IBaseInputProps } from '../IBaseInput';
+import { MultipleChoice } from "./index";
 
-export class FieldMultipleChoice extends BaseField {
-
-  public type: FieldTypes.MultipleChoice;
-
-  public placeholder: string;
-
-  public inputType: 'checkbox' | 'select';
-
-  public options: any[];
+export interface IProps extends IBaseInputProps<MultipleChoice, any[]> {
 }
 
-export class MultipleChoiceOption {
-  public label: string;
-  public value: string;
-}
+class InputMultipleChoice extends React.Component<IProps> implements IBaseInput<MultipleChoice[]> {
 
-export interface IProps extends IBaseInputProps<FieldMultipleChoice, any[]> {
-}
-
-class InputMultipleChoice extends React.Component<IProps> implements IBaseInput<MultipleChoiceOption[]> {
-  
   constructor(props: IProps) {
     super(props);
-    
+
     this.state = {
       value: props.value,
     };
   }
-  
+
   public onOptionClick(optionValue: string) {
     const selectedOptions = this.props.value || [];
     if (selectedOptions) {
@@ -45,26 +28,26 @@ class InputMultipleChoice extends React.Component<IProps> implements IBaseInput<
       }
     }
   }
-  
+
   public render() {
     const { disabled, field, errors, value, onChange } = this.props;
     const hasError = errors && errors.length > 0;
     const error = hasError ? errors![0] : undefined;
-    
-    // const name = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
-    
-    // render select
+
     if (field.inputType === 'select') {
+
+      // render select
       return (
         <div>
           <Select
+            mode="multiple"
             disabled={disabled}
             placeholder={field.placeholder}
             dropdownMatchSelectWidth={true}
             onChange={(v: any) => onChange(v)}
             value={value as any}>
             {field.options.map((o: any) => {
-              
+
               if (o.group && o.options) {
                 // render grouped options
                 return (
@@ -78,7 +61,7 @@ class InputMultipleChoice extends React.Component<IProps> implements IBaseInput<
                     )}
                   </Select.OptGroup>
                 );
-                
+
               } else {
                 // render simple options
                 return (
@@ -89,24 +72,45 @@ class InputMultipleChoice extends React.Component<IProps> implements IBaseInput<
                   </Select.Option>
                 );
               }
-              
+
             })}
           </Select>
-          
+
           <div style={{ color: colors.error, minHeight: metrics.verticalSpaceBetweenInputs }}>
             {error}
           </div>
         </div>
       );
+    } else if (field.inputType === 'tag-cloud') {
+
+      // render tag cloud
+      return (
+        <div style={{ overflow: 'auto', marginBottom: metrics.verticalSpaceBetweenInputs }}>
+          {(field.options || []).map((o: any) =>
+            <Tag
+              key={o.value}
+              color={value && value.indexOf(o.value) > -1 ? 'blue' : undefined}
+              onClick={() => this.onOptionClick(o.value)}
+              style={{ margin: '2px' }}
+            >
+              {o.label}
+            </Tag>
+          )}
+
+          <div style={{ color: colors.error, minHeight: metrics.verticalSpaceBetweenInputs }}>
+            {error}
+          </div>
+        </div>
+      )
     }
-    
-    // render radio buttons as default
+
+    // render checkbox as default
     return (
       <div>
         <div style={{ fontSize: '0.9em' }}>
           {(field.options || []).map((o: any) =>
             <Checkbox
-              name={o.value}
+              name={String(o.value)}
               key={o.value}
               value={o.value}
               checked={value && value.indexOf(o.value) > -1}
@@ -118,7 +122,7 @@ class InputMultipleChoice extends React.Component<IProps> implements IBaseInput<
             </Checkbox>,
           )}
         </div>
-        
+
         <div style={{ color: colors.error, minHeight: metrics.verticalSpaceBetweenInputs }}>
           {error}
         </div>
