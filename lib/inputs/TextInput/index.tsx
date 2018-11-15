@@ -3,6 +3,8 @@ import { registerField } from "../../form/InputGenerator";
 import { BaseField, InputGenerator } from "../../models/BaseField";
 import { InputText } from "./InputText";
 
+type typeTnputType = 'email' | 'password' | 'tel' | 'text' | 'url';
+
 export class TextInput extends BaseField {
 
   public static type = 'text';
@@ -10,6 +12,8 @@ export class TextInput extends BaseField {
   public type = 'text';
 
   public placeholder?: string;
+
+  public inputType?: typeTnputType;
 
   // Default number of lines to occupy vertically.
   public lines: number;
@@ -19,19 +23,20 @@ export class TextInput extends BaseField {
 
   public render = render;
 
-  constructor(id: string, title: string, placeholder?: string, description?: string, lines: number = 1, linesMax: number = 1) {
+  constructor(id: string, title: string, placeholder?: string, description?: string, inputType?: typeTnputType, lines: number = 1, linesMax: number = 1) {
     super();
     this.id = id;
     this.title = title;
     this.placeholder = placeholder;
     this.description = description;
+    this.inputType = inputType;
     this.lines = lines;
     this.linesMax = linesMax;
   }
 }
 
 // component generator
-const render: InputGenerator  = (
+const render: InputGenerator = (
   field: BaseField,
   value: any,
   errors: any[],

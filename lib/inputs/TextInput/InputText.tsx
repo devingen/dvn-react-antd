@@ -47,7 +47,7 @@ export class InputText extends React.Component<IProps> implements IBaseInput<str
       <div>
         <Input
           id={field.id}
-          type="text"
+          type={field.inputType || 'text'}
           autoComplete="off"
           disabled={disabled}
           placeholder={field.placeholder}

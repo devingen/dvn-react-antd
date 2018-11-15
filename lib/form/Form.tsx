@@ -30,7 +30,7 @@ export interface IProps {
   extraButtons?: ButtonProps[]
   formData: FormData
   language?: 'en' | 'tr'
-  layout?: 'horizontal' | 'vertical'
+  layout?: 'horizontal' | 'vertical' | 'compact'
   loading: boolean
   onSubmit: (values: any) => void
   submitButtonLabel: string

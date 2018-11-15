@@ -64,6 +64,35 @@
     }
   }
 
+  &.compact {
+    .dvn-form-field {
+      margin-bottom: 0;
+
+      .dvn-form-label {
+        margin-bottom: 0.5rem;
+
+        label {
+          b {
+            font-size: 1.1em;
+          }
+
+          span {
+            font-size: 0.9em;
+          }
+
+          .description {
+            white-space: normal;
+            //max-width: 100%;
+          }
+        }
+
+        &.dvn-empty-label {
+          display: none;
+        }
+      }
+    }
+  }
+
   .dvn-form-field {
     margin-bottom: 0.5rem;
 
