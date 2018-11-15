@@ -1,13 +1,14 @@
-import * as React from 'react';
-import * as cn from 'classnames';
 import { Button } from 'antd';
+import * as cn from 'classnames';
+import * as React from 'react';
+import { colors } from '../constants';
+import { generateInput } from '../inputs/InputGenerator';
+import { executeInterceptors, generateInterceptor } from "../interceptors/InterceptorGenerator";
+import { BaseField } from "../models/BaseField";
+import { InterceptorConfig } from "../models/InterceptorConfig";
+import { InterceptorHandler } from "../models/InterceptorHandler";
 
 import './Form.css';
-import { executeInterceptors, generateInterceptor } from '../interceptors/InterceptorGenerator';
-import { colors } from '../constants';
-import { BaseField } from "../models/BaseField";
-import { generateInput } from './InputGenerator';
-import { InterceptorHandler } from '../interceptors';
 import { FormContext } from './FormContext';
 
 export class FormData {
@@ -37,13 +38,13 @@ export interface IProps {
 }
 
 export interface IState {
-  
+
   // Errors of the fields.
   errors: Map<string, any>
-  
+
   // Interceptors of the fields.
   interceptors: Map<string, InterceptorBundle>
-  
+
   // Values of the fields.
   values: Map<string, any>
 }
@@ -55,48 +56,58 @@ export class InterceptorBundle {
 }
 
 export class Form extends React.Component<IProps, IState> {
-  
+
   public static defaultProps: Partial<IProps> = {
     extraButtons: [],
     layout: 'vertical',
   };
-  
+
   public constructor(props: IProps) {
     super(props);
-    
+
     const values: Map<string, any> = new Map<string, any>();
     const interceptors: Map<string, InterceptorBundle> = new Map<string, InterceptorBundle>();
     for (const field of props.formData.fields) {
       values[field.id] = field.value;
-      
-      const hasValidatorNotEmpty = (field.onSubmit && !!field.onSubmit.find(i => i.id === 'validatorNotEmpty'));
-      
+
+      const hasValidatorNotEmpty = (field.interceptors
+        && field.interceptors.onSubmit
+        && !!field.interceptors.onSubmit.find(i => i.id === 'validatorNotEmpty'));
+
+      const getInterceptors = (interceptors: any, type: string) => interceptors ? (interceptors[type] || []) : [];
+
       if (field.required && !hasValidatorNotEmpty) {
         // add validatorNotEmpty if the field is required and validatorNotEmpty is not in onSubmit interceptors
-        field.onSubmit = [{ id: 'validatorNotEmpty' }, ...(field.onSubmit || [])];
+        field.interceptors = {
+          ...(field.interceptors || {}),
+          onSubmit: [
+            { id: 'validatorNotEmpty' },
+            ...getInterceptors(field.interceptors, 'onSubmit'),
+          ]
+        }
       }
-      
+
       interceptors[field.id] = {
-        onBlur: (field.onBlur || []).map(interceptorConfig => generateInterceptor(field, interceptorConfig)),
-        onChange: (field.onChange || []).map(interceptorConfig => generateInterceptor(field, interceptorConfig)),
-        onSubmit: (field.onSubmit || []).map(interceptorConfig => generateInterceptor(field, interceptorConfig)),
+        onBlur: getInterceptors(field.interceptors, 'onBlur').map((conf: InterceptorConfig) => generateInterceptor(conf)),
+        onChange: getInterceptors(field.interceptors, 'onChange').map((conf: InterceptorConfig) => generateInterceptor(conf)),
+        onSubmit: getInterceptors(field.interceptors, 'onSubmit').map((conf: InterceptorConfig) => generateInterceptor(conf)),
       };
     }
-    
+
     this.state = {
       errors: new Map<string, any>(),
       interceptors,
       values,
     };
   }
-  
+
   public onSubmit(e: any) {
     e.preventDefault();
-    
+
     const { formData } = this.props;
     const { fields } = formData;
     const { errors, interceptors, values } = this.state;
-    
+
     // check existing errors
     // onChange and onBlur interceptors may have returned errors
     let hasError = false;
@@ -106,16 +117,16 @@ export class Form extends React.Component<IProps, IState> {
         break;
       }
     }
-    
+
     // don't proceed if there is an error
     if (hasError) {
       return;
     }
-    
+
     // execute onSubmit interceptors on every field
     for (const field of fields) {
       const value = values[field.id];
-      
+
       // execute the interceptors, they may modify the given value
       const result = executeInterceptors(
         generateContext(this.props.language),
@@ -123,24 +134,24 @@ export class Form extends React.Component<IProps, IState> {
         value,
         interceptors[field.id].onSubmit,
       );
-      
+
       if (result.error) {
         hasError = true;
         this.setState({
           errors: { ...this.state.errors, [field.id]: [result.error] },
         });
-        
+
         // don't proceed if there is an error
         return;
       }
     }
-    
+
     // submit the form if none of the checks above returned
     this.props.onSubmit(values);
   };
-  
+
   public onFieldChange = (field: BaseField, value: any) => {
-    
+
     // execute the interceptors, they may modify the given value
     const result = executeInterceptors(
       generateContext(this.props.language),
@@ -148,18 +159,23 @@ export class Form extends React.Component<IProps, IState> {
       value,
       this.state.interceptors[field.id].onChange,
     );
-    
+
     this.setState({
       errors: { ...this.state.errors, [field.id]: result.error ? [result.error] : [] },
       values: { ...this.state.values, [field.id]: result.value },
     });
   };
-  
+
   public onFieldBlur = (field: BaseField) => {
-    
+
+    const errors = [];
+    if (this.state.errors[field.id]) {
+      errors.push(this.state.errors[field.id]);
+    }
+
     // get the value from the state
     const value = this.state.values[field.id];
-    
+
     // execute the interceptors, they may modify the given value
     const result = executeInterceptors(
       generateContext(this.props.language),
@@ -167,19 +183,19 @@ export class Form extends React.Component<IProps, IState> {
       value,
       this.state.interceptors[field.id].onBlur,
     );
-    
+
     this.setState({
-      errors: { ...this.state.errors, [field.id]: result.error ? [result.error] : [] },
+      errors: { ...this.state.errors, [field.id]: result.error ? [...errors, result.error] : [] },
       values: { ...this.state.values, [field.id]: result.value },
     });
   };
-  
+
   public render() {
     const { formData, layout, loading, submitButtonLabel, extraButtons } = this.props;
     const { fields } = formData;
     const { errors, values } = this.state;
     let order = 0;
-    
+
     let error;
     for (const fieldId of Object.keys(errors)) {
       if (errors[fieldId]) {
@@ -189,19 +205,19 @@ export class Form extends React.Component<IProps, IState> {
         }
       }
     }
-    
+
     return (
       <form className={cn({
         'dvn-form': true,
         [layout as string]: true,
       })} onSubmit={(e: any) => this.onSubmit(e)}>
         {fields.map(field => {
-          
+
           const input = generateInput(field, values[field.id], errors[field.id], loading, this.onFieldChange, this.onFieldBlur);
           if (field.title && field.title !== '') {
             order += 1;
           }
-          
+
           return (
             <div
               id={field.id}
@@ -221,7 +237,7 @@ export class Form extends React.Component<IProps, IState> {
                     {formData.showFieldOrder && `${order}. `}
                     {field.title}
                   </b>
-                  
+
                   {(layout === 'vertical' && field.description && field.description !== '') &&
                   <div className="description">
                     {field.description}
@@ -229,27 +245,27 @@ export class Form extends React.Component<IProps, IState> {
                   }
                 </label>
               </div>
-              
+
               <div className={cn({
                 'dvn-col-sm-18': layout === 'horizontal',
                 'dvn-input-container': true,
               })}>
-                
+
                 {(layout === 'horizontal' && field.description && field.description !== '') &&
                 <div className="dvn-form-label-right">
                   {field.description}
                 </div>
                 }
-                
+
                 {input}
               </div>
             </div>
           );
         })}
-        
+
         <div className="dvn-form-footer">
           {error && <span style={{ color: colors.error, marginRight: '1rem' }}>{error}</span>}
-          
+
           {extraButtons!.map(button =>
             <Button
               key={button.label}
@@ -261,7 +277,7 @@ export class Form extends React.Component<IProps, IState> {
               {button.label}
             </Button>,
           )}
-  
+
           {submitButtonLabel &&
           <Button
             type="primary"

@@ -24,6 +24,8 @@
     "scripts",
     "acceptance-tests",
     "webpack",
-    "jest"
+    "jest",
+    "**/*.test.ts",
+    "**/*.test.tsx"
   ]
 }

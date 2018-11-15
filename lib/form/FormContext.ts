@@ -1,4 +1,4 @@
 export class FormContext {
-  constructor(public language: 'en' | 'tr') {
+  constructor(public language: 'en' | 'tr' = 'en') {
   }
 }

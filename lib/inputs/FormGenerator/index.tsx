@@ -1,5 +1,5 @@
 import * as React from "react";
-import { registerField } from "../../form/InputGenerator";
+import { registerField } from "../InputGenerator";
 import { BaseField, InputGenerator } from "../../models/BaseField";
 import { InputFormGenerator } from "./FormGenerator";
 

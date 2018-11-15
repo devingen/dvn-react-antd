@@ -8,15 +8,7 @@ import { ICommonFieldProps } from './FieldForm';
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-export const emptyFieldData: SingleChoice = {
-  id: '',
-  inputType: 'radioButton',
-  options: [],
-  placeholder: '',
-  required: true,
-  title: '',
-  type: SingleChoice.type,
-};
+export const emptyFieldData = new SingleChoice('', '', [])
 
 class FieldFormSingleChoice extends React.Component<ICommonFieldProps> {
   

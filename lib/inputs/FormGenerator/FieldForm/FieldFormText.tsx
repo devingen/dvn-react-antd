@@ -4,40 +4,32 @@ import { simpleTextDecorator } from '../utils';
 import { ICommonFieldProps } from './FieldForm';
 import { TextInput } from "../../../index";
 
-export const emptyFieldData: any = {
-  id: '',
-  lines: 1,
-  linesMax: 3,
-  placeholder: '',
-  required: true,
-  title: '',
-  type: TextInput.type,
-};
+export const emptyFieldData = new TextInput('', '');
 
 const FormItem = Form.Item;
 
 class DynamicFieldTextForm extends React.Component<ICommonFieldProps> {
-  
+
   public handleSubmit() {
     this.props.form.validateFields((errors: any, values: any) => {
       if (errors) {
         return;
       }
-      
+
       const data: TextInput = {
         ...(this.props.data || emptyFieldData),
         ...values,
         type: TextInput.type,
       };
-      
+
       this.props.onSaveClick(data);
     });
   }
-  
+
   public render() {
     const { data, form, commonProps, disabled, strings } = this.props;
     const { getFieldDecorator } = form;
-    
+
     return (
       <Form layout="horizontal" onSubmit={() => this.handleSubmit()}>
         <FormItem {...commonProps} label={strings.field.question}>
@@ -51,7 +43,7 @@ class DynamicFieldTextForm extends React.Component<ICommonFieldProps> {
             />,
           )}
         </FormItem>
-        
+
         <FormItem {...commonProps} label={strings.field.description}>
           {simpleTextDecorator(getFieldDecorator, 'description',
             strings.field.descriptionPlaceholder, data ? data.description : '', false, 3, 100, [], strings)(
@@ -63,13 +55,13 @@ class DynamicFieldTextForm extends React.Component<ICommonFieldProps> {
             />,
           )}
         </FormItem>
-        
+
         <FormItem {...commonProps} label={strings.field.required}>
           {getFieldDecorator('required', { initialValue: data ? data.required : true, valuePropName: 'checked' })(
             <Checkbox disabled={disabled}>{strings.field.requiredDescription}</Checkbox>,
           )}
         </FormItem>
-        
+
         <FormItem {...commonProps} label={strings.field.textField.placeholder}>
           {simpleTextDecorator(getFieldDecorator, 'placeholder',
             strings.field.textField.placeholder, data ? data.placeholder : '', false, 3, 100, [], strings)(
@@ -81,7 +73,7 @@ class DynamicFieldTextForm extends React.Component<ICommonFieldProps> {
             />,
           )}
         </FormItem>
-        
+
         <FormItem {...commonProps} label={strings.field.textField.lineCount}>
           {getFieldDecorator('lines', { initialValue: data ? data.lines : 1 })(
             <InputNumber
@@ -92,7 +84,7 @@ class DynamicFieldTextForm extends React.Component<ICommonFieldProps> {
             />,
           )}
         </FormItem>
-        
+
         <FormItem {...commonProps} label={strings.field.textField.maxLineCount}>
           {getFieldDecorator('linesMax', { initialValue: data ? data.linesMax : 3 })(
             <InputNumber
@@ -103,7 +95,7 @@ class DynamicFieldTextForm extends React.Component<ICommonFieldProps> {
             />,
           )}
         </FormItem>
-        
+
         <div style={{ textAlign: 'right' }}>
           <Button
             onClick={() => this.props.onCancelClick()}

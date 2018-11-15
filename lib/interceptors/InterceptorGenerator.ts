@@ -1,48 +1,60 @@
-import { FormContext } from '../form/FormContext';
+import { FormContext } from "../form/FormContext";
 import { BaseField } from "../models/BaseField";
-import { HandlerResponse, InterceptorConfig, InterceptorHandler } from './index';
-import { ModifierLowercaseConverter } from './modifiers/ModifierLowercaseConverter';
-import { ModifierNonStandardCharRemover } from './modifiers/ModifierNonStandardCharRemover';
-import { ModifierUppercaseConverter } from './modifiers/ModifierUppercaseConverter';
-import { ValidatorEmail } from './validators/ValidatorEmail';
-import { ValidatorLength } from './validators/ValidatorLength';
-import { ValidatorNotEmpty } from './validators/ValidatorNotEmpty';
-import { ValidatorURL } from './validators/ValidatorURL';
+import { InterceptorConfig } from "../models/InterceptorConfig";
+import { InterceptorHandler } from "../models/InterceptorHandler";
+import { InterceptorHandlerResponse } from "../models/InterceptorHandlerResponse";
 
-export function generateInterceptor(field: BaseField, interceptorConfig: InterceptorConfig): InterceptorHandler | undefined {
-  switch (interceptorConfig.id) {
-    case ValidatorNotEmpty.id:
-      return new ValidatorNotEmpty(field, interceptorConfig);
-    case ValidatorLength.id:
-      return new ValidatorLength(field, interceptorConfig);
-    case ValidatorURL.id:
-      return new ValidatorURL(field, interceptorConfig);
-    case ValidatorEmail.id:
-      return new ValidatorEmail(field, interceptorConfig);
-    
-    case ModifierLowercaseConverter.id:
-      return new ModifierLowercaseConverter(field, interceptorConfig);
-    case ModifierUppercaseConverter.id:
-      return new ModifierUppercaseConverter(field, interceptorConfig);
-    case ModifierNonStandardCharRemover.id:
-      return new ModifierNonStandardCharRemover(field, interceptorConfig);
+const interceptorTypeMap: Map<string, InterceptorGenerator> = new Map<string, InterceptorGenerator>();
+
+/**
+ * Saves the interceptor into the interceptorTypeMap.
+ * @param interceptorType is the identifier of the interceptor.
+ * @param generator function that is expected to generate the interceptor with the given config.
+ */
+export function registerInterceptor(interceptorType: string, generator: InterceptorGenerator) {
+  interceptorTypeMap.set(interceptorType, generator);
+}
+
+/**
+ * Generates an interceptor handler with the given config.
+ *
+ * @param config that contains all the parameters that the interceptor needs.
+ */
+export function generateInterceptor(config: InterceptorConfig): InterceptorHandler | undefined {
+
+  const generator = interceptorTypeMap.get(config.id);
+  if (generator) {
+    return generator(config);
   }
+
   return undefined;
 }
 
-export function executeInterceptors(context: FormContext, field: BaseField, value: any, interceptors: InterceptorHandler[]): HandlerResponse {
-  
+/**
+ * Executs the given interceptors in order. Passes the response of each interceptor's result to the next
+ * interceptor. Returns error of the first failed interceptor or returns the result of the last interceptor
+ * if none returns an error.
+ *
+ * @param context of the form.
+ * @param field that is being executed.
+ * @param value that the interceptor will process.
+ * @param interceptors that will be executed in order.
+ */
+export function executeInterceptors(context: FormContext, field: BaseField, value: any, interceptors: InterceptorHandler[]): InterceptorHandlerResponse {
+
   let v = value;
   for (const interceptor of interceptors) {
     if (!interceptor) {
       continue;
     }
-    const response = interceptor.run(context, v);
+    const response = interceptor.run(context, field, v);
     if (response.error) {
-      // don't proceed to other interceptor if an error returned
+      // don't proceed to next interceptor if an error returned
       return response;
     }
     v = response.value;
   }
-  return new HandlerResponse(v);
+  return new InterceptorHandlerResponse(v);
 }
+
+export type InterceptorGenerator = (config: InterceptorConfig) => InterceptorHandler | undefined;

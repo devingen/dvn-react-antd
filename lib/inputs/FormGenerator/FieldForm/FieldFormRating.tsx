@@ -4,13 +4,7 @@ import { RatingStars } from "../../RatingStars/index";
 import { convertToUniqueAlphanumberic, simpleTextDecorator } from '../utils';
 import { ICommonFieldProps } from './FieldForm';
 
-export const emptyFieldData: RatingStars = {
-  id: '',
-  required: true,
-  starCount: 5,
-  title: '',
-  type: RatingStars.type,
-};
+export const emptyFieldData = new RatingStars('', '');
 
 class FieldFormRating extends React.Component<ICommonFieldProps> {
   
