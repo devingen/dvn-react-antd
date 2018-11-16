@@ -1,3 +1,4 @@
+import { InterceptorBundle } from "../form/Form";
 import { FormContext } from "../form/FormContext";
 import { BaseField } from "../models/BaseField";
 import { InterceptorConfig } from "../models/InterceptorConfig";
@@ -38,9 +39,12 @@ export function generateInterceptor(config: InterceptorConfig): InterceptorHandl
  * @param context of the form.
  * @param field that is being executed.
  * @param value that the interceptor will process.
- * @param interceptors that will be executed in order.
+ * @param interceptorBundle that contains interceptor list for each type.
+ * @param interceptorType that is expected to be used.
  */
-export function executeInterceptors(context: FormContext, field: BaseField, value: any, interceptors: InterceptorHandler[]): InterceptorHandlerResponse {
+export function executeInterceptors(context: FormContext, field: BaseField, value: any, interceptorBundle?: InterceptorBundle, interceptorType?: 'onBlur' | 'onChange' | 'onSubmit'): InterceptorHandlerResponse {
+
+  const interceptors = interceptorBundle ? (interceptorBundle[interceptorType!] || []) : [];
 
   let v = value;
   for (const interceptor of interceptors) {
