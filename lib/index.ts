@@ -1,4 +1,4 @@
-export { Form, ExtraButtonCallbackResponse, ExtraButtonCallback } from './form/Form';
+export { Form, SubmitCallbackResponse, SubmitCallback, getFirstError } from './form/Form';
 export { FormContext } from './form/FormContext';
 export { InterceptorHandlerResponse } from './models/InterceptorHandlerResponse';
 export { MultipleChoice } from './inputs/MultipleChoice';

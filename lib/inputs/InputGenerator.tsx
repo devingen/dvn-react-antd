@@ -7,7 +7,7 @@ export function registerField(fieldType: string, inputGenerator: InputGenerator)
 }
 
 export function generateInput(
-  field: BaseField, value: any, errors: any[], disabled: boolean,
+  field: BaseField, value: any, errors: string[] = [], disabled: boolean,
   onFieldChange: (field: BaseField, value: any) => void,
   onFieldBlur: (field: BaseField) => void,
 ): any {

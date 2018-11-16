@@ -20,15 +20,15 @@ export class FormData {
   }
 }
 
-export type ExtraButtonCallbackResponse = { values?: Map<string, any>, errors?: Map<string, any> } | undefined
+export type SubmitCallbackResponse = { values?: { [key: string]: any }, errors?: { [key: string]: string[] } } | void
 
-export type ExtraButtonCallback = (context: FormContext, values: Map<string, any>, errors: Map<string, any>) => ExtraButtonCallbackResponse
+export type SubmitCallback = (values: { [key: string]: any }, errors: { [key: string]: string[] }, context: FormContext) => SubmitCallbackResponse
 
 export class ButtonProps {
   public label: string;
   public loading: boolean;
   public type?: 'primary' | 'danger';
-  public onClick: ExtraButtonCallback;
+  public onClick: SubmitCallback;
 }
 
 export interface IProps {
@@ -37,22 +37,26 @@ export interface IProps {
   language?: 'en' | 'tr'
   layout?: 'horizontal' | 'vertical' | 'compact'
   loading: boolean
-  onSubmit: (values: any) => void
+  onSubmit: SubmitCallback
   submitButtonLabel: string
 }
+
+type StateError = { [key: string]: string[] }
+type StateInterceptors = { [key: string]: InterceptorBundle }
+type StateValues = { [key: string]: any }
 
 export interface IState {
 
   context: FormContext
 
   // Errors of the fields.
-  errors: Map<string, string[]>
+  errors: StateError
 
   // Interceptors of the fields.
-  interceptors: Map<string, InterceptorBundle>
+  interceptors: StateInterceptors
 
   // Values of the fields.
-  values: Map<string, any>
+  values: StateValues
 }
 
 export class InterceptorBundle {
@@ -171,7 +175,7 @@ export class Form extends React.Component<IProps, IState> {
     );
   }
 
-  private onExtraButtonClick(callback: ExtraButtonCallback) {
+  private onExtraButtonClick(callback: SubmitCallback) {
 
     const state = handleExtraButtonClick(this.props, this.state, callback);
 
@@ -191,25 +195,10 @@ export class Form extends React.Component<IProps, IState> {
   private onFormSubmit(e: any) {
     e.preventDefault();
 
-    const { formData } = this.props;
-    const { fields } = formData;
-    const { context, errors, interceptors, values } = this.state;
+    const state = handleExtraButtonClick(this.props, this.state, this.props.onSubmit);
 
-    // check existing errors. onChange and onBlur interceptors may have returned errors
-    if (!!getFirstError(errors)) {
-      // don't proceed if there is an error
-      return;
-    }
-
-    // check if any onSubmit interceptors return an error
-    const onSubmitErrors = executeOnSubmitInterceptors(context, fields, interceptors, values);
-
-    if (onSubmitErrors.size > 0) {
-      // set the errors and prevent the form submit
-      this.setState({ errors: onSubmitErrors });
-    } else {
-      // submit the form
-      this.props.onSubmit(values);
+    if (state) {
+      this.setState(state);
     }
   };
 }
@@ -221,7 +210,7 @@ export class Form extends React.Component<IProps, IState> {
  * @param state
  * @param callback
  */
-export function handleExtraButtonClick(props: IProps, state: IState, callback: ExtraButtonCallback): IState | undefined {
+export function handleExtraButtonClick(props: IProps, state: IState, callback: SubmitCallback): IState | undefined {
 
   const { formData } = props;
   const { context, errors, interceptors, values } = state;
@@ -230,18 +219,18 @@ export function handleExtraButtonClick(props: IProps, state: IState, callback: E
   // retrieve errors that the interceptors return on submit
   const onSubmitErrors = executeOnSubmitInterceptors(context, fields, interceptors, values);
 
-  const response = callback(context, values, mergeErrors(errors, onSubmitErrors));
+  const response = callback(values, mergeErrors(errors, onSubmitErrors), context);
 
   if (!response || (!response.errors && !response.values)) {
-    return undefined;
+    return { ...state, errors: mergeErrors(errors, onSubmitErrors), values };
   }
 
   const newState: IState = { ...state };
   if (response && response.errors) {
-    newState.errors = new Map<string, string[]>(response.errors);
+    newState.errors = response.errors;
   }
   if (response && response.values) {
-    newState.values = new Map<string, any>(response.values);
+    newState.values = response.values;
   }
   return newState;
 }
@@ -253,9 +242,10 @@ export function handleExtraButtonClick(props: IProps, state: IState, callback: E
 function generateState(props: IProps): IState {
 
   const values: Map<string, any> = new Map<string, any>();
-  const interceptors: Map<string, InterceptorBundle> = new Map<string, InterceptorBundle>();
+  const interceptors = {};
+
   for (const field of props.formData.fields) {
-    values[field.id] = field.value;
+    values.set(field.id, field.value);
 
     const hasValidatorNotEmpty = (field.interceptors
       && field.interceptors.onSubmit
@@ -267,10 +257,7 @@ function generateState(props: IProps): IState {
       // add validatorNotEmpty if the field is required and validatorNotEmpty is not in onSubmit interceptors
       field.interceptors = {
         ...(field.interceptors || {}),
-        onSubmit: [
-          { id: 'validatorNotEmpty' },
-          ...getInterceptors(field.interceptors, 'onSubmit'),
-        ]
+        onSubmit: [{ id: 'validatorNotEmpty' }, ...getInterceptors(field.interceptors, 'onSubmit')]
       }
     }
 
@@ -283,7 +270,7 @@ function generateState(props: IProps): IState {
 
   return {
     context: generateContext(props.language),
-    errors: new Map<string, any>(),
+    errors: {},
     interceptors,
     values,
   };
@@ -300,23 +287,23 @@ export function generateStateOnFieldBlur(state: IState, field: BaseField): IStat
   const { context, errors, interceptors, values } = state;
 
   // get the existing error of the field
-  const fieldErrors = [...(errors.get(field.id) || [])];
+  const fieldErrors = [...(errors[field.id] || [])];
 
   // get the value from the state
-  const value = values.get(field.id);
+  const value = values[field.id];
 
   // execute the interceptors, they may modify the given value
-  const result = executeInterceptors(context, field, value, interceptors.get(field.id), 'onBlur');
+  const result = executeInterceptors(context, field, value, interceptors[field.id], 'onBlur');
 
-  const newErrorState = new Map<string, string[]>(errors);
+  const newErrorState = { ...errors };
   if (result.error) {
-    newErrorState.set(field.id, [...fieldErrors, result.error]);
+    newErrorState[field.id] = [...fieldErrors, result.error];
   }
 
   return {
     ...state,
     errors: newErrorState,
-    values: new Map<string, any>(values).set(field.id, result.value),
+    values: { ...values, [field.id]: result.value },
   };
 }
 
@@ -348,7 +335,7 @@ export function generateStateOnFieldChange(state: IState, field: BaseField, valu
  * @param errors to check.
  * @return the error.
  */
-export function getFirstError(errors: Map<string, any>): any {
+export function getFirstError(errors: { [key: string]: string[] }): any {
 
   let error;
   for (const fieldId of Object.keys(errors)) {
@@ -370,9 +357,9 @@ export function getFirstError(errors: Map<string, any>): any {
  * @param interceptors
  * @param values
  */
-export function executeOnSubmitInterceptors(context: FormContext, fields: BaseField[], interceptors: Map<string, InterceptorBundle>, values: Map<string, any>): Map<string, any> {
+export function executeOnSubmitInterceptors(context: FormContext, fields: BaseField[], interceptors: StateInterceptors, values: StateValues): StateError {
 
-  const errors = new Map<string, string[]>();
+  const errors = {};
 
   // execute onSubmit interceptors on every field
   for (const field of fields) {
@@ -383,7 +370,7 @@ export function executeOnSubmitInterceptors(context: FormContext, fields: BaseFi
 
     if (result.error) {
       // return the first error
-      return errors.set(field.id, [result.error]);
+      errors[field.id] = [result.error];
     }
   }
 
@@ -407,24 +394,24 @@ export function generateContext(language: string = 'en') {
  * @param errors1
  * @param errors2
  */
-export function mergeErrors(errors1: Map<string, any>, errors2: Map<string, any>): Map<string, any> {
+export function mergeErrors(errors1: StateError, errors2: StateError): StateError {
   if (!errors1) {
     return errors2;
   } else if (!errors2) {
     return errors1;
   }
 
-  const errors = new Map<string, any>();
+  const errors = {};
 
-  const uniqueIds = Array.from(new Set([...Array.from(errors1.keys()), ...Array.from(errors2.keys())]))
+  const uniqueIds = Array.from(new Set([...Object.keys(errors1), ...Object.keys(errors2)]));
 
   for (const id of uniqueIds) {
-    if (!errors1.get(id)) {
-      errors.set(id, errors2.get(id));
-    } else if (!errors2.get(id)) {
-      errors.set(id, errors1.get(id));
+    if (!errors1[id]) {
+      errors[id] = errors2[id];
+    } else if (!errors2[id]) {
+      errors[id] = errors1[id];
     } else {
-      errors.set(id, [...errors1.get(id), ...errors2.get(id)]);
+      errors[id] = [...errors1[id], ...errors2[id]];
     }
   }
 

@@ -3,10 +3,9 @@ import { ValidatorEmail, ValidatorLength } from "../interceptors";
 import { ValidatorNotEmptyHandler } from "../interceptors/ValidatorNotEmpty";
 import { BaseField } from "../models/BaseField";
 import {
-  ExtraButtonCallbackResponse,
+  SubmitCallbackResponse,
   generateStateOnFieldBlur,
   handleExtraButtonClick,
-  InterceptorBundle,
   IProps,
   IState
 } from "./Form";
@@ -21,9 +20,9 @@ describe('ValidatorURL', () => {
     it('should return no error if there is no existing error and the onBlur interceptors return no error', () => {
       const state: IState = {
         context,
-        errors: new Map<string, string[]>(),
-        interceptors: new Map<string, InterceptorBundle>(),
-        values: new Map<string, any>().set('a', 1).set('b', 'b').set('c', false),
+        errors: {},
+        interceptors: {},
+        values: { a: 1, b: 'b', c: false },
       };
 
       const field = {
@@ -34,18 +33,18 @@ describe('ValidatorURL', () => {
 
       expect(generateStateOnFieldBlur(state, field as BaseField)).toEqual({
         context,
-        errors: new Map<string, string[]>(),
-        interceptors: new Map<string, InterceptorBundle>(),
-        values: new Map<string, any>().set('a', 1).set('b', 'b').set('c', false),
+        errors: {},
+        interceptors: {},
+        values: { a: 1, b: 'b', c: false },
       });
     })
 
     it('should return previous errors if there are existing errors and the onBlur interceptors return no error', () => {
       const state: IState = {
         context,
-        errors: new Map<string, string[]>().set('a', ['Fix this!']),
-        interceptors: new Map<string, InterceptorBundle>(),
-        values: new Map<string, any>().set('a', 1).set('b', 'b').set('c', false),
+        errors: { 'a': ['Fix this!'] },
+        interceptors: {},
+        values: { a: 1, b: 'b', c: false },
       };
 
       const field = {
@@ -56,22 +55,24 @@ describe('ValidatorURL', () => {
 
       expect(generateStateOnFieldBlur(state, field as BaseField)).toEqual({
         context,
-        errors: new Map<string, string[]>().set('a', ['Fix this!']),
-        interceptors: new Map<string, InterceptorBundle>(),
-        values: new Map<string, any>().set('a', 1).set('b', 'b').set('c', false),
+        errors: { 'a': ['Fix this!'] },
+        interceptors: {},
+        values: { a: 1, b: 'b', c: false },
       });
     })
 
     it('should return combined errors if there are existing errors and the onBlur interceptors return error too', () => {
       const state: IState = {
         context,
-        errors: new Map<string, string[]>().set('a', ['Fix this!']),
-        interceptors: new Map<string, InterceptorBundle>().set('a', {
-          onBlur: [new ValidatorNotEmptyHandler()],
-          onChange: [],
-          onSubmit: [],
-        }),
-        values: new Map<string, any>().set('a', 0).set('b', 'b').set('c', false),
+        errors: { 'a': ['Fix this!'] },
+        interceptors: {
+          'a': {
+            onBlur: [new ValidatorNotEmptyHandler()],
+            onChange: [],
+            onSubmit: [],
+          }
+        },
+        values: { a: 0, b: 'b', c: false },
       };
 
       const field = {
@@ -82,13 +83,15 @@ describe('ValidatorURL', () => {
 
       expect(generateStateOnFieldBlur(state, field as BaseField)).toEqual({
         context,
-        errors: new Map<string, string[]>().set('a', ['Fix this!', 'A cannot be empty.']),
-        interceptors: new Map<string, InterceptorBundle>().set('a', {
-          onBlur: [new ValidatorNotEmptyHandler()],
-          onChange: [],
-          onSubmit: [],
-        }),
-        values: new Map<string, any>().set('a', 0).set('b', 'b').set('c', false),
+        errors: { 'a': ['Fix this!', 'A cannot be empty.'] },
+        interceptors: {
+          'a': {
+            onBlur: [new ValidatorNotEmptyHandler()],
+            onChange: [],
+            onSubmit: [],
+          }
+        },
+        values: { a: 0, b: 'b', c: false },
       });
     })
 
@@ -118,16 +121,17 @@ describe('ValidatorURL', () => {
     const props: IProps = {
       formData: { fields },
       loading: false,
-      onSubmit: (values: any) => {
+      onSubmit: (values: { [key: string]: any }, errors: { [key: string]: string[] }, context: FormContext): SubmitCallbackResponse => {
+        return undefined
       },
       submitButtonLabel: 'Hit me!',
     };
 
     const state: IState = {
       context,
-      errors: new Map<string, string[]>(),
-      interceptors: new Map<string, InterceptorBundle>(),
-      values: new Map<string, any>().set('a', 1).set('b', 'b').set('c', false),
+      errors: {},
+      interceptors: {},
+      values: { a: 1, b: 'b', c: false },
     };
 
     it('should pass existing values and errors to the button callback when the button is clicked', () => {
@@ -139,23 +143,28 @@ describe('ValidatorURL', () => {
 
       expect(callbackCalls.length).toBe(1);
       expect(callbackCalls[0].length).toBe(3);
-      expect(callbackCalls[0][0]).toEqual(new FormContext());
-      expect(callbackCalls[0][1]).toEqual(new Map<string, any>().set('a', 1).set('b', 'b').set('c', false));
-      expect(callbackCalls[0][2]).toEqual(new Map<string, string[]>());
+      expect(callbackCalls[0][0]).toEqual({ a: 1, b: 'b', c: false });
+      expect(callbackCalls[0][1]).toEqual({});
+      expect(callbackCalls[0][2]).toEqual(new FormContext());
     });
 
-    it('should return an undefined state if the callback return nothing', () => {
+    it('should return the same state if the callback returns nothing', () => {
 
       const callback = jest.fn();
       const response = handleExtraButtonClick(props, state, callback);
-      expect(response).toBeUndefined();
+      expect(response).toEqual({
+        "context": { "language": "en" },
+        "errors": {},
+        "interceptors": {},
+        "values": { "a": 1, "b": "b", "c": false }
+      });
     });
 
     it('should return a state that contains the values that the callback returns', () => {
 
-      const callback = jest.fn((context: FormContext, values: Map<string, any>, errors: Map<string, any>): ExtraButtonCallbackResponse => {
+      const callback = jest.fn((context: FormContext, values: { [key: string]: any }, errors: { [key: string]: string[] }): SubmitCallbackResponse => {
         return {
-          values: new Map<string, any>().set('a', 20).set('b', 'b').set('c', false)
+          values: { a: 20, b: 'b', c: false }
         }
       });
 
@@ -164,7 +173,7 @@ describe('ValidatorURL', () => {
       expect(response).toBeDefined();
       expect(response).toEqual({
         ...state,
-        values: new Map<string, any>().set('a', 20).set('b', 'b').set('c', false),
+        values: { a: 20, b: 'b', c: false },
       });
     });
 
@@ -172,16 +181,14 @@ describe('ValidatorURL', () => {
 
       const state: IState = {
         context,
-        errors: new Map<string, string[]>().set('a', ['The error that the form passes.']),
-        interceptors: new Map<string, InterceptorBundle>(),
-        values: new Map<string, any>().set('a', 1).set('b', 'b').set('c', false),
+        errors: { 'a': ['The error that the form passes.'] },
+        interceptors: {},
+        values: { a: 1, b: 'b', c: false },
       };
 
-      const callback = jest.fn((context: FormContext, values: Map<string, any>, errors: Map<string, any>): {
-        values?: Map<string, any>, errors?: Map<string, any>
-      } => {
+      const callback = jest.fn((context: FormContext, values: { [key: string]: any }, errors: { [key: string]: string[] }): SubmitCallbackResponse => {
         return {
-          errors: new Map<string, string[]>().set('a', ['You did not see it coming, did you?']),
+          errors: { 'a': ['You did not see it coming, did you?'] },
         }
       });
 
@@ -190,16 +197,16 @@ describe('ValidatorURL', () => {
       expect(response).toBeDefined();
       expect(response).toEqual({
         ...state,
-        errors: new Map<string, string[]>().set('a', ['You did not see it coming, did you?']),
+        errors: { 'a': ['You did not see it coming, did you?'] },
       });
     });
 
     it('should return a state that contains the values and the errors that the callback returns', () => {
 
-      const callback = jest.fn((context: FormContext, values: Map<string, any>, errors: Map<string, any>) => {
+      const callback = jest.fn((context: FormContext, values: { [key: string]: any }, errors: { [key: string]: string[] }): SubmitCallbackResponse => {
         return {
-          errors: new Map<string, string[]>().set('a', ['You did not see it coming, did you?']),
-          values: new Map<string, any>().set('a', 20).set('b', 'b').set('c', false),
+          errors: { 'a': ['You did not see it coming, did you?'] },
+          values: { a: 20, b: 'b', c: false },
         }
       });
 
@@ -208,8 +215,8 @@ describe('ValidatorURL', () => {
       expect(response).toBeDefined();
       expect(response).toEqual({
         ...state,
-        errors: new Map<string, string[]>().set('a', ['You did not see it coming, did you?']),
-        values: new Map<string, any>().set('a', 20).set('b', 'b').set('c', false),
+        errors: { 'a': ['You did not see it coming, did you?'] },
+        values: { a: 20, b: 'b', c: false },
       });
     });
   });
