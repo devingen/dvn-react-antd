@@ -29,9 +29,9 @@ export class MultipleChoice extends BaseField {
 export module MultipleChoice {
   export class Option {
     public label: string;
-    public value: string | number;
+    public value: any;
 
-    constructor(label: string, value: string | number) {
+    constructor(label: string, value: any) {
       this.label = label;
       this.value = value;
     }
