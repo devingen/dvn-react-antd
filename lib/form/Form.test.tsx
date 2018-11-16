@@ -2,7 +2,14 @@ import { TextInput } from "../inputs/TextInput";
 import { ValidatorEmail, ValidatorLength } from "../interceptors";
 import { ValidatorNotEmptyHandler } from "../interceptors/ValidatorNotEmpty";
 import { BaseField } from "../models/BaseField";
-import { generateStateOnFieldBlur, handleExtraButtonClick, InterceptorBundle, IProps, IState } from "./Form";
+import {
+  ExtraButtonCallbackResponse,
+  generateStateOnFieldBlur,
+  handleExtraButtonClick,
+  InterceptorBundle,
+  IProps,
+  IState
+} from "./Form";
 import { FormContext } from "./FormContext";
 
 const context = new FormContext('en');
@@ -146,7 +153,7 @@ describe('ValidatorURL', () => {
 
     it('should return a state that contains the values that the callback returns', () => {
 
-      const callback = jest.fn((context: FormContext, values: Map<string, any>, errors: Map<string, any>) => {
+      const callback = jest.fn((context: FormContext, values: Map<string, any>, errors: Map<string, any>): ExtraButtonCallbackResponse => {
         return {
           values: new Map<string, any>().set('a', 20).set('b', 'b').set('c', false)
         }
@@ -170,7 +177,9 @@ describe('ValidatorURL', () => {
         values: new Map<string, any>().set('a', 1).set('b', 'b').set('c', false),
       };
 
-      const callback = jest.fn((context: FormContext, values: Map<string, any>, errors: Map<string, any>) => {
+      const callback = jest.fn((context: FormContext, values: Map<string, any>, errors: Map<string, any>): {
+        values?: Map<string, any>, errors?: Map<string, any>
+      } => {
         return {
           errors: new Map<string, string[]>().set('a', ['You did not see it coming, did you?']),
         }

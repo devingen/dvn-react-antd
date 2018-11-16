@@ -20,9 +20,9 @@ export class FormData {
   }
 }
 
-export type ExtraButtonCallback = (context: FormContext, values: Map<string, any>, errors: Map<string, any>) => {
-  values: Map<string, any>, errors: Map<string, any>
-}
+export type ExtraButtonCallbackResponse = { values?: Map<string, any>, errors?: Map<string, any> } | undefined
+
+export type ExtraButtonCallback = (context: FormContext, values: Map<string, any>, errors: Map<string, any>) => ExtraButtonCallbackResponse
 
 export class ButtonProps {
   public label: string;
