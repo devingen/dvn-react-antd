@@ -1,7 +1,19 @@
+# The source code of the library
 lib/
+
+# Test configration
+config/
 
 # Testing
 coverage
 .coverage
 
-.idea
+# IDEs
+.idea/
+.vscode/
+*.swp
+
+# TypeScript configurations
+tsconfig.*
+
+.travis.yml
