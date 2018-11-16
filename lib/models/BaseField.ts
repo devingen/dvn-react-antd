@@ -58,6 +58,11 @@ export class BaseField {
     this.required = true;
     return this;
   }
+
+  public setValue(value: any): BaseField {
+    this.value = value;
+    return this;
+  }
 }
 
 export type InputGenerator = (
