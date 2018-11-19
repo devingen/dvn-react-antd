@@ -20,9 +20,9 @@ export class FormData {
   }
 }
 
-export type SubmitCallbackResponse = { values?: { [key: string]: any }, errors?: { [key: string]: string[] } } | void
+export type SubmitCallbackResponse = { values?: { [key: string]: any }, errors?: { [key: string]: string[] } }
 
-export type SubmitCallback = (values: { [key: string]: any }, errors: { [key: string]: string[] }, context: FormContext) => SubmitCallbackResponse
+export type SubmitCallback = (values: { [key: string]: any }, errors: { [key: string]: string[] }, context: FormContext) => SubmitCallbackResponse | void
 
 export class ButtonProps {
   public label: string;
@@ -38,6 +38,7 @@ export interface IProps {
   layout?: 'horizontal' | 'vertical' | 'compact'
   loading: boolean
   onSubmit: SubmitCallback
+  passErrorsToSubmit?: boolean
   submitButtonLabel: string
 }
 
@@ -177,7 +178,7 @@ export class Form extends React.Component<IProps, IState> {
 
   private onExtraButtonClick(callback: SubmitCallback) {
 
-    const state = handleExtraButtonClick(this.props, this.state, callback);
+    const state = handleExtraButtonClick(this.props, this.state, callback, true);
 
     if (state) {
       this.setState(state);
@@ -195,7 +196,7 @@ export class Form extends React.Component<IProps, IState> {
   private onFormSubmit(e: any) {
     e.preventDefault();
 
-    const state = handleExtraButtonClick(this.props, this.state, this.props.onSubmit);
+    const state = handleExtraButtonClick(this.props, this.state, this.props.onSubmit, !!this.props.passErrorsToSubmit);
 
     if (state) {
       this.setState(state);
@@ -209,8 +210,9 @@ export class Form extends React.Component<IProps, IState> {
  * @param props
  * @param state
  * @param callback
+ * @param passErrorsToCallback is used to call callback even though there are errors.
  */
-export function handleExtraButtonClick(props: IProps, state: IState, callback: SubmitCallback): IState | undefined {
+export function handleExtraButtonClick(props: IProps, state: IState, callback: SubmitCallback, passErrorsToCallback: boolean): IState | undefined {
 
   const { formData } = props;
   const { context, errors, interceptors, values } = state;
@@ -218,6 +220,11 @@ export function handleExtraButtonClick(props: IProps, state: IState, callback: S
 
   // retrieve errors that the interceptors return on submit
   const onSubmitErrors = executeOnSubmitInterceptors(context, fields, interceptors, values);
+
+  if (!passErrorsToCallback && getFirstError(mergeErrors(errors, onSubmitErrors))) {
+    // skip the rest if the errors should not be passed to the callback
+    return { ...state, errors: mergeErrors(errors, onSubmitErrors), values };
+  }
 
   const response = callback(values, mergeErrors(errors, onSubmitErrors), context);
 
@@ -333,9 +340,9 @@ export function generateStateOnFieldChange(state: IState, field: BaseField, valu
 /**
  * Checks whether the errors map has any error and returns the first (field order) found error.
  * @param errors to check.
- * @return the error.
+ * @return the error if exists, nothing otherwise.
  */
-export function getFirstError(errors: { [key: string]: string[] }): any {
+export function getFirstError(errors: { [key: string]: string[] }): string | undefined {
 
   let error;
   for (const fieldId of Object.keys(errors)) {

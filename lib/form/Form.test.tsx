@@ -100,29 +100,14 @@ describe('ValidatorURL', () => {
   describe('handleExtraButtonClick()', () => {
 
     const fields = [
-      new TextInput(
-        'email',
-        'Email',
-        'Email',
-        '',
-        'email',
-      ).addInterceptor('onSubmit', new ValidatorEmail())
-        .require(),
-      new TextInput(
-        'password',
-        'Password',
-        'Password',
-        '',
-        'password',
-      ).addInterceptor('onSubmit', new ValidatorLength(6, 10))
-        .require(),
+      new TextInput('a', 'A', 'Aaa').addInterceptor('onSubmit', new ValidatorEmail()).require(),
+      new TextInput('b', 'B', 'Bbb').addInterceptor('onSubmit', new ValidatorLength(6, 10)).require(),
     ];
 
     const props: IProps = {
       formData: { fields },
       loading: false,
-      onSubmit: (values: { [key: string]: any }, errors: { [key: string]: string[] }, context: FormContext): SubmitCallbackResponse => {
-        return undefined
+      onSubmit: (values: { [key: string]: any }, errors: { [key: string]: string[] }, context: FormContext) => {
       },
       submitButtonLabel: 'Hit me!',
     };
@@ -139,7 +124,7 @@ describe('ValidatorURL', () => {
       const callback = jest.fn();
       const callbackCalls = callback.mock.calls;
 
-      handleExtraButtonClick(props, state, callback);
+      handleExtraButtonClick(props, state, callback, true);
 
       expect(callbackCalls.length).toBe(1);
       expect(callbackCalls[0].length).toBe(3);
@@ -151,7 +136,7 @@ describe('ValidatorURL', () => {
     it('should return the same state if the callback returns nothing', () => {
 
       const callback = jest.fn();
-      const response = handleExtraButtonClick(props, state, callback);
+      const response = handleExtraButtonClick(props, state, callback, true);
       expect(response).toEqual({
         "context": { "language": "en" },
         "errors": {},
@@ -168,7 +153,7 @@ describe('ValidatorURL', () => {
         }
       });
 
-      const response = handleExtraButtonClick(props, state, callback);
+      const response = handleExtraButtonClick(props, state, callback, true);
 
       expect(response).toBeDefined();
       expect(response).toEqual({
@@ -192,7 +177,7 @@ describe('ValidatorURL', () => {
         }
       });
 
-      const response = handleExtraButtonClick(props, state, callback);
+      const response = handleExtraButtonClick(props, state, callback, true);
 
       expect(response).toBeDefined();
       expect(response).toEqual({
@@ -210,13 +195,77 @@ describe('ValidatorURL', () => {
         }
       });
 
-      const response = handleExtraButtonClick(props, state, callback);
+      const response = handleExtraButtonClick(props, state, callback, true);
 
       expect(response).toBeDefined();
       expect(response).toEqual({
         ...state,
         errors: { 'a': ['You did not see it coming, did you?'] },
         values: { a: 20, b: 'b', c: false },
+      });
+    });
+
+    it('should not call the callback if there are errors', () => {
+
+      const state: IState = {
+        context,
+        errors: { 'a': ['The error that the form passes.'] },
+        interceptors: {},
+        values: { a: 1, b: 'b', c: false },
+      };
+
+      const callback = jest.fn(() => {
+      });
+
+      handleExtraButtonClick(props, state, callback, false);
+
+      const callbackCalls = callback.mock.calls;
+      expect(callbackCalls.length).toBe(0);
+    });
+
+    it('should return the exact same value and errors in the state', () => {
+
+      const state: IState = {
+        context,
+        errors: { 'a': ['The error that the form passes.'] },
+        interceptors: {},
+        values: { a: 1, b: 'b', c: false },
+      };
+
+      const response = handleExtraButtonClick(props, state, () => {
+      }, false);
+
+      expect(response).toBeDefined();
+      expect(response).toEqual({
+        ...state,
+        errors: { 'a': ['The error that the form passes.'] },
+        values: { a: 1, b: 'b', c: false },
+      });
+    });
+
+    it('should return combined errors along with the one in the state', () => {
+
+      const state: IState = {
+        context,
+        errors: { 'a': ['The error that the form passes.'] },
+        interceptors: {
+          'a': {
+            onBlur: [],
+            onChange: [],
+            onSubmit: [new ValidatorNotEmptyHandler()],
+          }
+        },
+        values: { a: 0, b: 'b', c: false },
+      };
+
+      const response = handleExtraButtonClick(props, state, () => {
+      }, false);
+
+      expect(response).toBeDefined();
+      expect(response).toEqual({
+        ...state,
+        errors: { 'a': ['The error that the form passes.', 'A cannot be empty.'] },
+        values: { a: 0, b: 'b', c: false },
       });
     });
   });

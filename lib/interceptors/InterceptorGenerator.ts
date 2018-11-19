@@ -32,7 +32,7 @@ export function generateInterceptor(config: InterceptorConfig): InterceptorHandl
 }
 
 /**
- * Executs the given interceptors in order. Passes the response of each interceptor's result to the next
+ * Executes the given interceptors in order. Passes the response of each interceptor's result to the next
  * interceptor. Returns error of the first failed interceptor or returns the result of the last interceptor
  * if none returns an error.
  *
