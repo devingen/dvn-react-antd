@@ -1,19 +1,137 @@
 import { TextInput } from "../inputs/TextInput";
-import { ValidatorEmail, ValidatorLength } from "../interceptors";
+import { ValidatorEmail, ValidatorLength, ValidatorNotEmpty, ValidatorURL } from "../interceptors";
+import { ValidatorEmailHandler } from "../interceptors/ValidatorEmail";
+import { ValidatorLengthHandler } from "../interceptors/ValidatorLength";
 import { ValidatorNotEmptyHandler } from "../interceptors/ValidatorNotEmpty";
+import { ValidatorURLHandler } from "../interceptors/ValidatorURL";
 import { BaseField } from "../models/BaseField";
 import {
-  SubmitCallbackResponse,
+  generateState,
   generateStateOnFieldBlur,
   handleExtraButtonClick,
   IProps,
-  IState
+  IState,
+  SubmitCallbackResponse
 } from "./Form";
 import { FormContext } from "./FormContext";
 
 const context = new FormContext('en');
 
-describe('ValidatorURL', () => {
+describe('Form', () => {
+
+  describe('generateState()', () => {
+
+    it('state should contain the correct values', function () {
+
+      const props: IProps = {
+        formData: {
+          fields: [
+            new TextInput('textWithValue', 'Text With Value').setValue('This is short text value'),
+            new TextInput('textWithoutValue', 'Text Without Value'),
+          ]
+        },
+        submitButtonLabel: 'Submit',
+        onSubmit: jest.fn(),
+      };
+
+      const state = generateState(props);
+
+      expect(state.values['textWithValue']).toBe('This is short text value');
+      expect(state.values['textWithoutValue']).toBeUndefined();
+    });
+
+    describe('"validatorNotEmpty" interceptor', () => {
+
+      it('should not be added for non-required fields', function () {
+
+        const props: IProps = {
+          formData: {
+            fields: [
+              new TextInput('nonRequiredField', 'Text Without Value'),
+            ]
+          },
+          submitButtonLabel: 'Submit',
+          onSubmit: jest.fn(),
+        };
+
+        expect(generateState(props).interceptors['nonRequiredField'].onSubmit).toHaveLength(0);
+      });
+
+      it('should not be added for required fields if it is already in the interceptor list', function () {
+
+        const props: IProps = {
+          formData: {
+            fields: [
+              new TextInput('requiredField', 'Text With Value')
+                .addInterceptor('onSubmit', new ValidatorNotEmpty())
+                .require(),
+            ]
+          },
+          submitButtonLabel: 'Submit',
+          onSubmit: jest.fn(),
+        };
+
+        // there should be just one ValidatorNotEmptyHandler in onSubmit interceptors
+        expect(generateState(props).interceptors['requiredField'].onSubmit).toEqual([new ValidatorNotEmptyHandler()]);
+      });
+
+      it('should be added for required fields if it is not already in the interceptor list', function () {
+
+        const props: IProps = {
+          formData: {
+            fields: [
+              new TextInput('requiredField', 'Text With Value')
+                .addInterceptor('onSubmit', new ValidatorLength(10))
+                .require(),
+            ]
+          },
+          submitButtonLabel: 'Submit',
+          onSubmit: jest.fn(),
+        };
+
+        // there should be one ValidatorNotEmptyHandler prepended to the onSubmit interceptors
+        expect(generateState(props).interceptors['requiredField'].onSubmit).toEqual(
+          [
+            new ValidatorNotEmptyHandler(),
+            new ValidatorLengthHandler(new ValidatorLength(10))
+          ]
+        );
+      });
+    });
+
+    it('state should contain correct interceptor handlers', function () {
+
+      const props: IProps = {
+        formData: {
+          fields: [
+            new TextInput('emailField', 'Email')
+              .addInterceptor('onChange', new ValidatorLength(10, 20))
+              .addInterceptor('onSubmit', new ValidatorEmail()),
+            new TextInput('urlField', 'Web site')
+              .addInterceptor('onChange', new ValidatorURL())
+              .addInterceptor('onBlur', new ValidatorLength(5)),
+            new TextInput('textField', 'First name')
+              .addInterceptor('onBlur', new ValidatorNotEmpty())
+              .addInterceptor('onSubmit', new ValidatorLength(2)),
+          ]
+        },
+        submitButtonLabel: 'Submit',
+        onSubmit: jest.fn(),
+      };
+
+      const state = generateState(props);
+
+      expect(state.interceptors['emailField'].onChange).toEqual([new ValidatorLengthHandler(new ValidatorLength(10, 20))]);
+      expect(state.interceptors['emailField'].onSubmit).toEqual([new ValidatorEmailHandler()]);
+
+      expect(state.interceptors['urlField'].onChange).toEqual([new ValidatorURLHandler()]);
+      expect(state.interceptors['urlField'].onBlur).toEqual([new ValidatorLengthHandler(new ValidatorLength(5))]);
+
+      expect(state.interceptors['textField'].onBlur).toEqual([new ValidatorNotEmptyHandler()]);
+      expect(state.interceptors['textField'].onSubmit).toEqual([new ValidatorLengthHandler(new ValidatorLength(2))]);
+    });
+
+  });
 
   describe('generateStateOnFieldBlur()', () => {
 
@@ -37,7 +155,7 @@ describe('ValidatorURL', () => {
         interceptors: {},
         values: { a: 1, b: 'b', c: false },
       });
-    })
+    });
 
     it('should return previous errors if there are existing errors and the onBlur interceptors return no error', () => {
       const state: IState = {
@@ -59,7 +177,7 @@ describe('ValidatorURL', () => {
         interceptors: {},
         values: { a: 1, b: 'b', c: false },
       });
-    })
+    });
 
     it('should return combined errors if there are existing errors and the onBlur interceptors return error too', () => {
       const state: IState = {
@@ -93,7 +211,7 @@ describe('ValidatorURL', () => {
         },
         values: { a: 0, b: 'b', c: false },
       });
-    })
+    });
 
   });
 
@@ -107,7 +225,7 @@ describe('ValidatorURL', () => {
     const props: IProps = {
       formData: { fields },
       loading: false,
-      onSubmit: (values: { [key: string]: any }, errors: { [key: string]: string[] }, context: FormContext) => {
+      onSubmit: () => {
       },
       submitButtonLabel: 'Hit me!',
     };
@@ -150,7 +268,7 @@ describe('ValidatorURL', () => {
       const callback = jest.fn((context: FormContext, values: { [key: string]: any }, errors: { [key: string]: string[] }): SubmitCallbackResponse => {
         return {
           values: { a: 20, b: 'b', c: false }
-        }
+        };
       });
 
       const response = handleExtraButtonClick(props, state, callback, true);
@@ -174,7 +292,7 @@ describe('ValidatorURL', () => {
       const callback = jest.fn((context: FormContext, values: { [key: string]: any }, errors: { [key: string]: string[] }): SubmitCallbackResponse => {
         return {
           errors: { 'a': ['You did not see it coming, did you?'] },
-        }
+        };
       });
 
       const response = handleExtraButtonClick(props, state, callback, true);
@@ -192,7 +310,7 @@ describe('ValidatorURL', () => {
         return {
           errors: { 'a': ['You did not see it coming, did you?'] },
           values: { a: 20, b: 'b', c: false },
-        }
+        };
       });
 
       const response = handleExtraButtonClick(props, state, callback, true);

@@ -36,7 +36,7 @@ export interface IProps {
   formData: FormData
   language?: 'en' | 'tr'
   layout?: 'horizontal' | 'vertical' | 'compact'
-  loading: boolean
+  loading?: boolean
   onSubmit: SubmitCallback
   passErrorsToSubmit?: boolean
   submitButtonLabel: string
@@ -71,6 +71,8 @@ export class Form extends React.Component<IProps, IState> {
   public static defaultProps: Partial<IProps> = {
     extraButtons: [],
     layout: 'vertical',
+    loading: false,
+    passErrorsToSubmit: false,
   };
 
   public constructor(props: IProps) {
@@ -97,7 +99,7 @@ export class Form extends React.Component<IProps, IState> {
       })} onSubmit={(e: any) => this.onFormSubmit(e)}>
         {fields.map(field => {
 
-          const input = generateInput(field, values[field.id], errors[field.id], loading, this.onFieldChange, this.onFieldBlur);
+          const input = generateInput(field, values[field.id], errors[field.id], loading!, this.onFieldChange, this.onFieldBlur);
           if (field.title && field.title !== '') {
             order += 1;
           }
@@ -196,7 +198,7 @@ export class Form extends React.Component<IProps, IState> {
   private onFormSubmit(e: any) {
     e.preventDefault();
 
-    const state = handleExtraButtonClick(this.props, this.state, this.props.onSubmit, !!this.props.passErrorsToSubmit);
+    const state = handleExtraButtonClick(this.props, this.state, this.props.onSubmit, this.props.passErrorsToSubmit!);
 
     if (state) {
       this.setState(state);
@@ -246,13 +248,13 @@ export function handleExtraButtonClick(props: IProps, state: IState, callback: S
  * Generates the initial state from the props.
  * @param props
  */
-function generateState(props: IProps): IState {
+export function generateState(props: IProps): IState {
 
-  const values: Map<string, any> = new Map<string, any>();
+  const values: StateValues = {};
   const interceptors = {};
 
   for (const field of props.formData.fields) {
-    values.set(field.id, field.value);
+    values[field.id] = field.value;
 
     const hasValidatorNotEmpty = (field.interceptors
       && field.interceptors.onSubmit
