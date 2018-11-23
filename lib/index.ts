@@ -2,6 +2,7 @@ export { Form, SubmitCallbackResponse, SubmitCallback, getFirstError } from './f
 export { FormContext } from './form/FormContext';
 export { InterceptorHandlerResponse } from './models/InterceptorHandlerResponse';
 export { MultipleChoice } from './inputs/MultipleChoice';
+export { NumberInput } from './inputs/NumberInput';
 export { SectionHeader } from './inputs/SectionHeader';
 export { SingleChoice } from './inputs/SingleChoice';
 export { TextInput } from './inputs/TextInput';
