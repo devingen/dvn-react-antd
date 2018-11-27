@@ -3,10 +3,10 @@ import * as cn from 'classnames';
 import * as React from 'react';
 import { colors } from '../constants';
 import { generateInput } from '../inputs/InputGenerator';
-import { executeInterceptors, generateInterceptor } from "../interceptors/InterceptorGenerator";
-import { BaseField } from "../models/BaseField";
-import { InterceptorConfig } from "../models/InterceptorConfig";
-import { InterceptorHandler } from "../models/InterceptorHandler";
+import { executeInterceptors, generateInterceptor } from '../interceptors/InterceptorGenerator';
+import { BaseField } from '../models/BaseField';
+import { InterceptorConfig } from '../models/InterceptorConfig';
+import { InterceptorHandler } from '../models/InterceptorHandler';
 
 import './Form.css';
 import { FormContext } from './FormContext';
@@ -37,6 +37,7 @@ export interface IProps {
   language?: 'en' | 'tr'
   layout?: 'horizontal' | 'vertical' | 'compact'
   loading?: boolean
+  onChange?: SubmitCallback
   onSubmit: SubmitCallback
   passErrorsToSubmit?: boolean
   submitButtonLabel: string
@@ -192,7 +193,14 @@ export class Form extends React.Component<IProps, IState> {
   };
 
   private onFieldChange = (field: BaseField, value: any) => {
-    this.setState(generateStateOnFieldChange(this.state, field, value));
+    const state = generateStateOnFieldChange(this.state, field, value);
+
+    if (this.props.onChange) {
+      // call the onChange callback if exists
+      this.props.onChange(state.values, state.errors, state.context);
+    }
+
+    this.setState(state);
   };
 
   private onFormSubmit(e: any) {
@@ -267,7 +275,7 @@ export function generateState(props: IProps): IState {
       field.interceptors = {
         ...(field.interceptors || {}),
         onSubmit: [{ id: 'validatorNotEmpty' }, ...getInterceptors(field.interceptors, 'onSubmit')]
-      }
+      };
     }
 
     interceptors[field.id] = {

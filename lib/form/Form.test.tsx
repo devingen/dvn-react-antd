@@ -1,23 +1,76 @@
-import { TextInput } from "../inputs/TextInput";
-import { ValidatorEmail, ValidatorLength, ValidatorNotEmpty, ValidatorURL } from "../interceptors";
-import { ValidatorEmailHandler } from "../interceptors/ValidatorEmail";
-import { ValidatorLengthHandler } from "../interceptors/ValidatorLength";
-import { ValidatorNotEmptyHandler } from "../interceptors/ValidatorNotEmpty";
-import { ValidatorURLHandler } from "../interceptors/ValidatorURL";
-import { BaseField } from "../models/BaseField";
-import {
+import { configure, shallow } from 'enzyme';
+import * as Adapter from 'enzyme-adapter-react-16';
+import * as React from 'react';
+import { TextInput } from '../inputs/TextInput';
+import { InputText } from '../inputs/TextInput/InputText';
+import { ValidatorEmail, ValidatorLength, ValidatorNotEmpty, ValidatorURL } from '../interceptors';
+import { ValidatorEmailHandler } from '../interceptors/ValidatorEmail';
+import { ValidatorLengthHandler } from '../interceptors/ValidatorLength';
+import { ValidatorNotEmptyHandler } from '../interceptors/ValidatorNotEmpty';
+import { ValidatorURLHandler } from '../interceptors/ValidatorURL';
+import { BaseField } from '../models/BaseField';
+import Form, {
   generateState,
   generateStateOnFieldBlur,
   handleExtraButtonClick,
   IProps,
   IState,
   SubmitCallbackResponse
-} from "./Form";
-import { FormContext } from "./FormContext";
+} from './Form';
+import { FormContext } from './FormContext';
+
+configure({ adapter: new Adapter() });
 
 const context = new FormContext('en');
 
 describe('Form', () => {
+
+  describe('onFieldChange()', () => {
+
+    it('should call props.onChange() with correct parameters', function () {
+
+      const fields = [
+        new TextInput(
+          'someTextField',
+          'Text',
+        ).addInterceptor('onChange', new ValidatorLength(6, 10)),
+      ];
+
+      const onChange = jest.fn();
+
+      const wrapper = shallow(<Form
+        formData={{ fields }}
+        onChange={onChange}
+        onSubmit={jest.fn()}
+        submitButtonLabel="Submit"
+      />);
+
+      // there should be an InputText rendered
+      expect(wrapper.find(InputText)).toHaveLength(1);
+
+      // simulate the on change event on the input
+      wrapper.find(InputText).simulate('change', 'asd');
+
+      // onChange should be called once
+      expect(onChange.mock.calls).toHaveLength(1);
+
+      // the onChange call should receive 3 parameters
+      expect(onChange.mock.calls[0]).toHaveLength(3);
+
+      // the first parameter should be the values of the form
+      expect(onChange.mock.calls[0][0]).toEqual({
+        someTextField: 'asd'
+      });
+
+      // the second parameter should be the errors of the form
+      expect(onChange.mock.calls[0][1]).toEqual({
+        someTextField: ['Text must be min 6 characters long.']
+      });
+
+      // the third parameter should be a form context
+      expect(onChange.mock.calls[0][2]).toEqual(new FormContext('en'));
+    });
+  });
 
   describe('generateState()', () => {
 
@@ -256,10 +309,10 @@ describe('Form', () => {
       const callback = jest.fn();
       const response = handleExtraButtonClick(props, state, callback, true);
       expect(response).toEqual({
-        "context": { "language": "en" },
-        "errors": {},
-        "interceptors": {},
-        "values": { "a": 1, "b": "b", "c": false }
+        'context': { 'language': 'en' },
+        'errors': {},
+        'interceptors': {},
+        'values': { 'a': 1, 'b': 'b', 'c': false }
       });
     });
 
