@@ -36,14 +36,13 @@
     "testEnvironment": "node",
     "testURL": "http://localhost",
     "transform": {
-      "^.+\\.tsx?$": "ts-jest",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js"
+      "^.+\\.tsx?$": "ts-jest"
     },
     "transformIgnorePatterns": [
       "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|ts|tsx)$"
     ],
     "moduleNameMapper": {
-      "^react-native$": "react-native-web"
+      "^.+\\.css$": "<rootDir>/config/jest/styleMock.js"
     },
     "moduleFileExtensions": [
       "web.ts",
