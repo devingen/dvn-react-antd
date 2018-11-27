@@ -1,5 +1,9 @@
 {
-  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "extends": [
+    "tslint:recommended",
+    "tslint-react",
+    "tslint-config-prettier"
+  ],
   "linterOptions": {
     "exclude": [
       "config/**/*.js",
@@ -9,6 +13,14 @@
   "rules": {
     "interface-over-type-literal": false,
     "max-classes-per-file": false,
-    "jsx-no-lambda": false
+    "no-namespace": false,
+    "jsx-no-lambda": false,
+    "quotemark": [
+      true,
+      "single",
+      "avoid-escape",
+      "avoid-template",
+      "jsx-double"
+    ]
   }
 }

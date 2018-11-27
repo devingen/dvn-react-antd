@@ -1,8 +1,8 @@
 import { Icon } from 'antd';
 import * as React from 'react';
-import { RatingStars } from "../../RatingStars";
-import { SingleChoice } from "../../SingleChoice";
-import { TextInput } from "../../TextInput";
+import { RatingStars } from '../../RatingStars';
+import { SingleChoice } from '../../SingleChoice';
+import { TextInput } from '../../TextInput';
 import FieldDisplay from '../FieldDisplays/FieldDisplay';
 import FieldForm from '../FieldForm/FieldForm';
 import * as FieldFormRating from '../FieldForm/FieldFormRating';

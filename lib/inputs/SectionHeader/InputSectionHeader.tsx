@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IBaseInputProps } from '../IBaseInput';
-import { SectionHeader } from "./index";
+import { SectionHeader } from './index';
 
 export interface IProps extends IBaseInputProps<SectionHeader, void> {
 }

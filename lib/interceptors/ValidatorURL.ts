@@ -1,9 +1,9 @@
 import { FormContext } from '../form/FormContext';
-import { BaseField } from "../models/BaseField";
-import { InterceptorConfig } from "../models/InterceptorConfig";
-import { InterceptorHandler } from "../models/InterceptorHandler";
-import { InterceptorHandlerResponse } from "../models/InterceptorHandlerResponse";
-import { registerInterceptor } from "./InterceptorGenerator";
+import { BaseField } from '../models/BaseField';
+import { InterceptorConfig } from '../models/InterceptorConfig';
+import { InterceptorHandler } from '../models/InterceptorHandler';
+import { InterceptorHandlerResponse } from '../models/InterceptorHandlerResponse';
+import { registerInterceptor } from './InterceptorGenerator';
 
 export class ValidatorURL extends InterceptorConfig {
 
@@ -22,13 +22,13 @@ export class ValidatorURLHandler extends InterceptorHandler {
       // return no error if there is no value
       return { value };
     }
-    
+
     if (!isValidURL(value)) {
       let error = `${field.title} is not a valid URL. Be sure it starts with HTTP or HTTPS.`;
       if (context!.language === 'tr') {
-        error = `${field.title} doğru bir URL değil. Başında HTTP veya HTTPS olduğuna emin olun.`
+        error = `${field.title} doğru bir URL değil. Başında HTTP veya HTTPS olduğuna emin olun.`;
       }
-  
+
       return {
         error,
         value,

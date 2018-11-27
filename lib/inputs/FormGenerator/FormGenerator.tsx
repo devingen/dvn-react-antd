@@ -1,20 +1,20 @@
 import { Icon, Modal } from 'antd';
 import * as cn from 'classnames';
 import * as React from 'react';
-import { colors } from "../../constants";
-import { FormData } from "../../form/Form";
-import { IBaseInput, IBaseInputProps } from "../IBaseInput";
-import { RatingStars } from "../RatingStars";
-import { SingleChoice } from "../SingleChoice";
-import { TextInput } from "../TextInput";
-import { getStrings } from "./defaultStrings";
+import { colors } from '../../constants';
+import { FormData } from '../../form/Form';
+import { IBaseInput, IBaseInputProps } from '../IBaseInput';
+import { RatingStars } from '../RatingStars';
+import { SingleChoice } from '../SingleChoice';
+import { TextInput } from '../TextInput';
+import { getStrings } from './defaultStrings';
 
 import FieldDisplay from './FieldDisplays/FieldDisplay';
-import FieldFormDialog from "./FieldFormDialog/FieldFormDialog";
+import FieldFormDialog from './FieldFormDialog/FieldFormDialog';
 
 import './FormGenerator.css';
-import { FormGenerator } from "./index";
-import { swapArray } from "./utils";
+import { FormGenerator } from './index';
+import { swapArray } from './utils';
 
 export interface IAddQuestionOptionsProps {
   disabled: boolean
@@ -56,10 +56,10 @@ export interface IState {
 }
 
 export class InputFormGenerator extends React.Component<IProps, IState> implements IBaseInput<FormData> {
-  
+
   constructor(props: IProps) {
     super(props);
-    
+
     this.state = {
       componentBeingEdited: '',
       fieldBeingEdited: undefined,
@@ -68,16 +68,16 @@ export class InputFormGenerator extends React.Component<IProps, IState> implemen
       value: props.value || { fields: [], version: 0.1 },
     };
   }
-  
+
   public componentWillReceiveProps(nProps: IProps) {
     if (nProps.value) {
       this.setState({ value: nProps.value });
     }
   }
-  
+
   public onDeleteClick(components: any[], id: string) {
     const strings = this.props.field.strings || getStrings(this.props.field.language);
-    
+
     Modal.confirm({
       cancelText: strings.no,
       content: strings.deleteConfirmationMessage,
@@ -91,7 +91,7 @@ export class InputFormGenerator extends React.Component<IProps, IState> implemen
             break;
           }
         }
-        
+
         this.props.onChange({
           ...this.state.value,
           fields: updatedComponents,
@@ -100,59 +100,59 @@ export class InputFormGenerator extends React.Component<IProps, IState> implemen
       title: strings.deleteConfirmationTitle,
     });
   }
-  
+
   public moveComponentUp(id: string) {
     const components = [...this.state.value.fields];
-    
+
     for (let i = 0; i < components.length; i += 1) {
       if (components[i].id === id) {
         if (i === 0) {
           return;
         }
-        
+
         swapArray(components, i, i - 1);
         break;
       }
     }
-    
+
     this.props.onChange({
       ...this.state.value,
       fields: components,
     });
   }
-  
+
   public moveComponentDown(id: string) {
     const components = [...this.state.value.fields];
-    
+
     for (let i = 0; i < components.length; i += 1) {
       if (components[i].id === id) {
         if (i === components.length - 1) {
           return;
         }
-        
+
         swapArray(components, i, i + 1);
         break;
       }
     }
-    
+
     this.props.onChange({
       ...this.state.value,
       fields: components,
     });
   }
-  
+
   public render() {
     const { errors, field: fieldData, value, onChange, disabled = false } = this.props;
     const { inline, language } = fieldData;
     const fields = (value && value.fields) ? value.fields : [];
-    
+
     const hasError = errors && errors.length > 0;
     const error = hasError ? errors![0] : undefined;
-    
+
     let order = 0;
-    
+
     const strings = fieldData.strings || getStrings(language);
-    
+
     return (
       <div
         className={cn('form-generator', { 'inline': inline })}
@@ -162,13 +162,13 @@ export class InputFormGenerator extends React.Component<IProps, IState> implemen
           {strings.noQuestionInForm}
         </div>
         }
-        
+
         {(this.state.isAddingField || this.state.fieldBeingEdited) &&
         <FieldFormDialog
           field={this.state.fieldBeingEdited}
           fieldType={this.state.fieldType!}
           onSave={(newOrEditedField) => {
-            
+
             if (this.state.isAddingField) {
               // adding new field
               onChange({
@@ -196,13 +196,13 @@ export class InputFormGenerator extends React.Component<IProps, IState> implemen
           strings={strings}
         />
         }
-        
+
         {fields.map((field: any) => {
-          
+
           if (field.title && field.title !== '') {
             order += 1;
           }
-          
+
           return (
             <FieldDisplay
               key={field.id}
@@ -220,7 +220,7 @@ export class InputFormGenerator extends React.Component<IProps, IState> implemen
             />
           );
         })}
-        
+
         {(!this.state.isAddingField && !this.state.componentBeingEdited) &&
         <AddQuestionOptions
           options={[{
@@ -240,7 +240,7 @@ export class InputFormGenerator extends React.Component<IProps, IState> implemen
           disabled={disabled}
         />
         }
-        
+
         {error &&
         <div style={{ color: colors.error, marginTop: '1rem' }}>
           {error}

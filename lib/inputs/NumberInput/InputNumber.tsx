@@ -1,8 +1,8 @@
-import { InputNumber as AntdInputNumber } from "antd";
-import * as React from "react";
-import { colors, metrics } from "../../constants";
-import { IBaseInput, IBaseInputProps } from "../IBaseInput";
-import { NumberInput } from "./index";
+import { InputNumber as AntdInputNumber } from 'antd';
+import * as React from 'react';
+import { colors, metrics } from '../../constants';
+import { IBaseInput, IBaseInputProps } from '../IBaseInput';
+import { NumberInput } from './index';
 
 export interface IProps extends IBaseInputProps<NumberInput, number> {
 }

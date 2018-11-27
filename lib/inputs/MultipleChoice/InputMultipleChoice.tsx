@@ -2,7 +2,7 @@ import { Checkbox, Select, Tag } from 'antd';
 import * as React from 'react';
 import { colors, metrics } from '../../constants';
 import { IBaseInput, IBaseInputProps } from '../IBaseInput';
-import { MultipleChoice } from "./index";
+import { MultipleChoice } from './index';
 
 export interface IProps extends IBaseInputProps<MultipleChoice, any[]> {
 }
@@ -101,7 +101,7 @@ class InputMultipleChoice extends React.Component<IProps> implements IBaseInput<
             {error}
           </div>
         </div>
-      )
+      );
     }
 
     // render checkbox as default

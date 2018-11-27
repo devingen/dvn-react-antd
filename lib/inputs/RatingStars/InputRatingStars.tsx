@@ -3,7 +3,7 @@ import * as React from 'react';
 import { colors, metrics } from '../../constants';
 
 import { IBaseInput, IBaseInputProps } from '../IBaseInput';
-import { RatingStars } from "./index";
+import { RatingStars } from './index';
 
 export interface IProps extends IBaseInputProps<RatingStars, number> {
 }

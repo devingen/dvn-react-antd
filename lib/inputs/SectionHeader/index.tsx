@@ -1,7 +1,7 @@
-import * as React from "react";
-import { registerField } from "../InputGenerator";
-import { BaseField, InputGenerator } from "../../models/BaseField";
-import { InputSectionHeader } from "./InputSectionHeader";
+import * as React from 'react';
+import { BaseField, InputGenerator } from '../../models/BaseField';
+import { registerField } from '../InputGenerator';
+import { InputSectionHeader } from './InputSectionHeader';
 
 export class SectionHeader extends BaseField {
 
@@ -21,7 +21,7 @@ export class SectionHeader extends BaseField {
   }
 }
 
-const render: InputGenerator  = (
+const render: InputGenerator = (
   field: BaseField,
   value: any,
   errors: any[],

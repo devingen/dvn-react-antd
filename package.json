@@ -5,13 +5,14 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "npm-run-all build-css build-js",
+    "build": "npm-run-all build-css lint build-js",
     "build-css": "node-sass-chokidar --include-path ./lib --include-path ./node_modules lib/ -o dist/",
     "build-js": "tsc",
     "test-ci": "npm-run-all build-css-test test-wc",
     "build-css-test": "node-sass-chokidar --include-path ./lib --include-path ./node_modules lib/ -o lib/",
     "test-wc": "jest --coverage",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "lint": "tslint -p tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -80,6 +81,9 @@
     "npm-run-all": "^4.1.5",
     "ts-jest": "^23.10.5",
     "tslib": "^1.9.3",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.16.0",
+    "tslint-react": "^3.6.0",
     "typescript": "^3.1.6"
   },
   "dependencies": {

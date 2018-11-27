@@ -3,7 +3,7 @@ import { BaseField, InputGenerator } from '../models/BaseField';
 const fieldTypeMap: Map<string, InputGenerator> = new Map<string, InputGenerator>();
 
 export function registerField(fieldType: string, inputGenerator: InputGenerator) {
-  fieldTypeMap.set(fieldType, inputGenerator)
+  fieldTypeMap.set(fieldType, inputGenerator);
 }
 
 export function generateInput(

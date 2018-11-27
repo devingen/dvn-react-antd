@@ -2,20 +2,20 @@ import { Radio, Select } from 'antd';
 import * as React from 'react';
 import { colors, metrics } from '../../constants';
 import { IBaseInput, IBaseInputProps } from '../IBaseInput';
-import { SingleChoice } from "./index";
+import { SingleChoice } from './index';
 
 export interface IProps extends IBaseInputProps<SingleChoice, any[]> {
 }
 
 export class InputSingleChoice extends React.Component<IProps> implements IBaseInput<any[]> {
-  
+
   public render() {
     const { disabled, field, errors, value, onChange } = this.props;
     const hasError = errors && errors.length > 0;
     const error = hasError ? errors![0] : undefined;
-    
+
     const name = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
-    
+
     // render select
     if (field.inputType === 'select') {
       return (
@@ -29,7 +29,7 @@ export class InputSingleChoice extends React.Component<IProps> implements IBaseI
             style={{ minWidth: 200 }}
             value={value as any}>
             {field.options.map((o: any) => {
-              
+
               if (o.group && o.options) {
                 // render grouped options
                 return (
@@ -43,7 +43,7 @@ export class InputSingleChoice extends React.Component<IProps> implements IBaseI
                     )}
                   </Select.OptGroup>
                 );
-                
+
               } else {
                 // render simple options
                 return (
@@ -54,17 +54,17 @@ export class InputSingleChoice extends React.Component<IProps> implements IBaseI
                   </Select.Option>
                 );
               }
-              
+
             })}
           </Select>
-          
+
           <div style={{ color: colors.error, minHeight: metrics.verticalSpaceBetweenInputs }}>
             {error}
           </div>
         </div>
       );
     }
-    
+
     // render radio buttons as default
     return (
       <div>
@@ -85,7 +85,7 @@ export class InputSingleChoice extends React.Component<IProps> implements IBaseI
             )}
           </Radio.Group>
         </div>
-        
+
         <div style={{ color: colors.error, minHeight: metrics.verticalSpaceBetweenInputs }}>
           {error}
         </div>

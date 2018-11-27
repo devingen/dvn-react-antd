@@ -1,9 +1,9 @@
-import { InterceptorBundle } from "../form/Form";
-import { FormContext } from "../form/FormContext";
-import { BaseField } from "../models/BaseField";
-import { InterceptorConfig } from "../models/InterceptorConfig";
-import { InterceptorHandler } from "../models/InterceptorHandler";
-import { InterceptorHandlerResponse } from "../models/InterceptorHandlerResponse";
+import { InterceptorBundle } from '../form/Form';
+import { FormContext } from '../form/FormContext';
+import { BaseField } from '../models/BaseField';
+import { InterceptorConfig } from '../models/InterceptorConfig';
+import { InterceptorHandler } from '../models/InterceptorHandler';
+import { InterceptorHandlerResponse } from '../models/InterceptorHandlerResponse';
 
 const interceptorTypeMap: Map<string, InterceptorGenerator> = new Map<string, InterceptorGenerator>();
 

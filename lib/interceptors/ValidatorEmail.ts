@@ -1,9 +1,9 @@
 import { FormContext } from '../form/FormContext';
-import { BaseField } from "../models/BaseField";
-import { InterceptorConfig } from "../models/InterceptorConfig";
-import { InterceptorHandler } from "../models/InterceptorHandler";
-import { InterceptorHandlerResponse } from "../models/InterceptorHandlerResponse";
-import { registerInterceptor } from "./InterceptorGenerator";
+import { BaseField } from '../models/BaseField';
+import { InterceptorConfig } from '../models/InterceptorConfig';
+import { InterceptorHandler } from '../models/InterceptorHandler';
+import { InterceptorHandlerResponse } from '../models/InterceptorHandlerResponse';
+import { registerInterceptor } from './InterceptorGenerator';
 
 export class ValidatorEmail extends InterceptorConfig {
 
@@ -26,7 +26,7 @@ export class ValidatorEmailHandler extends InterceptorHandler {
     if (!isValidEmail(value)) {
       let error = `${field.title} is not a valid email.`;
       if (context!.language === 'tr') {
-        error = `${field.title} doğru bir e-posta değil.`
+        error = `${field.title} doğru bir e-posta değil.`;
       }
 
       return {

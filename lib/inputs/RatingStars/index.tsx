@@ -1,7 +1,7 @@
-import * as React from "react";
-import { registerField } from "../InputGenerator";
-import { BaseField, InputGenerator } from "../../models/BaseField";
-import { InputRatingStars } from "./InputRatingStars";
+import * as React from 'react';
+import { BaseField, InputGenerator } from '../../models/BaseField';
+import { registerField } from '../InputGenerator';
+import { InputRatingStars } from './InputRatingStars';
 
 export class RatingStars extends BaseField {
 

@@ -1,7 +1,7 @@
-import * as React from "react";
-import { registerField } from "../InputGenerator";
-import { BaseField, InputGenerator } from "../../models/BaseField";
-import { InputSingleChoice } from "./InputSingleChoice";
+import * as React from 'react';
+import { BaseField, InputGenerator } from '../../models/BaseField';
+import { registerField } from '../InputGenerator';
+import { InputSingleChoice } from './InputSingleChoice';
 
 export class SingleChoice extends BaseField {
 
@@ -26,7 +26,7 @@ export class SingleChoice extends BaseField {
   }
 }
 
-export module SingleChoice {
+export namespace SingleChoice {
   export class Option {
     public label: string;
     public value: any;

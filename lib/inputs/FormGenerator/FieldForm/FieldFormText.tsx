@@ -1,8 +1,8 @@
+import { Button, Checkbox, Form, Input, InputNumber } from 'antd';
 import * as React from 'react';
-import { Input, InputNumber, Button, Form, Checkbox } from 'antd';
+import { TextInput } from '../../../index';
 import { simpleTextDecorator } from '../utils';
 import { ICommonFieldProps } from './FieldForm';
-import { TextInput } from "../../../index";
 
 export const emptyFieldData = new TextInput('', '');
 

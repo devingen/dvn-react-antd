@@ -1,4 +1,4 @@
-import { InterceptorConfig } from "./InterceptorConfig";
+import { InterceptorConfig } from './InterceptorConfig';
 
 export class BaseField {
   // Identifier of the form item. When the form submitted, the values are
@@ -43,7 +43,7 @@ export class BaseField {
   public addInterceptor(type: 'onChange' | 'onBlur' | 'onSubmit', interceptor: InterceptorConfig): BaseField {
 
     if (!this.interceptors) {
-      this.interceptors = {}
+      this.interceptors = {};
     }
 
     this.interceptors = {

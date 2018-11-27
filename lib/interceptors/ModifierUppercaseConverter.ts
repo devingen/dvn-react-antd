@@ -1,9 +1,9 @@
 import { FormContext } from '../form/FormContext';
-import { BaseField } from "../models/BaseField";
-import { InterceptorConfig } from "../models/InterceptorConfig";
-import { InterceptorHandler } from "../models/InterceptorHandler";
-import { InterceptorHandlerResponse } from "../models/InterceptorHandlerResponse";
-import { registerInterceptor } from "./InterceptorGenerator";
+import { BaseField } from '../models/BaseField';
+import { InterceptorConfig } from '../models/InterceptorConfig';
+import { InterceptorHandler } from '../models/InterceptorHandler';
+import { InterceptorHandlerResponse } from '../models/InterceptorHandlerResponse';
+import { registerInterceptor } from './InterceptorGenerator';
 
 export class ModifierUppercaseConverter extends InterceptorConfig {
 

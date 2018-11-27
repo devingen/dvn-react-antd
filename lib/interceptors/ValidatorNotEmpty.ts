@@ -1,9 +1,9 @@
 import { FormContext } from '../form/FormContext';
-import { BaseField } from "../models/BaseField";
-import { InterceptorConfig } from "../models/InterceptorConfig";
-import { InterceptorHandler } from "../models/InterceptorHandler";
-import { InterceptorHandlerResponse } from "../models/InterceptorHandlerResponse";
-import { registerInterceptor } from "./InterceptorGenerator";
+import { BaseField } from '../models/BaseField';
+import { InterceptorConfig } from '../models/InterceptorConfig';
+import { InterceptorHandler } from '../models/InterceptorHandler';
+import { InterceptorHandlerResponse } from '../models/InterceptorHandlerResponse';
+import { registerInterceptor } from './InterceptorGenerator';
 
 export class ValidatorNotEmpty extends InterceptorConfig {
 
@@ -20,7 +20,7 @@ export class ValidatorNotEmptyHandler extends InterceptorHandler {
     if (!value || value === '' || value === 0 || (Array.isArray(value) && value.length === 0)) {
       let error = `${field.title} cannot be empty.`;
       if (context!.language === 'tr') {
-        error = `${field.title} boş olamaz.`
+        error = `${field.title} boş olamaz.`;
       }
 
       return {

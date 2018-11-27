@@ -268,7 +268,7 @@ export function generateState(props: IProps): IState {
       && field.interceptors.onSubmit
       && !!field.interceptors.onSubmit.find(i => i.id === 'validatorNotEmpty'));
 
-    const getInterceptors = (interceptors: any, type: string) => interceptors ? (interceptors[type] || []) : [];
+    const getInterceptors = (ints: any, type: string) => ints ? (ints[type] || []) : [];
 
     if (field.required && !hasValidatorNotEmpty) {
       // add validatorNotEmpty if the field is required and validatorNotEmpty is not in onSubmit interceptors

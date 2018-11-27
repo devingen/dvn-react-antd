@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { registerField } from "../InputGenerator";
-import { BaseField, InputGenerator } from "../../models/BaseField";
-import { InputText } from "./InputText";
+import { BaseField, InputGenerator } from '../../models/BaseField';
+import { registerField } from '../InputGenerator';
+import { InputText } from './InputText';
 
 type typeTnputType = 'email' | 'password' | 'tel' | 'text' | 'url';
 

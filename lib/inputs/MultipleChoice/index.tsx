@@ -1,7 +1,7 @@
-import * as React from "react";
-import { registerField } from "../InputGenerator";
-import { BaseField, InputGenerator } from "../../models/BaseField";
-import InputMultipleChoice from "./InputMultipleChoice";
+import * as React from 'react';
+import { BaseField, InputGenerator } from '../../models/BaseField';
+import { registerField } from '../InputGenerator';
+import InputMultipleChoice from './InputMultipleChoice';
 
 export class MultipleChoice extends BaseField {
 
@@ -26,7 +26,7 @@ export class MultipleChoice extends BaseField {
   }
 }
 
-export module MultipleChoice {
+export namespace MultipleChoice {
   export class Option {
     public label: string;
     public value: any;
