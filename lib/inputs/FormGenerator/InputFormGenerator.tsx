@@ -1,9 +1,11 @@
-import { Icon, Modal } from 'antd';
+import { Button, Dropdown, Icon, Menu, Modal } from 'antd';
+import { ClickParam } from 'antd/lib/menu';
 import * as cn from 'classnames';
 import * as React from 'react';
 import { colors } from '../../constants';
 import { FormData } from '../../form/Form';
 import { IBaseInput, IBaseInputProps } from '../IBaseInput';
+import { MultipleChoice } from '../MultipleChoice';
 import { RatingStars } from '../RatingStars';
 import { SingleChoice } from '../SingleChoice';
 import { TextInput } from '../TextInput';
@@ -11,38 +13,10 @@ import { getStrings } from './defaultStrings';
 
 import FieldDisplay from './FieldDisplays/FieldDisplay';
 import FieldFormDialog from './FieldFormDialog/FieldFormDialog';
-
-import './FormGenerator.css';
 import { FormGenerator } from './index';
+
+import './InputFormGenerator.css';
 import { swapArray } from './utils';
-
-export interface IAddQuestionOptionsProps {
-  disabled: boolean
-  options: any[]
-  onSelect: (type: string) => void
-}
-
-const AddQuestionOptions = ({ disabled, options, onSelect }: IAddQuestionOptionsProps) => (
-  <div className="add-question-options">
-    <div className="add-question-option-container">
-      {options.map((option: any, i: number) => (
-        <div
-          id={'type.' + option.type}
-          key={option.type}
-          className={cn('add-question-option', { 'disabled': disabled })}
-          onClick={() => {
-            if (!disabled) {
-              onSelect(option.type);
-            }
-          }}
-        >
-          <Icon type={option.icon} style={{ fontSize: '1em', marginBottom: '0.2rem' }} />
-          <span>{option.label}</span>
-        </div>
-      ))}
-    </div>
-  </div>
-);
 
 export interface IProps extends IBaseInputProps<FormGenerator, FormData> {
 }
@@ -73,72 +47,6 @@ export class InputFormGenerator extends React.Component<IProps, IState> implemen
     if (nProps.value) {
       this.setState({ value: nProps.value });
     }
-  }
-
-  public onDeleteClick(components: any[], id: string) {
-    const strings = this.props.field.strings || getStrings(this.props.field.language);
-
-    Modal.confirm({
-      cancelText: strings.no,
-      content: strings.deleteConfirmationMessage,
-      okText: strings.yes,
-      okType: 'danger',
-      onOk: () => {
-        const updatedComponents = [...components];
-        for (let i = 0; i < components.length; i += 1) {
-          if (components[i].id === id) {
-            updatedComponents.splice(i, 1);
-            break;
-          }
-        }
-
-        this.props.onChange({
-          ...this.state.value,
-          fields: updatedComponents,
-        });
-      },
-      title: strings.deleteConfirmationTitle,
-    });
-  }
-
-  public moveComponentUp(id: string) {
-    const components = [...this.state.value.fields];
-
-    for (let i = 0; i < components.length; i += 1) {
-      if (components[i].id === id) {
-        if (i === 0) {
-          return;
-        }
-
-        swapArray(components, i, i - 1);
-        break;
-      }
-    }
-
-    this.props.onChange({
-      ...this.state.value,
-      fields: components,
-    });
-  }
-
-  public moveComponentDown(id: string) {
-    const components = [...this.state.value.fields];
-
-    for (let i = 0; i < components.length; i += 1) {
-      if (components[i].id === id) {
-        if (i === components.length - 1) {
-          return;
-        }
-
-        swapArray(components, i, i + 1);
-        break;
-      }
-    }
-
-    this.props.onChange({
-      ...this.state.value,
-      fields: components,
-    });
   }
 
   public render() {
@@ -224,20 +132,25 @@ export class InputFormGenerator extends React.Component<IProps, IState> implemen
         {(!this.state.isAddingField && !this.state.componentBeingEdited) &&
         <AddQuestionOptions
           options={[{
-            icon: 'file-text',
-            label: `+ ${strings.textField}`,
+            icon: 'font-size',
+            label: strings.textField,
             type: TextInput.type,
           }, {
-            icon: 'bars',
-            label: `+ ${strings.singleChoice}`,
+            icon: 'check-circle',
+            label: strings.singleChoice,
             type: SingleChoice.type,
           }, {
+            icon: 'check-square',
+            label: strings.multipleChoice,
+            type: MultipleChoice.type,
+          }, {
             icon: 'star-o',
-            label: `+ ${strings.ratingStars}`,
+            label: strings.ratingStars,
             type: RatingStars.type,
           }]}
           onSelect={type => this.setState({ isAddingField: true, fieldType: type })}
           disabled={disabled}
+          strings={strings}
         />
         }
 
@@ -249,4 +162,101 @@ export class InputFormGenerator extends React.Component<IProps, IState> implemen
       </div>
     );
   }
+
+  private onDeleteClick(components: any[], id: string) {
+    const strings = this.props.field.strings || getStrings(this.props.field.language);
+
+    Modal.confirm({
+      cancelText: strings.no,
+      content: strings.deleteConfirmationMessage,
+      okText: strings.yes,
+      okType: 'danger',
+      onOk: () => {
+        const updatedComponents = [...components];
+        for (let i = 0; i < components.length; i += 1) {
+          if (components[i].id === id) {
+            updatedComponents.splice(i, 1);
+            break;
+          }
+        }
+
+        this.props.onChange({
+          ...this.state.value,
+          fields: updatedComponents,
+        });
+      },
+      title: strings.deleteConfirmationTitle,
+    });
+  }
+
+  private moveComponentUp(id: string) {
+    const components = [...this.state.value.fields];
+
+    for (let i = 0; i < components.length; i += 1) {
+      if (components[i].id === id) {
+        if (i === 0) {
+          return;
+        }
+
+        swapArray(components, i, i - 1);
+        break;
+      }
+    }
+
+    this.props.onChange({
+      ...this.state.value,
+      fields: components,
+    });
+  }
+
+  private moveComponentDown(id: string) {
+    const components = [...this.state.value.fields];
+
+    for (let i = 0; i < components.length; i += 1) {
+      if (components[i].id === id) {
+        if (i === components.length - 1) {
+          return;
+        }
+
+        swapArray(components, i, i + 1);
+        break;
+      }
+    }
+
+    this.props.onChange({
+      ...this.state.value,
+      fields: components,
+    });
+  }
 }
+
+export interface IAddQuestionOptionsProps {
+  disabled: boolean
+  options: any[]
+  onSelect: (type: string) => void
+  strings: any
+}
+
+const AddQuestionOptions = ({ strings, disabled, options, onSelect }: IAddQuestionOptionsProps) => (
+  <div className="add-question-options">
+    <Dropdown
+      overlay={
+        <Menu onClick={(type: ClickParam) => {
+          if (!disabled) {
+            onSelect(type.key);
+          }
+        }}>
+          {options.map((option: any, i: number) => (
+            <Menu.Item key={option.type}>
+              <Icon type={option.icon} style={{ fontSize: '1em', marginBottom: '0.2rem' }} /> {option.label}
+            </Menu.Item>
+          ))}
+        </Menu>
+      }
+    >
+      <Button>
+        {strings.addField} <Icon type="plus" />
+      </Button>
+    </Dropdown>
+  </div>
+);

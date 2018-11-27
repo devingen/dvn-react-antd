@@ -1,6 +1,6 @@
 import { Button, Checkbox, Form, Input } from 'antd';
 import * as React from 'react';
-import { RatingStars } from '../../RatingStars/index';
+import { RatingStars } from '../../RatingStars';
 import { convertToUniqueAlphanumberic, simpleTextDecorator } from '../utils';
 import { ICommonFieldProps } from './FieldForm';
 

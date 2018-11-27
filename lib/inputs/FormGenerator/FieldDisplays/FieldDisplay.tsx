@@ -1,6 +1,7 @@
 import { Icon } from 'antd';
 import * as cn from 'classnames';
 import * as React from 'react';
+import { BaseField } from '../../../models/BaseField';
 import { generateInput } from '../../InputGenerator';
 
 export interface IProps {
@@ -17,7 +18,15 @@ export interface IProps {
   showControls: boolean
 }
 
-class FieldDisplay extends React.Component<IProps> {
+interface IState {
+  value?: any
+}
+
+class FieldDisplay extends React.Component<IProps, IState> {
+
+  public state: IState = {
+    value: undefined
+  };
 
   public render() {
     const { field, layout, order, showControls, isPending } = this.props;
@@ -28,8 +37,9 @@ class FieldDisplay extends React.Component<IProps> {
     };
 
     /* tslint:disable:no-empty */
-    const input = generateInput(field, undefined, [], isPending,
-      () => {
+    const input = generateInput(field, this.state.value, [], isPending,
+      (f: BaseField, v: any) => {
+        this.setState({ value: v });
       }, () => {
       });
 

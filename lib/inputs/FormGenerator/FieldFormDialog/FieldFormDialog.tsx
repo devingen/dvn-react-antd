@@ -1,10 +1,12 @@
 import { Icon } from 'antd';
 import * as React from 'react';
+import { MultipleChoice } from '../../MultipleChoice';
 import { RatingStars } from '../../RatingStars';
 import { SingleChoice } from '../../SingleChoice';
 import { TextInput } from '../../TextInput';
 import FieldDisplay from '../FieldDisplays/FieldDisplay';
 import FieldForm from '../FieldForm/FieldForm';
+import * as FieldFormMultipleChoice from '../FieldForm/FieldFormMultipleChoice';
 import * as FieldFormRating from '../FieldForm/FieldFormRating';
 import * as FieldFormSingleChoice from '../FieldForm/FieldFormSingleChoice';
 import * as FieldFormText from '../FieldForm/FieldFormText';
@@ -25,6 +27,8 @@ export interface IState {
 
 function getEmptyFieldData(fieldType: string): any {
   switch (fieldType) {
+    case MultipleChoice.type:
+      return FieldFormMultipleChoice.emptyFieldData;
     case RatingStars.type:
       return FieldFormRating.emptyFieldData;
     case SingleChoice.type:

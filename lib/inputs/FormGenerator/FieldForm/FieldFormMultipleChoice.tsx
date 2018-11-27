@@ -1,15 +1,15 @@
 import { Button, Checkbox, Form, Icon, Input, Select } from 'antd';
 import * as React from 'react';
-import { SingleChoice } from '../../SingleChoice';
+import { MultipleChoice } from '../../MultipleChoice';
 import { convertToAlphanumeric, isNumeric, simpleTextDecorator, swapArray } from '../utils';
 import { ICommonFieldProps } from './FieldForm';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-export const emptyFieldData = new SingleChoice('', '', []);
+export const emptyFieldData = new MultipleChoice('', '', []);
 
-class FieldFormSingleChoice extends React.Component<ICommonFieldProps> {
+class FieldFormMultipleChoice extends React.Component<ICommonFieldProps> {
 
   public static defaultProps: Partial<ICommonFieldProps> = {
     data: undefined,
@@ -25,7 +25,7 @@ class FieldFormSingleChoice extends React.Component<ICommonFieldProps> {
       const data = {
         ...(this.props.data || emptyFieldData),
         ...values,
-        type: SingleChoice.type,
+        type: MultipleChoice.type,
       };
       this.props.onSaveClick(data);
     });
@@ -69,7 +69,7 @@ class FieldFormSingleChoice extends React.Component<ICommonFieldProps> {
           )}
         </FormItem>
 
-        <FormItem {...commonProps} label={strings.field.singleChoice.options}>
+        <FormItem {...commonProps} label={strings.field.multipleChoice.options}>
 
           {getFieldDecorator('options', { initialValue: data ? data.options : [] })(
             <OptionList
@@ -81,23 +81,24 @@ class FieldFormSingleChoice extends React.Component<ICommonFieldProps> {
 
         </FormItem>
 
-        <FormItem {...commonProps} label={strings.field.singleChoice.inputType}>
+        <FormItem {...commonProps} label={strings.field.multipleChoice.inputType}>
           {getFieldDecorator('inputType',
-            { initialValue: data ? data.inputType : 'radioButton' })(
+            { initialValue: data ? data.inputType : 'checkbox' })(
             <Select disabled={disabled}>
-              <Option value="radioButton">{strings.field.singleChoice.inputTypeRadioButton}</Option>
-              <Option value="select">{strings.field.singleChoice.inputTypeSelect}</Option>
+              <Option value="checkbox">{strings.field.multipleChoice.inputTypeCheckbox}</Option>
+              <Option value="select">{strings.field.multipleChoice.inputTypeSelect}</Option>
+              <Option value="tag-cloud">{strings.field.multipleChoice.inputTypeTagCloud}</Option>
             </Select>,
           )}
         </FormItem>
 
-        <FormItem {...commonProps} label={strings.field.singleChoice.placeholder}>
+        <FormItem {...commonProps} label={strings.field.multipleChoice.placeholder}>
           {simpleTextDecorator(getFieldDecorator, 'placeholder',
-            strings.field.singleChoice.placeholder, data ? data.placeholder : '', false, 3, 100, [], strings)(
+            strings.field.multipleChoice.placeholder, data ? data.placeholder : '', false, 3, 100, [], strings)(
             <Input
               type="text"
               autoComplete="off"
-              placeholder={strings.field.singleChoice.placeholderPlaceholder}
+              placeholder={strings.field.multipleChoice.placeholderPlaceholder}
               disabled={disabled}
             />,
           )}
@@ -124,7 +125,7 @@ export default Form.create({
       props.onChange({ ...(props.data || emptyFieldData), ...allValues });
     }
   },
-})(FieldFormSingleChoice);
+})(FieldFormMultipleChoice);
 
 export interface IOptionListProps {
   disableOptionValues: boolean
@@ -250,7 +251,7 @@ class OptionList extends React.Component<IOptionListProps, IOptionListState> {
             <Input
               type="text"
               autoComplete="off"
-              placeholder={strings.field.singleChoice.label}
+              placeholder={strings.field.multipleChoice.label}
               style={{ flex: isNumeric(option.value) ? 8 : 10 }}
               value={option.label}
               onChange={e => this.updateOptionLabel(option, e.target.value)}
@@ -261,7 +262,7 @@ class OptionList extends React.Component<IOptionListProps, IOptionListState> {
             <Input
               type="text"
               autoComplete="off"
-              placeholder={strings.field.singleChoice.value}
+              placeholder={strings.field.multipleChoice.value}
               value={option.value}
               disabled={disabled || disableOptionValues}
               style={{ flex: 2, marginLeft: 5 }}
@@ -305,7 +306,7 @@ class OptionList extends React.Component<IOptionListProps, IOptionListState> {
             <Input
               type="text"
               autoComplete="off"
-              placeholder={strings.field.singleChoice.label}
+              placeholder={strings.field.multipleChoice.label}
               value={this.state.optionLabel}
               onChange={e => this.setState({ optionLabel: e.target.value })}
               ref={(input) => {
@@ -319,7 +320,7 @@ class OptionList extends React.Component<IOptionListProps, IOptionListState> {
             <Input
               type="text"
               autoComplete="off"
-              placeholder={strings.field.singleChoice.value}
+              placeholder={strings.field.multipleChoice.value}
               value={this.state.optionValue}
               onChange={e => this.setState({ optionValue: e.target.value })}
               onPressEnter={() => this.onAddOptionClick()}
@@ -342,7 +343,7 @@ class OptionList extends React.Component<IOptionListProps, IOptionListState> {
           </div>
         </div>
         <p style={{ lineHeight: '1.2em', marginTop: '0.5rem' }}>
-          * {strings.field.singleChoice.valueDescription}
+          * {strings.field.multipleChoice.valueDescription}
         </p>
       </div>
     );

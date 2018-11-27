@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { BaseField } from '../../../models/BaseField';
-import { RatingStars } from '../../RatingStars/index';
-import { SingleChoice } from '../../SingleChoice/index';
-import { TextInput } from '../../TextInput/index';
+import { MultipleChoice } from '../../MultipleChoice';
+import { RatingStars } from '../../RatingStars';
+import { SingleChoice } from '../../SingleChoice';
+import { TextInput } from '../../TextInput';
 import { convertToUniqueAlphanumberic } from '../utils';
+import FieldFormMultipleChoice from './FieldFormMultipleChoice';
 import FieldFormRating from './FieldFormRating';
 import FieldFormSingleChoice from './FieldFormSingleChoice';
 import FieldFormText from './FieldFormText';
@@ -37,16 +39,6 @@ export interface ICommonFieldProps {
 
 class FieldForm extends React.Component<IProps> {
 
-  public onSaveClick(data: BaseField) {
-
-    if (!data.id || data.id === '') {
-      // generate id for the new component
-      data.id = convertToUniqueAlphanumberic(data.title);
-    }
-
-    this.props.onSaveClick(data);
-  }
-
   public render() {
     const { fieldType, fieldData, disabled, strings } = this.props;
 
@@ -61,6 +53,30 @@ class FieldForm extends React.Component<IProps> {
 
     return (
       <div style={{ padding: '1rem 0.5rem', background: '#f8f8f8' }}>
+
+        {type === MultipleChoice.type &&
+        <FieldFormMultipleChoice
+          data={fieldData}
+          disabled={disabled}
+          strings={strings}
+          commonProps={commonProps}
+          onChange={this.props.onChange}
+          onSaveClick={(data) => this.onSaveClick(data)}
+          onCancelClick={this.props.onCancelClick}
+        />
+        }
+
+        {type === RatingStars.type &&
+        <FieldFormRating
+          data={fieldData}
+          strings={strings}
+          disabled={disabled}
+          commonProps={commonProps}
+          onChange={this.props.onChange}
+          onSaveClick={(data) => this.onSaveClick(data)}
+          onCancelClick={this.props.onCancelClick}
+        />
+        }
 
         {type === SingleChoice.type &&
         <FieldFormSingleChoice
@@ -86,20 +102,18 @@ class FieldForm extends React.Component<IProps> {
         />
         }
 
-        {type === RatingStars.type &&
-        <FieldFormRating
-          data={fieldData}
-          strings={strings}
-          disabled={disabled}
-          commonProps={commonProps}
-          onChange={this.props.onChange}
-          onSaveClick={(data) => this.onSaveClick(data)}
-          onCancelClick={this.props.onCancelClick}
-        />
-        }
-
       </div>
     );
+  }
+
+  private onSaveClick(data: BaseField) {
+
+    if (!data.id || data.id === '') {
+      // generate id for the new component
+      data.id = convertToUniqueAlphanumberic(data.title);
+    }
+
+    this.props.onSaveClick(data);
   }
 }
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BaseField, InputGenerator } from '../../models/BaseField';
 import { registerField } from '../InputGenerator';
-import { InputFormGenerator } from './FormGenerator';
+import { InputFormGenerator } from './InputFormGenerator';
 
 export class FormGenerator extends BaseField {
 
@@ -15,8 +15,9 @@ export class FormGenerator extends BaseField {
 
   public strings: any;
 
-  constructor(language: string, inline: boolean) {
+  constructor(id: string, language: string, inline: boolean) {
     super();
+    this.id = id;
     this.language = language;
     this.inline = inline;
   }
