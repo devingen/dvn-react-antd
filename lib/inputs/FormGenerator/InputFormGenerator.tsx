@@ -6,6 +6,7 @@ import { colors } from '../../constants';
 import { FormData } from '../../form/Form';
 import { IBaseInput, IBaseInputProps } from '../IBaseInput';
 import { MultipleChoice } from '../MultipleChoice';
+import { NumberInput } from '../NumberInput';
 import { RatingStars } from '../RatingStars';
 import { SingleChoice } from '../SingleChoice';
 import { TextInput } from '../TextInput';
@@ -135,6 +136,10 @@ export class InputFormGenerator extends React.Component<IProps, IState> implemen
             icon: 'font-size',
             label: strings.textField,
             type: TextInput.type,
+          }, {
+            icon: 'calculator',
+            label: strings.numberField,
+            type: NumberInput.type,
           }, {
             icon: 'check-circle',
             label: strings.singleChoice,

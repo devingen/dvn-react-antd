@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { BaseField } from '../../../models/BaseField';
 import { MultipleChoice } from '../../MultipleChoice';
+import { NumberInput } from '../../NumberInput';
 import { RatingStars } from '../../RatingStars';
 import { SingleChoice } from '../../SingleChoice';
 import { TextInput } from '../../TextInput';
 import { convertToUniqueAlphanumberic } from '../utils';
 import FieldFormMultipleChoice from './FieldFormMultipleChoice';
+import FieldFormNumber from './FieldFormNumber';
 import FieldFormRating from './FieldFormRating';
 import FieldFormSingleChoice from './FieldFormSingleChoice';
 import FieldFormText from './FieldFormText';
@@ -59,6 +61,18 @@ class FieldForm extends React.Component<IProps> {
           data={fieldData}
           disabled={disabled}
           strings={strings}
+          commonProps={commonProps}
+          onChange={this.props.onChange}
+          onSaveClick={(data) => this.onSaveClick(data)}
+          onCancelClick={this.props.onCancelClick}
+        />
+        }
+
+        {type === NumberInput.type &&
+        <FieldFormNumber
+          data={fieldData}
+          strings={strings}
+          disabled={disabled}
           commonProps={commonProps}
           onChange={this.props.onChange}
           onSaveClick={(data) => this.onSaveClick(data)}

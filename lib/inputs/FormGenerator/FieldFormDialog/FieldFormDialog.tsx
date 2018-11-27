@@ -1,12 +1,14 @@
 import { Icon } from 'antd';
 import * as React from 'react';
 import { MultipleChoice } from '../../MultipleChoice';
+import { NumberInput } from '../../NumberInput';
 import { RatingStars } from '../../RatingStars';
 import { SingleChoice } from '../../SingleChoice';
 import { TextInput } from '../../TextInput';
 import FieldDisplay from '../FieldDisplays/FieldDisplay';
 import FieldForm from '../FieldForm/FieldForm';
 import * as FieldFormMultipleChoice from '../FieldForm/FieldFormMultipleChoice';
+import * as FieldFormNumber from '../FieldForm/FieldFormNumber';
 import * as FieldFormRating from '../FieldForm/FieldFormRating';
 import * as FieldFormSingleChoice from '../FieldForm/FieldFormSingleChoice';
 import * as FieldFormText from '../FieldForm/FieldFormText';
@@ -29,6 +31,8 @@ function getEmptyFieldData(fieldType: string): any {
   switch (fieldType) {
     case MultipleChoice.type:
       return FieldFormMultipleChoice.emptyFieldData;
+    case NumberInput.type:
+      return FieldFormNumber.emptyFieldData;
     case RatingStars.type:
       return FieldFormRating.emptyFieldData;
     case SingleChoice.type:
