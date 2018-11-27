@@ -8,10 +8,10 @@
     "build": "npm-run-all build-css build-js",
     "build-css": "node-sass-chokidar --include-path ./lib --include-path ./node_modules lib/ -o dist/",
     "build-js": "tsc",
-    "test": "npm-run-all build-css-test test-js",
+    "test-ci": "npm-run-all build-css-test test-wc",
     "build-css-test": "node-sass-chokidar --include-path ./lib --include-path ./node_modules lib/ -o lib/",
-    "test-js": "jest --coverage",
-    "jest": "jest --watch"
+    "test-wc": "jest --coverage",
+    "test": "jest --watch"
   },
   "repository": {
     "type": "git",
