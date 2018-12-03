@@ -21,6 +21,9 @@ export class TextInput extends BaseField {
   // Maximum number of lines to occupy vertically.
   public linesMax: number;
 
+  // Renders only the value, not the input field.
+  public preview?: boolean;
+
   public render = render;
 
   constructor(id: string, title: string, placeholder?: string, description?: string, inputType?: typeTnputType, lines: number = 1, linesMax: number = 1) {
@@ -32,6 +35,11 @@ export class TextInput extends BaseField {
     this.inputType = inputType;
     this.lines = lines;
     this.linesMax = linesMax;
+  }
+
+  public showPreview(): BaseField {
+    this.preview = true;
+    return this;
   }
 }
 

@@ -22,6 +22,18 @@ export class InputText extends React.Component<IProps> implements IBaseInput<str
     const hasError = errors && errors.length > 0;
     const error = hasError ? errors![0] : undefined;
 
+    if (field.preview) {
+      return (
+        <div>
+          {value}
+
+          <div style={{ color: colors.error, minHeight: metrics.verticalSpaceBetweenInputs }}>
+            {error}
+          </div>
+        </div>
+      );
+    }
+
     if (field.linesMax > 1 && field.linesMax >= field.lines) {
       return (
         <div>
