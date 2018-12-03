@@ -14,6 +14,19 @@ export class InputSingleChoice extends React.Component<IProps> implements IBaseI
     const hasError = errors && errors.length > 0;
     const error = hasError ? errors![0] : undefined;
 
+    if (field.preview) {
+      const selectedOption = field.options.find(o => o.value === value);
+      return (
+        <div>
+          {selectedOption ? selectedOption.label : ''}
+
+          <div style={{ color: colors.error, minHeight: metrics.verticalSpaceBetweenInputs }}>
+            {error}
+          </div>
+        </div>
+      );
+    }
+
     const name = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
 
     // render select

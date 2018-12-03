@@ -15,6 +15,9 @@ export class SingleChoice extends BaseField {
 
   public options: SingleChoice.Option[];
 
+  // Renders only the value, not the input field.
+  public preview?: boolean;
+
   constructor(id: string, title: string, options: SingleChoice.Option[], description?: string, inputType: 'radioButton' | 'select' = 'radioButton', placeholder?: string) {
     super();
     this.id = id;
@@ -23,6 +26,11 @@ export class SingleChoice extends BaseField {
     this.inputType = inputType;
     this.description = description;
     this.placeholder = placeholder;
+  }
+
+  public showPreview(): BaseField {
+    this.preview = true;
+    return this;
   }
 }
 
