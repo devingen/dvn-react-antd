@@ -7,7 +7,7 @@ import { MultipleChoice } from './index';
 export interface IProps extends IBaseInputProps<MultipleChoice, any[]> {
 }
 
-class InputMultipleChoice extends React.Component<IProps> implements IBaseInput<MultipleChoice[]> {
+export default class InputMultipleChoice extends React.Component<IProps> implements IBaseInput<MultipleChoice[]> {
 
   constructor(props: IProps) {
     super(props);
@@ -33,6 +33,18 @@ class InputMultipleChoice extends React.Component<IProps> implements IBaseInput<
     const { disabled, field, errors, value, onChange } = this.props;
     const hasError = errors && errors.length > 0;
     const error = hasError ? errors![0] : undefined;
+
+    if (field.preview) {
+      return (
+        <div>
+          {getSelectedOptionLabels(field.options, value)}
+
+          <div style={{ color: colors.error, minHeight: metrics.verticalSpaceBetweenInputs }}>
+            {error}
+          </div>
+        </div>
+      );
+    }
 
     if (field.inputType === 'select') {
 
@@ -131,4 +143,18 @@ class InputMultipleChoice extends React.Component<IProps> implements IBaseInput<
   }
 }
 
-export default InputMultipleChoice;
+export function getSelectedOptionLabels(options: MultipleChoice.Option[], value?: any[]): string {
+
+  if (!value) {
+    return '';
+  }
+
+  const labels = [];
+  for (const option of options) {
+    if (value.indexOf(option.value) > -1) {
+      labels.push(option.label);
+    }
+  }
+
+  return labels.join(', ');
+}
