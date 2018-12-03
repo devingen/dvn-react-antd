@@ -1,31 +1,31 @@
 import { FormContext } from '../form/FormContext';
 import { BaseField } from '../models/BaseField';
-import { ValidatorNotEmptyHandler } from './ValidatorNotEmpty';
+import { ValidatorLength, ValidatorLengthHandler } from './ValidatorLength';
 
 describe('ValidatorLength', () => {
 
-  it('should return error if the value is 0', () => {
+  it('should return min char error for the string value', () => {
     expect(
-      new ValidatorNotEmptyHandler().run(new FormContext(), { title: 'Number' } as BaseField, 0)
-    ).toEqual({ 'error': 'Number cannot be empty.', 'value': 0 });
+      new ValidatorLengthHandler(new ValidatorLength(3)).run(new FormContext(), { title: 'Name' } as BaseField, 'Su')
+    ).toEqual({ 'error': 'Name must be min 3 characters long.', 'value': 'Su' });
   });
 
-  it('should return error if the value is empty string', () => {
+  it('should return max char error for the string value', () => {
     expect(
-      new ValidatorNotEmptyHandler().run(new FormContext(), { title: 'Title' } as BaseField, '')
-    ).toEqual({ 'error': 'Title cannot be empty.', 'value': '' });
+      new ValidatorLengthHandler(new ValidatorLength(0, 1)).run(new FormContext(), { title: 'Name' } as BaseField, 'Su')
+    ).toEqual({ 'error': 'Name must be max 1 characters long.', 'value': 'Su' });
   });
 
-  it('should return error if the value is undefined', () => {
+  it('should return min char error for the string value', () => {
     expect(
-      new ValidatorNotEmptyHandler().run(new FormContext(), { title: 'Title' } as BaseField, undefined)
-    ).toEqual({ 'error': 'Title cannot be empty.', 'value': undefined });
+      new ValidatorLengthHandler(new ValidatorLength(3)).run(new FormContext(), { title: 'Name' } as BaseField, [{}, {}])
+    ).toEqual({ 'error': 'Name must be min 3 items long.', 'value': [{}, {}] });
   });
 
-  it('should return error if the value is empty array', () => {
+  it('should return max char error for the string value', () => {
     expect(
-      new ValidatorNotEmptyHandler().run(new FormContext(), { title: 'Tags' } as BaseField, [])
-    ).toEqual({ 'error': 'Tags cannot be empty.', 'value': [] });
+      new ValidatorLengthHandler(new ValidatorLength(0, 1)).run(new FormContext(), { title: 'Name' } as BaseField, [{}, {}])
+    ).toEqual({ 'error': 'Name must be max 1 items long.', 'value': [{}, {}] });
   });
 
 });

@@ -24,13 +24,9 @@ export class ValidatorURLHandler extends InterceptorHandler {
     }
 
     if (!isValidURL(value)) {
-      let error = `${field.title} is not a valid URL. Be sure it starts with HTTP or HTTPS.`;
-      if (context!.language === 'tr') {
-        error = `${field.title} doğru bir URL değil. Başında HTTP veya HTTPS olduğuna emin olun.`;
-      }
 
       return {
-        error,
+        error: context.strings.interceptors.validatorUrl.message.replace('{title}', field.title),
         value,
       };
     }

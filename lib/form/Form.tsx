@@ -9,7 +9,7 @@ import { InterceptorConfig } from '../models/InterceptorConfig';
 import { InterceptorHandler } from '../models/InterceptorHandler';
 
 import './Form.css';
-import { FormContext } from './FormContext';
+import { FormContext, Language } from './FormContext';
 
 export type SubmitCallbackResponse = { values?: { [key: string]: any }, errors?: { [key: string]: string[] } }
 
@@ -25,7 +25,7 @@ export class ButtonProps {
 export interface IProps {
   extraButtons?: ButtonProps[]
   fields: BaseField[]
-  language?: 'en' | 'tr'
+  language?: Language
   layout?: 'horizontal' | 'vertical' | 'compact'
   loading?: boolean
   onChange?: SubmitCallback
@@ -391,10 +391,7 @@ export function executeOnSubmitInterceptors(context: FormContext, fields: BaseFi
  * TODO the language and dictionary structure should be changed to something that makes more sense
  * @param language
  */
-export function generateContext(language: string = 'en') {
-  if (language !== 'en' && language !== 'tr') {
-    return new FormContext('en');
-  }
+export function generateContext(language?: Language) {
   return new FormContext(language);
 }
 

@@ -52,25 +52,21 @@ export class ValidatorLengthHandler extends InterceptorHandler {
 export function validateArray(context: FormContext, field: BaseField, value: any, min?: number, max?: number): InterceptorHandlerResponse {
 
   if (min && (!value || value.length < min)) {
-    let error = `${field.title} must be min ${min} items long.`;
-    if (context!.language === 'tr') {
-      error = `${field.title} en az ${min} tane olmalıdır.`;
-    }
 
     return {
-      error,
+      error: context.strings.interceptors.validatorLength.messageMinItems
+        .replace('{title}', field.title)
+        .replace('{min}', min),
       value,
     };
   }
 
   if (max && (value && value.length > max)) {
-    let error = `${field.title} must be max ${max} items long.`;
-    if (context!.language === 'tr') {
-      error = `${field.title} en fazla ${max} tane olmalıdır.`;
-    }
 
     return {
-      error,
+      error: context.strings.interceptors.validatorLength.messageMaxItems
+        .replace('{title}', field.title)
+        .replace('{max}', max),
       value,
     };
   }
@@ -81,25 +77,21 @@ export function validateArray(context: FormContext, field: BaseField, value: any
 export function validateString(context: FormContext, field: BaseField, value: any, min?: number, max?: number): InterceptorHandlerResponse {
 
   if (min && (!value || value.length < min)) {
-    let error = `${field.title} must be min ${min} characters long.`;
-    if (context!.language === 'tr') {
-      error = `${field.title} en az ${min} harf içermelidir.`;
-    }
 
     return {
-      error,
+      error: context.strings.interceptors.validatorLength.messageMinChars
+        .replace('{title}', field.title)
+        .replace('{min}', min),
       value,
     };
   }
 
   if (max && (value && value.length > max)) {
-    let error = `${field.title} must be max ${max} characters long.`;
-    if (context!.language === 'tr') {
-      error = `${field.title} en fazla ${max} harf içermelidir.`;
-    }
 
     return {
-      error,
+      error: context.strings.interceptors.validatorLength.messageMaxChars
+        .replace('{title}', field.title)
+        .replace('{max}', max),
       value,
     };
   }

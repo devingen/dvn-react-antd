@@ -6,7 +6,7 @@ describe('ModifierLowercaseConverter', () => {
 
   it('should lowercase the given value', () => {
     expect(
-      new ModifierLowercaseConverterHandler().run(new FormContext('en'), {} as BaseField, 'AsDf')
+      new ModifierLowercaseConverterHandler().run(new FormContext(), {} as BaseField, 'AsDf')
     ).toEqual({ 'value': 'asdf' });
   });
 });

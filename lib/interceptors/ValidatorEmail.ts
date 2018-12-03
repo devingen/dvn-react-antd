@@ -24,13 +24,9 @@ export class ValidatorEmailHandler extends InterceptorHandler {
     }
 
     if (!isValidEmail(value)) {
-      let error = `${field.title} is not a valid email.`;
-      if (context!.language === 'tr') {
-        error = `${field.title} doğru bir e-posta değil.`;
-      }
 
       return {
-        error,
+        error: context.strings.interceptors.validatorEmail.message.replace('{title}', field.title),
         value,
       };
     }

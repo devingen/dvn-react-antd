@@ -18,13 +18,9 @@ export class ValidatorNotEmptyHandler extends InterceptorHandler {
   public run(context: FormContext, field: BaseField, value: any): InterceptorHandlerResponse {
 
     if (!value || value === '' || value === 0 || (Array.isArray(value) && value.length === 0)) {
-      let error = `${field.title} cannot be empty.`;
-      if (context!.language === 'tr') {
-        error = `${field.title} boş olamaz.`;
-      }
 
       return {
-        error,
+        error: context.strings.interceptors.validatorNotEmpty.message.replace('{title}', field.title),
         value,
       };
     }

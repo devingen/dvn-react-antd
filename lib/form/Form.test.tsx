@@ -21,7 +21,7 @@ import { FormContext } from './FormContext';
 
 configure({ adapter: new Adapter() });
 
-const context = new FormContext('en');
+const context = new FormContext();
 
 describe('Form', () => {
 
@@ -68,7 +68,7 @@ describe('Form', () => {
       });
 
       // the third parameter should be a form context
-      expect(onChange.mock.calls[0][2]).toEqual(new FormContext('en'));
+      expect(onChange.mock.calls[0][2]).toEqual(new FormContext());
     });
   });
 
@@ -298,12 +298,7 @@ describe('Form', () => {
 
       const callback = jest.fn();
       const response = handleExtraButtonClick(props, state, callback, true);
-      expect(response).toEqual({
-        'context': { 'language': 'en' },
-        'errors': {},
-        'interceptors': {},
-        'values': { 'a': 1, 'b': 'b', 'c': false }
-      });
+      expect(response!.values).toEqual({ 'a': 1, 'b': 'b', 'c': false });
     });
 
     it('should return a state that contains the values that the callback returns', () => {
