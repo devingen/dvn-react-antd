@@ -35,9 +35,24 @@ export default class InputMultipleChoice extends React.Component<IProps> impleme
     const error = hasError ? errors![0] : undefined;
 
     if (field.preview) {
+
+      if (field.inputType === 'tag-cloud') {
+        return (
+          <div>
+            {getSelectedOptions(field.options, value).map(o =>
+              <Tag key={o.value} style={{ margin: '2px' }}>{o.label}</Tag>
+            )}
+
+            <div style={{ color: colors.error, minHeight: metrics.verticalSpaceBetweenInputs }}>
+              {error}
+            </div>
+          </div>
+        );
+      }
+
       return (
         <div>
-          {getSelectedOptionLabels(field.options, value)}
+          {getOptionLabels(field.options, value)}
 
           <div style={{ color: colors.error, minHeight: metrics.verticalSpaceBetweenInputs }}>
             {error}
@@ -143,18 +158,30 @@ export default class InputMultipleChoice extends React.Component<IProps> impleme
   }
 }
 
-export function getSelectedOptionLabels(options: MultipleChoice.Option[], value?: any[]): string {
+/**
+ * Returns the options that are in the value.
+ * @param options
+ * @param value
+ */
+export function getSelectedOptions(options: MultipleChoice.Option[], value?: any[]): MultipleChoice.Option[] {
+
+  if (!value) {
+    return [];
+  }
+
+  return options.filter(o => value.indexOf(o.value) > -1);
+}
+
+/**
+ * Returns the labels of the given options that are joined with comma.
+ * @param options
+ * @param value
+ */
+export function getOptionLabels(options: MultipleChoice.Option[], value?: any[]): string {
 
   if (!value) {
     return '';
   }
 
-  const labels = [];
-  for (const option of options) {
-    if (value.indexOf(option.value) > -1) {
-      labels.push(option.label);
-    }
-  }
-
-  return labels.join(', ');
+  return getSelectedOptions(options, value).map(o => o.label).join(', ');
 }
