@@ -3,7 +3,7 @@ import { ClickParam } from 'antd/lib/menu';
 import * as cn from 'classnames';
 import * as React from 'react';
 import { colors } from '../../constants';
-import { FormData } from '../../form/Form';
+import { BaseField } from '../../models/BaseField';
 import { IBaseInput, IBaseInputProps } from '../IBaseInput';
 import { MultipleChoice } from '../MultipleChoice';
 import { NumberInput } from '../NumberInput';
@@ -19,11 +19,11 @@ import { FormGenerator } from './index';
 import './InputFormGenerator.css';
 import { swapArray } from './utils';
 
-export interface IProps extends IBaseInputProps<FormGenerator, FormData> {
+export interface IProps extends IBaseInputProps<FormGenerator, BaseField[]> {
 }
 
 export interface IState {
-  value: FormData
+  value: BaseField[]
   componentBeingEdited: string
   fieldBeingEdited?: any
   fieldType?: string
@@ -40,7 +40,7 @@ export class InputFormGenerator extends React.Component<IProps, IState> implemen
       fieldBeingEdited: undefined,
       fieldType: undefined,
       isAddingField: false,
-      value: props.value || { fields: [], version: 0.1 },
+      value: props.value || [],
     };
   }
 
@@ -53,7 +53,7 @@ export class InputFormGenerator extends React.Component<IProps, IState> implemen
   public render() {
     const { errors, field: fieldData, value, onChange, disabled = false } = this.props;
     const { inline, language } = fieldData;
-    const fields = (value && value.fields) ? value.fields : [];
+    const fields = value || [];
 
     const hasError = errors && errors.length > 0;
     const error = hasError ? errors![0] : undefined;
@@ -79,14 +79,13 @@ export class InputFormGenerator extends React.Component<IProps, IState> implemen
           onSave={(newOrEditedField) => {
 
             if (this.state.isAddingField) {
-              // adding new field
-              onChange({
-                ...this.state.value,
-                fields: [...fields, newOrEditedField],
-              });
+              // add new field
+              onChange([...this.state.value, newOrEditedField]);
+
               this.setState({ isAddingField: false });
             } else if (this.state.fieldBeingEdited) {
-              // updating existing field
+
+              // update existing field
               const updatedComponents = [...fields];
               for (let i = 0; i < fields.length; i += 1) {
                 if (fields[i].id === newOrEditedField.id) {
@@ -94,10 +93,7 @@ export class InputFormGenerator extends React.Component<IProps, IState> implemen
                   break;
                 }
               }
-              onChange({
-                ...this.state.value,
-                fields: updatedComponents,
-              });
+              onChange(updatedComponents);
               this.setState({ fieldBeingEdited: undefined });
             }
           }}
@@ -185,17 +181,14 @@ export class InputFormGenerator extends React.Component<IProps, IState> implemen
           }
         }
 
-        this.props.onChange({
-          ...this.state.value,
-          fields: updatedComponents,
-        });
+        this.props.onChange(updatedComponents);
       },
       title: strings.deleteConfirmationTitle,
     });
   }
 
   private moveComponentUp(id: string) {
-    const components = [...this.state.value.fields];
+    const components = [...this.state.value];
 
     for (let i = 0; i < components.length; i += 1) {
       if (components[i].id === id) {
@@ -208,14 +201,11 @@ export class InputFormGenerator extends React.Component<IProps, IState> implemen
       }
     }
 
-    this.props.onChange({
-      ...this.state.value,
-      fields: components,
-    });
+    this.props.onChange(components);
   }
 
   private moveComponentDown(id: string) {
-    const components = [...this.state.value.fields];
+    const components = [...this.state.value];
 
     for (let i = 0; i < components.length; i += 1) {
       if (components[i].id === id) {
@@ -228,10 +218,7 @@ export class InputFormGenerator extends React.Component<IProps, IState> implemen
       }
     }
 
-    this.props.onChange({
-      ...this.state.value,
-      fields: components,
-    });
+    this.props.onChange(components);
   }
 }
 
@@ -251,7 +238,7 @@ const AddQuestionOptions = ({ strings, disabled, options, onSelect }: IAddQuesti
             onSelect(type.key);
           }
         }}>
-          {options.map((option: any, i: number) => (
+          {options.map((option: any) => (
             <Menu.Item key={option.type}>
               <Icon type={option.icon} style={{ fontSize: '1em', marginBottom: '0.2rem' }} /> {option.label}
             </Menu.Item>

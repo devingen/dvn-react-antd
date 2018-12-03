@@ -11,15 +11,6 @@ import { InterceptorHandler } from '../models/InterceptorHandler';
 import './Form.css';
 import { FormContext } from './FormContext';
 
-export class FormData {
-
-  public constructor(public fields: BaseField[], public showFieldOrder?: boolean, public version?: number) {
-    if (!version) {
-      this.version = 0.1;
-    }
-  }
-}
-
 export type SubmitCallbackResponse = { values?: { [key: string]: any }, errors?: { [key: string]: string[] } }
 
 export type SubmitCallback = (values: { [key: string]: any }, errors: { [key: string]: string[] }, context: FormContext) => SubmitCallbackResponse | void
@@ -33,13 +24,14 @@ export class ButtonProps {
 
 export interface IProps {
   extraButtons?: ButtonProps[]
-  formData: FormData
+  fields: BaseField[]
   language?: 'en' | 'tr'
   layout?: 'horizontal' | 'vertical' | 'compact'
   loading?: boolean
   onChange?: SubmitCallback
   onSubmit: SubmitCallback
   passErrorsToSubmit?: boolean
+  showFieldOrder?: boolean
   submitButtonLabel: string
 }
 
@@ -83,8 +75,9 @@ export class Form extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { formData, layout, loading, submitButtonLabel, extraButtons } = this.props;
-    const { fields } = formData;
+    const {
+      fields, layout, loading, submitButtonLabel, extraButtons, showFieldOrder,
+    } = this.props;
     const { errors, values } = this.state;
 
     // retrieve the first error and show at the bottom
@@ -121,7 +114,7 @@ export class Form extends React.Component<IProps, IState> {
               })}>
                 <label htmlFor={field.id}>
                   <b>
-                    {formData.showFieldOrder && `${order}. `}
+                    {showFieldOrder && `${order}. `}
                     {field.title}
                   </b>
 
@@ -224,9 +217,8 @@ export class Form extends React.Component<IProps, IState> {
  */
 export function handleExtraButtonClick(props: IProps, state: IState, callback: SubmitCallback, passErrorsToCallback: boolean): IState | undefined {
 
-  const { formData } = props;
+  const { fields } = props;
   const { context, errors, interceptors, values } = state;
-  const { fields } = formData;
 
   // retrieve errors that the interceptors return on submit
   const onSubmitErrors = executeOnSubmitInterceptors(context, fields, interceptors, values);
@@ -261,7 +253,7 @@ export function generateState(props: IProps): IState {
   const values: StateValues = {};
   const interceptors = {};
 
-  for (const field of props.formData.fields) {
+  for (const field of props.fields) {
     values[field.id] = field.value;
 
     const hasValidatorNotEmpty = (field.interceptors

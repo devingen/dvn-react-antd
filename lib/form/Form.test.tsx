@@ -39,7 +39,7 @@ describe('Form', () => {
       const onChange = jest.fn();
 
       const wrapper = shallow(<Form
-        formData={{ fields }}
+        fields={fields}
         onChange={onChange}
         onSubmit={jest.fn()}
         submitButtonLabel="Submit"
@@ -77,12 +77,10 @@ describe('Form', () => {
     it('state should contain the correct values', function () {
 
       const props: IProps = {
-        formData: {
-          fields: [
-            new TextInput('textWithValue', 'Text With Value').setValue('This is short text value'),
-            new TextInput('textWithoutValue', 'Text Without Value'),
-          ]
-        },
+        fields: [
+          new TextInput('textWithValue', 'Text With Value').setValue('This is short text value'),
+          new TextInput('textWithoutValue', 'Text Without Value'),
+        ],
         submitButtonLabel: 'Submit',
         onSubmit: jest.fn(),
       };
@@ -98,11 +96,9 @@ describe('Form', () => {
       it('should not be added for non-required fields', function () {
 
         const props: IProps = {
-          formData: {
-            fields: [
-              new TextInput('nonRequiredField', 'Text Without Value'),
-            ]
-          },
+          fields: [
+            new TextInput('nonRequiredField', 'Text Without Value'),
+          ],
           submitButtonLabel: 'Submit',
           onSubmit: jest.fn(),
         };
@@ -113,13 +109,11 @@ describe('Form', () => {
       it('should not be added for required fields if it is already in the interceptor list', function () {
 
         const props: IProps = {
-          formData: {
-            fields: [
-              new TextInput('requiredField', 'Text With Value')
-                .addInterceptor('onSubmit', new ValidatorNotEmpty())
-                .require(),
-            ]
-          },
+          fields: [
+            new TextInput('requiredField', 'Text With Value')
+              .addInterceptor('onSubmit', new ValidatorNotEmpty())
+              .require(),
+          ],
           submitButtonLabel: 'Submit',
           onSubmit: jest.fn(),
         };
@@ -131,13 +125,11 @@ describe('Form', () => {
       it('should be added for required fields if it is not already in the interceptor list', function () {
 
         const props: IProps = {
-          formData: {
-            fields: [
-              new TextInput('requiredField', 'Text With Value')
-                .addInterceptor('onSubmit', new ValidatorLength(10))
-                .require(),
-            ]
-          },
+          fields: [
+            new TextInput('requiredField', 'Text With Value')
+              .addInterceptor('onSubmit', new ValidatorLength(10))
+              .require(),
+          ],
           submitButtonLabel: 'Submit',
           onSubmit: jest.fn(),
         };
@@ -155,19 +147,17 @@ describe('Form', () => {
     it('state should contain correct interceptor handlers', function () {
 
       const props: IProps = {
-        formData: {
-          fields: [
-            new TextInput('emailField', 'Email')
-              .addInterceptor('onChange', new ValidatorLength(10, 20))
-              .addInterceptor('onSubmit', new ValidatorEmail()),
-            new TextInput('urlField', 'Web site')
-              .addInterceptor('onChange', new ValidatorURL())
-              .addInterceptor('onBlur', new ValidatorLength(5)),
-            new TextInput('textField', 'First name')
-              .addInterceptor('onBlur', new ValidatorNotEmpty())
-              .addInterceptor('onSubmit', new ValidatorLength(2)),
-          ]
-        },
+        fields: [
+          new TextInput('emailField', 'Email')
+            .addInterceptor('onChange', new ValidatorLength(10, 20))
+            .addInterceptor('onSubmit', new ValidatorEmail()),
+          new TextInput('urlField', 'Web site')
+            .addInterceptor('onChange', new ValidatorURL())
+            .addInterceptor('onBlur', new ValidatorLength(5)),
+          new TextInput('textField', 'First name')
+            .addInterceptor('onBlur', new ValidatorNotEmpty())
+            .addInterceptor('onSubmit', new ValidatorLength(2)),
+        ],
         submitButtonLabel: 'Submit',
         onSubmit: jest.fn(),
       };
@@ -276,7 +266,7 @@ describe('Form', () => {
     ];
 
     const props: IProps = {
-      formData: { fields },
+      fields,
       loading: false,
       onSubmit: () => {
       },
