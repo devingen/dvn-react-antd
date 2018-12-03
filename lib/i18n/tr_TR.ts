@@ -17,5 +17,5 @@ export default {
       message: '{title} doğru bir site adresi değil. Başında HTTP veya HTTPS olduğundan emin olun.',
     }
   },
-  language: 'Türkçe ',
+  language: 'Türkçe',
 };
