@@ -20,6 +20,9 @@ export class NumberInput extends BaseField {
   // Min value that the input can have
   public min: number;
 
+  // Renders only the value, not the input field.
+  public preview?: boolean;
+
   public render = render;
 
   constructor(id: string, title: string, placeholder?: string, description?: string, step: number = 1, min: number = -Infinity, max: number = Infinity) {
@@ -31,6 +34,11 @@ export class NumberInput extends BaseField {
     this.step = step;
     this.min = min;
     this.max = max;
+  }
+
+  public showPreview(): BaseField {
+    this.preview = true;
+    return this;
   }
 }
 

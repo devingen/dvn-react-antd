@@ -22,6 +22,18 @@ export class InputNumber extends React.Component<IProps> implements IBaseInput<s
     const hasError = errors && errors.length > 0;
     const error = hasError ? errors![0] : undefined;
 
+    if (field.preview) {
+      return (
+        <div>
+          {value}
+
+          <div style={{ color: colors.error, minHeight: metrics.verticalSpaceBetweenInputs }}>
+            {error}
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div>
         <AntdInputNumber
