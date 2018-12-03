@@ -6,8 +6,8 @@ export default {
     },
     validatorLength: {
       messageMaxChars: '{title} must be max {max} characters long.',
-      messageMinChars: '{title} must be min {min} characters long.',
       messageMaxItems: '{title} must be max {max} items long.',
+      messageMinChars: '{title} must be min {min} characters long.',
       messageMinItems: '{title} must be min {min} items long.',
     },
     validatorNotEmpty: {

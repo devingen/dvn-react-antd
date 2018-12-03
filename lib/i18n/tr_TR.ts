@@ -6,8 +6,8 @@ export default {
     },
     validatorLength: {
       messageMaxChars: '{title} en fazla {max} harf içermelidir.',
-      messageMinChars: '{title} en az {min} harf içermelidir.',
       messageMaxItems: '{title} en fazla {max} tane olmalıdır.',
+      messageMinChars: '{title} en az {min} harf içermelidir.',
       messageMinItems: '{title} en az {min} tane olmalıdır.',
     },
     validatorNotEmpty: {
