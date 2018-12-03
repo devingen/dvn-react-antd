@@ -20,10 +20,15 @@ export class InputRatingStars extends React.Component<IProps> implements IBaseIn
     const shownValue = field.starCount * (value || 0);
 
     return (
-      <div style={{}}>
-        <Rate count={field.starCount} disabled={disabled} onChange={v => onChange(v)} value={shownValue} />
+      <div>
+        <Rate
+          count={field.starCount}
+          disabled={disabled || field.preview}
+          onChange={v => onChange(v / field.starCount)}
+          value={shownValue}
+        />
 
-        <div style={{ color: colors.error, minHeight: metrics.verticalSpaceBetweenInputs }}>
+        <div className="error" style={{ color: colors.error, minHeight: metrics.verticalSpaceBetweenInputs }}>
           {error}
         </div>
       </div>
