@@ -1,6 +1,7 @@
 export { Form, SubmitCallbackResponse, SubmitCallback, getFirstError } from './form/Form';
 export { FormContext } from './form/FormContext';
 export { FormGenerator } from './inputs/FormGenerator';
+export { DateInput } from './inputs/DateInput';
 export { MultipleChoice } from './inputs/MultipleChoice';
 export { NumberInput } from './inputs/NumberInput';
 export { SectionHeader } from './inputs/SectionHeader';

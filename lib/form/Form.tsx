@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Button, LocaleProvider } from 'antd';
 import * as cn from 'classnames';
 import * as React from 'react';
 import { colors } from '../constants';
@@ -76,7 +76,7 @@ export class Form extends React.Component<IProps, IState> {
 
   public render() {
     const {
-      fields, layout, loading, submitButtonLabel, extraButtons, showFieldOrder,
+      fields, language, layout, loading, submitButtonLabel, extraButtons, showFieldOrder,
     } = this.props;
     const { errors, values } = this.state;
 
@@ -87,88 +87,90 @@ export class Form extends React.Component<IProps, IState> {
     let order = 0;
 
     return (
-      <form className={cn({
-        'dvn-form': true,
-        [layout as string]: true,
-      })} onSubmit={(e: any) => this.onFormSubmit(e)}>
-        {fields.map(field => {
+      <LocaleProvider locale={getLocale(language)}>
+        <form className={cn({
+          'dvn-form': true,
+          [layout as string]: true,
+        })} onSubmit={(e: any) => this.onFormSubmit(e)}>
+          {fields.map(field => {
 
-          const input = generateInput(field, values[field.id], errors[field.id], loading!, this.onFieldChange, this.onFieldBlur);
-          if (field.title && field.title !== '') {
-            order += 1;
-          }
+            const input = generateInput(field, values[field.id], errors[field.id], loading!, this.onFieldChange, this.onFieldBlur);
+            if (field.title && field.title !== '') {
+              order += 1;
+            }
 
-          return (
-            <div
-              id={field.id}
-              key={field.id}
-              className={cn({
-                'dvn-form-field': true,
-                'dvn-row': layout === 'horizontal',
-                required: field.required,
-              })}>
-              <div className={cn({
-                'dvn-col-sm-6': layout === 'horizontal',
-                'dvn-empty-label': !field.title,
-                'dvn-form-label': true,
-              })}>
-                <label htmlFor={field.id}>
-                  <b>
-                    {showFieldOrder && `${order}. `}
-                    {field.title}
-                  </b>
+            return (
+              <div
+                id={field.id}
+                key={field.id}
+                className={cn({
+                  'dvn-form-field': true,
+                  'dvn-row': layout === 'horizontal',
+                  required: field.required,
+                })}>
+                <div className={cn({
+                  'dvn-col-sm-6': layout === 'horizontal',
+                  'dvn-empty-label': !field.title,
+                  'dvn-form-label': true,
+                })}>
+                  <label htmlFor={field.id}>
+                    <b>
+                      {showFieldOrder && `${order}. `}
+                      {field.title}
+                    </b>
 
-                  {(layout === 'vertical' && field.description && field.description !== '') &&
-                  <div className="description">
+                    {(layout === 'vertical' && field.description && field.description !== '') &&
+                    <div className="description">
+                      {field.description}
+                    </div>
+                    }
+                  </label>
+                </div>
+
+                <div className={cn({
+                  'dvn-col-sm-18': layout === 'horizontal',
+                  'dvn-input-container': true,
+                })}>
+
+                  {(layout === 'horizontal' && field.description && field.description !== '') &&
+                  <div className="dvn-form-label-right">
                     {field.description}
                   </div>
                   }
-                </label>
-              </div>
 
-              <div className={cn({
-                'dvn-col-sm-18': layout === 'horizontal',
-                'dvn-input-container': true,
-              })}>
-
-                {(layout === 'horizontal' && field.description && field.description !== '') &&
-                <div className="dvn-form-label-right">
-                  {field.description}
+                  {input}
                 </div>
-                }
-
-                {input}
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
 
-        <div className="dvn-form-footer">
-          {error && <span style={{ color: colors.error, marginRight: '1rem' }}>{error}</span>}
+          <div className="dvn-form-footer">
+            {error && <span style={{ color: colors.error, marginRight: '1rem' }}>{error}</span>}
 
-          {extraButtons!.map(button =>
+            {extraButtons!.map(button =>
+              <Button
+                key={button.label}
+                type={button.type}
+                loading={button.loading}
+                onClick={() => this.onExtraButtonClick(button.onClick)}
+                style={{ marginRight: '1rem' }}
+              >
+                {button.label}
+              </Button>,
+            )}
+
+            {submitButtonLabel &&
             <Button
-              key={button.label}
-              type={button.type}
-              loading={button.loading}
-              onClick={() => this.onExtraButtonClick(button.onClick)}
-              style={{ marginRight: '1rem' }}
+              type="primary"
+              htmlType="submit"
+              loading={loading}
             >
-              {button.label}
-            </Button>,
-          )}
-
-          {submitButtonLabel &&
-          <Button
-            type="primary"
-            htmlType="submit"
-            loading={loading}
-          >
-            {submitButtonLabel}
-          </Button>
-          }
-        </div>
-      </form>
+              {submitButtonLabel}
+            </Button>
+            }
+          </div>
+        </form>
+      </LocaleProvider>
     );
   }
 
@@ -422,6 +424,16 @@ export function mergeErrors(errors1: StateError, errors2: StateError): StateErro
   }
 
   return errors;
+}
+
+export function getLocale(language?: Language): any {
+  switch (language) {
+    case Language.tr_TR:
+      return require('antd/lib/locale-provider/tr_TR');
+    case Language.en_US:
+    default:
+      return require('antd/lib/locale-provider/en_US');
+  }
 }
 
 export default Form;
