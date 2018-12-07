@@ -3,6 +3,7 @@ node_js :
  - stable
 install:
  - npm install
+ - npm install react react-dom antd@3.10.9
 script:
  - npm run lint
  - npm run test-ci

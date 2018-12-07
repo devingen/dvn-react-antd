@@ -11,33 +11,55 @@ export class DateInput extends BaseField {
 
   public dateFormat: string = 'YYYY-MM-DD';
 
+  public timeFormat: string = 'HH:mm:ss';
+
+  public inputType: 'date' | 'time' | 'dateTime' = 'date';
+
   public placeholder?: string;
+
+  public timePlaceholder?: string;
 
   // Renders only the value, not the input field.
   public preview?: boolean;
 
   public render = render;
 
-  constructor(id: string, title: string, placeholder?: string, description?: string, dateFormat?: string) {
+  constructor(id: string, title: string, placeholder?: string, description?: string) {
     super();
     this.id = id;
     this.title = title;
     this.placeholder = placeholder;
     this.description = description;
-
-    if (dateFormat) {
-      this.dateFormat = dateFormat;
-    }
   }
 
-  public showPreview(): BaseField {
+  public setDateFormat(format: string): DateInput {
+    this.dateFormat = format;
+    return this;
+  }
+
+  public setInputType(inputType: 'date' | 'time' | 'dateTime'): DateInput {
+    this.inputType = inputType;
+    return this;
+  }
+
+  public setTimeFormat(format: string): DateInput {
+    this.timeFormat = format;
+    return this;
+  }
+
+  public setTimePlaceholder(placeholder: string): DateInput {
+    this.timePlaceholder = placeholder;
+    return this;
+  }
+
+  public showPreview(): DateInput {
     this.preview = true;
     return this;
   }
 }
 
 // component generator
-const render: InputGenerator = (
+export const render: InputGenerator = (
   field: BaseField,
   value: any,
   errors: any[],
