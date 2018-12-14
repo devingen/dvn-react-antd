@@ -68,10 +68,8 @@ export class Form extends React.Component<IProps, IState> {
     passErrorsToSubmit: false,
   };
 
-  public constructor(props: IProps) {
-    super(props);
-
-    this.state = generateState(props);
+  public static getDerivedStateFromProps(props: IProps) {
+    return generateState(props);
   }
 
   public render() {
