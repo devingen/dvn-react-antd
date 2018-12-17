@@ -6,6 +6,7 @@ export { MultipleChoice } from './inputs/MultipleChoice';
 export { NumberInput } from './inputs/NumberInput';
 export { SectionHeader } from './inputs/SectionHeader';
 export { SingleChoice } from './inputs/SingleChoice';
+export { SubForm } from './inputs/SubForm';
 export { TextInput } from './inputs/TextInput';
 export { ConcealerConditional } from './interceptors/ConcealerGenericRule';
 export * from './interceptors';
