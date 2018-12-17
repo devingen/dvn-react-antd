@@ -17,16 +17,22 @@ export class BaseField {
   // Forces user to fill the field.
   public required?: boolean;
 
+  // Shows/hides the field.
+  public visible?: boolean;
+
   // Initial value of the field.
   public value?: any;
 
   public interceptors?: {
 
-    // Interceptors that are triggered on value change.
+    // Interceptors that are triggered on field's input blur.
+    onBlur?: InterceptorConfig[];
+
+    // Interceptors that are triggered on field's value change.
     onChange?: InterceptorConfig[];
 
-    // Interceptors that are triggered on input blur.
-    onBlur?: InterceptorConfig[];
+    // Interceptors that are triggered on any field value change.
+    onFormChange?: InterceptorConfig[];
 
     // Interceptors that are triggered on form submit.
     onSubmit?: InterceptorConfig[];
@@ -40,7 +46,7 @@ export class BaseField {
    * @param type
    * @param interceptor
    */
-  public addInterceptor(type: 'onChange' | 'onBlur' | 'onSubmit', interceptor: InterceptorConfig): BaseField {
+  public addInterceptor(type: 'onBlur' | 'onChange' | 'onFormChange' | 'onSubmit', interceptor: InterceptorConfig): BaseField {
 
     if (!this.interceptors) {
       this.interceptors = {};
@@ -56,6 +62,11 @@ export class BaseField {
 
   public require(): BaseField {
     this.required = true;
+    return this;
+  }
+
+  public hide(): BaseField {
+    this.visible = false;
     return this;
   }
 

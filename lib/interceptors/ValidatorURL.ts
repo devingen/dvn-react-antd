@@ -1,3 +1,4 @@
+import { Values } from '../form/Form';
 import { FormContext } from '../form/FormContext';
 import { BaseField } from '../models/BaseField';
 import { InterceptorConfig } from '../models/InterceptorConfig';
@@ -17,7 +18,7 @@ const isValidURL = (value: any) => /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?
 
 export class ValidatorURLHandler extends InterceptorHandler {
 
-  public run(context: FormContext, field: BaseField, value: any): InterceptorHandlerResponse {
+  public run(context: FormContext, values: Values, field: BaseField, value: any): InterceptorHandlerResponse {
     if (!value) {
       // return no error if there is no value
       return { value };

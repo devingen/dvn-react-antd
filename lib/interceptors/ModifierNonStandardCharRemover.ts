@@ -1,3 +1,4 @@
+import { Values } from '../form/Form';
 import { FormContext } from '../form/FormContext';
 import { BaseField } from '../models/BaseField';
 import { InterceptorConfig } from '../models/InterceptorConfig';
@@ -15,7 +16,7 @@ export class ModifierNonStandardCharRemover extends InterceptorConfig {
 
 export class ModifierNonStandardCharRemoverHandler extends InterceptorHandler {
 
-  public run(context: FormContext, field: BaseField, value: any): InterceptorHandlerResponse {
+  public run(context: FormContext, values: Values, field: BaseField, value: any): InterceptorHandlerResponse {
     if (typeof value === 'string' || value instanceof String) {
       return {
         value: value.replace(

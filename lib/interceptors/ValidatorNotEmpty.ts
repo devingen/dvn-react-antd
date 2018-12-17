@@ -1,3 +1,4 @@
+import { Values } from '../form/Form';
 import { FormContext } from '../form/FormContext';
 import { BaseField } from '../models/BaseField';
 import { InterceptorConfig } from '../models/InterceptorConfig';
@@ -15,7 +16,7 @@ export class ValidatorNotEmpty extends InterceptorConfig {
 
 export class ValidatorNotEmptyHandler extends InterceptorHandler {
 
-  public run(context: FormContext, field: BaseField, value: any): InterceptorHandlerResponse {
+  public run(context: FormContext, values: Values, field: BaseField, value: any): InterceptorHandlerResponse {
 
     if (!value || value === '' || value === 0 || (Array.isArray(value) && value.length === 0)) {
 

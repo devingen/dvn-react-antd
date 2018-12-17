@@ -6,7 +6,7 @@ describe('ModifierUppercaseConverter', () => {
 
   it('should uppercase the given value', () => {
     expect(
-      new ModifierUppercaseConverterHandler().run(new FormContext(), {} as BaseField, 'AsDf')
+      new ModifierUppercaseConverterHandler().run(new FormContext(), {}, {} as BaseField, 'AsDf')
     ).toEqual({ 'value': 'ASDF' });
   });
 });

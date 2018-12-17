@@ -1,3 +1,4 @@
+import { Values } from '../form/Form';
 import { FormContext } from '../form/FormContext';
 import { BaseField } from '../models/BaseField';
 import { InterceptorConfig } from '../models/InterceptorConfig';
@@ -31,7 +32,7 @@ export class ValidatorLengthHandler extends InterceptorHandler {
     this.config = config;
   }
 
-  public run(context: FormContext, field: BaseField, value: any): InterceptorHandlerResponse {
+  public run(context: FormContext, values: Values, field: BaseField, value: any): InterceptorHandlerResponse {
 
     const { max, min } = this.config;
 

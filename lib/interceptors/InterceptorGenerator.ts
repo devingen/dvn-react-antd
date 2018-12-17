@@ -1,4 +1,4 @@
-import { InterceptorBundle } from '../form/Form';
+import { InterceptorBundle, Values } from '../form/Form';
 import { FormContext } from '../form/FormContext';
 import { BaseField } from '../models/BaseField';
 import { InterceptorConfig } from '../models/InterceptorConfig';
@@ -37,28 +37,34 @@ export function generateInterceptor(config: InterceptorConfig): InterceptorHandl
  * if none returns an error.
  *
  * @param context of the form.
+ * @param values of the fields in the form.
  * @param field that is being executed.
  * @param value that the interceptor will process.
  * @param interceptorBundle that contains interceptor list for each type.
  * @param interceptorType that is expected to be used.
+ * @param boundField is the field that the interceptor is bound to. Used only for 'onFormChange' interceptor types.
  */
-export function executeInterceptors(context: FormContext, field: BaseField, value: any, interceptorBundle?: InterceptorBundle, interceptorType?: 'onBlur' | 'onChange' | 'onSubmit'): InterceptorHandlerResponse {
+export function executeInterceptors(context: FormContext, values: Values, field: BaseField, value: any, interceptorBundle?: InterceptorBundle, interceptorType?: 'onBlur' | 'onChange' | 'onFormChange' | 'onSubmit', boundField?: BaseField): InterceptorHandlerResponse {
 
   const interceptors = interceptorBundle ? (interceptorBundle[interceptorType!] || []) : [];
 
-  let v = value;
+  let v = boundField ? values[boundField.id] : value;
+  let visible = true;
+
   for (const interceptor of interceptors) {
     if (!interceptor) {
       continue;
     }
-    const response = interceptor.run(context, field, v);
+
+    const response = interceptor.run(context, values, field, v, boundField);
+    visible = typeof response.visible === 'boolean' ? response.visible : true;
     if (response.error) {
       // don't proceed to next interceptor if an error returned
       return response;
     }
     v = response.value;
   }
-  return new InterceptorHandlerResponse(v);
+  return new InterceptorHandlerResponse(v, undefined, visible);
 }
 
 export type InterceptorGenerator = (config: InterceptorConfig) => InterceptorHandler | undefined;

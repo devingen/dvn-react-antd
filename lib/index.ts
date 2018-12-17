@@ -7,5 +7,6 @@ export { NumberInput } from './inputs/NumberInput';
 export { SectionHeader } from './inputs/SectionHeader';
 export { SingleChoice } from './inputs/SingleChoice';
 export { TextInput } from './inputs/TextInput';
+export { ConcealerConditional } from './interceptors/ConcealerGenericRule';
 export * from './interceptors';
 export { InterceptorHandlerResponse } from './models/InterceptorHandlerResponse';
