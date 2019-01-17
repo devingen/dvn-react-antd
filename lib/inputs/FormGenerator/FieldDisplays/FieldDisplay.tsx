@@ -1,7 +1,6 @@
 import { Icon } from 'antd';
 import * as cn from 'classnames';
-import { BaseField } from 'dvn-react-core';
-import { generateField } from 'dvn-react-core/dist/fields/FieldGenerator';
+import { BaseField, generateField } from 'dvn-react-core';
 import * as React from 'react';
 
 export interface IProps {

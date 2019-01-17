@@ -1,5 +1,4 @@
-import { BaseField, MultipleChoice, NumberInput, SingleChoice, TextInput } from 'dvn-react-core';
-import { RatingStars } from 'dvn-react-core/dist/fields/RatingStars';
+import { BaseField, MultipleChoice, NumberInput, RatingStars, SingleChoice, TextInput } from 'dvn-react-core';
 import * as React from 'react';
 import { convertToUniqueAlphanumberic } from '../utils';
 import FieldFormMultipleChoice from './FieldFormMultipleChoice';

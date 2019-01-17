@@ -1,6 +1,5 @@
 import { Rate } from 'antd';
-import { BaseInputProps } from 'dvn-react-core';
-import { RatingStars } from 'dvn-react-core/dist/fields/RatingStars';
+import { BaseInputProps, RatingStars } from 'dvn-react-core';
 import * as React from 'react';
 import { colors, metrics } from '../../constants';
 

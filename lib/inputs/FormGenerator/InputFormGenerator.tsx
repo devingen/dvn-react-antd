@@ -1,8 +1,15 @@
 import { Button, Dropdown, Icon, Menu, Modal } from 'antd';
 import { ClickParam } from 'antd/lib/menu';
 import * as cn from 'classnames';
-import { BaseField, BaseInputProps, MultipleChoice, NumberInput, SingleChoice, TextInput } from 'dvn-react-core';
-import { RatingStars } from 'dvn-react-core/dist/fields/RatingStars';
+import {
+  BaseField,
+  BaseInputProps,
+  MultipleChoice,
+  NumberInput,
+  RatingStars,
+  SingleChoice,
+  TextInput
+} from 'dvn-react-core';
 import * as React from 'react';
 import { colors } from '../../constants';
 import { getStrings } from './defaultStrings';

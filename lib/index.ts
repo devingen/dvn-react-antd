@@ -1,4 +1,5 @@
 export { Form } from './form/Form';
+export { FormGenerator } from './inputs/FormGenerator';
 export {
   FormContext,
   SubmitCallbackResponse,

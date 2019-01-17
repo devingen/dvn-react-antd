@@ -1,5 +1,4 @@
-import { BaseField, InputGenerator, registerField } from 'dvn-react-core';
-import { RatingStars } from 'dvn-react-core/dist/fields/RatingStars';
+import { BaseField, InputGenerator, RatingStars, registerField } from 'dvn-react-core';
 import * as React from 'react';
 import { InputRatingStars } from './InputRatingStars';
 

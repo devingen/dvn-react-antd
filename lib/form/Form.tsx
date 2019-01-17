@@ -1,13 +1,21 @@
 import { Button, LocaleProvider } from 'antd';
 import * as cn from 'classnames';
-import { DevingenForm, getFirstError, SubmitCallback } from 'dvn-react-core';
-import { generateField } from 'dvn-react-core/dist/fields/FieldGenerator';
-import { equals, FormProps, generateState, handleExtraButtonClick } from 'dvn-react-core/dist/form/Form';
-import { Language } from 'dvn-react-core/dist/form/FormContext';
+import {
+  DevingenForm,
+  equals,
+  FormProps,
+  generateField,
+  generateState,
+  getFirstError,
+  handleExtraButtonClick,
+  Language,
+  SubmitCallback
+} from 'dvn-react-core';
 import * as React from 'react';
 
 import { colors } from '../constants';
 import '../inputs/DateInput';
+import '../inputs/FormGenerator';
 import '../inputs/MultipleChoice';
 import '../inputs/NumberInput';
 import '../inputs/RatingStars';

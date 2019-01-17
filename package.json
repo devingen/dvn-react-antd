@@ -88,7 +88,7 @@
   "dependencies": {
     "antd": "^3.10.9",
     "classnames": "^2.2.6",
-    "dvn-react-core": "0.0.5",
+    "dvn-react-core": "0.0.6",
     "react": "^16.7.0",
     "react-dom": "^16.7.0"
   },
