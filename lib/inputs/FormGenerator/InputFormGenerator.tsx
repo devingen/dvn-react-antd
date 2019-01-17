@@ -1,15 +1,10 @@
 import { Button, Dropdown, Icon, Menu, Modal } from 'antd';
 import { ClickParam } from 'antd/lib/menu';
 import * as cn from 'classnames';
+import { BaseField, BaseInputProps, MultipleChoice, NumberInput, SingleChoice, TextInput } from 'dvn-react-core';
+import { RatingStars } from 'dvn-react-core/dist/fields/RatingStars';
 import * as React from 'react';
 import { colors } from '../../constants';
-import { BaseField } from '../../models/BaseField';
-import { IBaseInput, IBaseInputProps } from '../IBaseInput';
-import { MultipleChoice } from '../MultipleChoice';
-import { NumberInput } from '../NumberInput';
-import { RatingStars } from '../RatingStars';
-import { SingleChoice } from '../SingleChoice';
-import { TextInput } from '../TextInput';
 import { getStrings } from './defaultStrings';
 
 import FieldDisplay from './FieldDisplays/FieldDisplay';
@@ -19,7 +14,7 @@ import { FormGenerator } from './index';
 import './InputFormGenerator.css';
 import { swapArray } from './utils';
 
-export interface IProps extends IBaseInputProps<FormGenerator, BaseField[]> {
+export interface IProps extends BaseInputProps<FormGenerator, BaseField[]> {
 }
 
 export interface IState {
@@ -30,7 +25,7 @@ export interface IState {
   isAddingField: boolean
 }
 
-export class InputFormGenerator extends React.Component<IProps, IState> implements IBaseInput<FormData> {
+export class InputFormGenerator extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props);

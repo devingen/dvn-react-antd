@@ -1,9 +1,9 @@
 import { DatePicker, TimePicker } from 'antd';
+import { DateInput } from 'dvn-react-core';
 import { configure, shallow } from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
 import * as moment from 'moment';
 import * as React from 'react';
-import { DateInput } from './index';
 import { InputDate } from './InputDate';
 
 configure({ adapter: new Adapter() });

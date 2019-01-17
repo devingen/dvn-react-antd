@@ -1,14 +1,13 @@
 import { DatePicker, TimePicker } from 'antd';
+import { BaseInputProps, DateInput } from 'dvn-react-core';
 import * as moment from 'moment';
 import * as React from 'react';
 import { colors, metrics } from '../../constants';
-import { IBaseInput, IBaseInputProps } from '../IBaseInput';
-import { DateInput } from './index';
 
-export interface IProps extends IBaseInputProps<DateInput, Date> {
+export interface IProps extends BaseInputProps<DateInput, Date> {
 }
 
-export class InputDate extends React.Component<IProps> implements IBaseInput<Date> {
+export class InputDate extends React.Component<IProps> {
 
   constructor(props: IProps) {
     super(props);

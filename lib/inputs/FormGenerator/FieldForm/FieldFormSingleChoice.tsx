@@ -1,6 +1,6 @@
 import { Button, Checkbox, Form, Icon, Input, Select } from 'antd';
+import { SingleChoice } from 'dvn-react-core';
 import * as React from 'react';
-import { SingleChoice } from '../../SingleChoice';
 import { convertToAlphanumeric, isNumeric, simpleTextDecorator, swapArray } from '../utils';
 import { ICommonFieldProps } from './FieldForm';
 

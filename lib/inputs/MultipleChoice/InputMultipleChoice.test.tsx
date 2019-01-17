@@ -1,4 +1,4 @@
-import { MultipleChoice } from './index';
+import { MultipleChoice } from 'dvn-react-core';
 import { getOptionLabels, getSelectedOptions } from './InputMultipleChoice';
 
 describe('<InputMultipleChoice />', () => {

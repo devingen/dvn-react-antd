@@ -1,6 +1,6 @@
 import { Button, Checkbox, Form, Input, InputNumber } from 'antd';
+import { NumberInput } from 'dvn-react-core';
 import * as React from 'react';
-import { NumberInput } from '../../NumberInput';
 import { simpleTextDecorator } from '../utils';
 import { ICommonFieldProps } from './FieldForm';
 

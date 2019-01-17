@@ -1,8 +1,8 @@
 import { Rate } from 'antd';
+import { RatingStars } from 'dvn-react-core/dist/fields/RatingStars';
 import { configure, shallow } from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
 import * as React from 'react';
-import { RatingStars } from './index';
 import { InputRatingStars } from './InputRatingStars';
 
 configure({ adapter: new Adapter() });

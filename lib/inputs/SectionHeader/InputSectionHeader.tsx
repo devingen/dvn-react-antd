@@ -1,8 +1,7 @@
+import { BaseInputProps, SectionHeader } from 'dvn-react-core';
 import * as React from 'react';
-import { IBaseInputProps } from '../IBaseInput';
-import { SectionHeader } from './index';
 
-export interface IProps extends IBaseInputProps<SectionHeader, void> {
+export interface IProps extends BaseInputProps<SectionHeader, void> {
 }
 
 export class InputSectionHeader extends React.Component<IProps> {

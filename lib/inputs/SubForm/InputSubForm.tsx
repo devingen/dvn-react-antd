@@ -1,15 +1,12 @@
+import { BaseField, BaseInputProps, SubForm } from 'dvn-react-core';
 import * as React from 'react';
 import { colors, metrics } from '../../constants';
-import Form from '../../form/Form';
-import { BaseField } from '../../models/BaseField';
+import { Form } from '../../form/Form';
 
-import { IBaseInput, IBaseInputProps } from '../IBaseInput';
-import { SubForm } from './index';
-
-export interface IProps extends IBaseInputProps<SubForm, any> {
+export interface IProps extends BaseInputProps<SubForm, any> {
 }
 
-export class InputSubForm extends React.Component<IProps> implements IBaseInput<number> {
+export class InputSubForm extends React.Component<IProps> {
 
   public render() {
     const { disabled, field, errors, onChange, value } = this.props;

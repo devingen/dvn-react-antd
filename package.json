@@ -1,6 +1,6 @@
 {
-  "name": "dvn-antd",
-  "version": "0.1.23",
+  "name": "dvn-react-antd",
+  "version": "0.0.1",
   "description": "Devingen form implementation with antd framework.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -86,7 +86,11 @@
     "typescript": "^3.2.2"
   },
   "dependencies": {
-    "classnames": "^2.2.6"
+    "antd": "^3.10.9",
+    "classnames": "^2.2.6",
+    "dvn-react-core": "0.0.5",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0"
   },
   "peerDependencies": {
     "antd": "3.10.9",

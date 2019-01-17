@@ -1,13 +1,12 @@
 import { Radio, Select } from 'antd';
+import { BaseInputProps, SingleChoice } from 'dvn-react-core';
 import * as React from 'react';
 import { colors, metrics } from '../../constants';
-import { IBaseInput, IBaseInputProps } from '../IBaseInput';
-import { SingleChoice } from './index';
 
-export interface IProps extends IBaseInputProps<SingleChoice, any[]> {
+export interface IProps extends BaseInputProps<SingleChoice, any[]> {
 }
 
-export class InputSingleChoice extends React.Component<IProps> implements IBaseInput<any[]> {
+export class InputSingleChoice extends React.Component<IProps> {
 
   public render() {
     const { disabled, field, errors, value, onChange } = this.props;

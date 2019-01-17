@@ -1,13 +1,12 @@
 import { Checkbox, Select, Tag } from 'antd';
+import { BaseInputProps, MultipleChoice } from 'dvn-react-core';
 import * as React from 'react';
 import { colors, metrics } from '../../constants';
-import { IBaseInput, IBaseInputProps } from '../IBaseInput';
-import { MultipleChoice } from './index';
 
-export interface IProps extends IBaseInputProps<MultipleChoice, any[]> {
+export interface IProps extends BaseInputProps<MultipleChoice, any[]> {
 }
 
-export default class InputMultipleChoice extends React.Component<IProps> implements IBaseInput<MultipleChoice[]> {
+export default class InputMultipleChoice extends React.Component<IProps> {
 
   constructor(props: IProps) {
     super(props);

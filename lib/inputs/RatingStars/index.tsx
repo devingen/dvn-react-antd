@@ -1,32 +1,7 @@
+import { BaseField, InputGenerator, registerField } from 'dvn-react-core';
+import { RatingStars } from 'dvn-react-core/dist/fields/RatingStars';
 import * as React from 'react';
-import { BaseField, InputGenerator } from '../../models/BaseField';
-import { registerField } from '../InputGenerator';
 import { InputRatingStars } from './InputRatingStars';
-
-export class RatingStars extends BaseField {
-
-  public static type = 'ratingStars';
-
-  public type = 'ratingStars';
-
-  public starCount: number;
-
-  // Renders only the value, not the input field.
-  public preview?: boolean;
-
-  constructor(id: string, title: string, description?: string, starCount: number = 5) {
-    super();
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.starCount = starCount;
-  }
-
-  public showPreview(): RatingStars {
-    this.preview = true;
-    return this;
-  }
-}
 
 const render: InputGenerator = (
   field: BaseField,

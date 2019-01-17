@@ -1,10 +1,7 @@
 import { Icon } from 'antd';
+import { MultipleChoice, NumberInput, SingleChoice, TextInput } from 'dvn-react-core';
+import { RatingStars } from 'dvn-react-core/dist/fields/RatingStars';
 import * as React from 'react';
-import { MultipleChoice } from '../../MultipleChoice';
-import { NumberInput } from '../../NumberInput';
-import { RatingStars } from '../../RatingStars';
-import { SingleChoice } from '../../SingleChoice';
-import { TextInput } from '../../TextInput';
 import FieldDisplay from '../FieldDisplays/FieldDisplay';
 import FieldForm from '../FieldForm/FieldForm';
 import * as FieldFormMultipleChoice from '../FieldForm/FieldFormMultipleChoice';

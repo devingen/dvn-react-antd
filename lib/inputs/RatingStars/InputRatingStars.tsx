@@ -1,14 +1,13 @@
 import { Rate } from 'antd';
+import { BaseInputProps } from 'dvn-react-core';
+import { RatingStars } from 'dvn-react-core/dist/fields/RatingStars';
 import * as React from 'react';
 import { colors, metrics } from '../../constants';
 
-import { IBaseInput, IBaseInputProps } from '../IBaseInput';
-import { RatingStars } from './index';
-
-export interface IProps extends IBaseInputProps<RatingStars, number> {
+export interface IProps extends BaseInputProps<RatingStars, number> {
 }
 
-export class InputRatingStars extends React.Component<IProps> implements IBaseInput<number> {
+export class InputRatingStars extends React.Component<IProps> {
 
   public render() {
     const { disabled, field, errors, onChange, value } = this.props;

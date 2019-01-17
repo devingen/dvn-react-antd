@@ -1,13 +1,12 @@
 import { InputNumber as AntdInputNumber } from 'antd';
+import { BaseInputProps, NumberInput } from 'dvn-react-core';
 import * as React from 'react';
 import { colors, metrics } from '../../constants';
-import { IBaseInput, IBaseInputProps } from '../IBaseInput';
-import { NumberInput } from './index';
 
-export interface IProps extends IBaseInputProps<NumberInput, number> {
+export interface IProps extends BaseInputProps<NumberInput, number> {
 }
 
-export class InputNumber extends React.Component<IProps> implements IBaseInput<string> {
+export class InputNumber extends React.Component<IProps> {
 
   constructor(props: IProps) {
     super(props);

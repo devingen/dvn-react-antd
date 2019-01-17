@@ -1,13 +1,12 @@
 import { Input } from 'antd';
+import { BaseInputProps, TextInput } from 'dvn-react-core';
 import * as React from 'react';
 import { colors, metrics } from '../../constants';
-import { IBaseInput, IBaseInputProps } from '../IBaseInput';
-import { TextInput } from './index';
 
-export interface IProps extends IBaseInputProps<TextInput, string> {
+export interface IProps extends BaseInputProps<TextInput, string> {
 }
 
-export class InputText extends React.Component<IProps> implements IBaseInput<string> {
+export class InputText extends React.Component<IProps> {
 
   constructor(props: IProps) {
     super(props);

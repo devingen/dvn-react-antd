@@ -1,6 +1,5 @@
+import { BaseField, InputGenerator, registerField } from 'dvn-react-core';
 import * as React from 'react';
-import { BaseField, InputGenerator } from '../../models/BaseField';
-import { registerField } from '../InputGenerator';
 import { InputFormGenerator } from './InputFormGenerator';
 
 export class FormGenerator extends BaseField {

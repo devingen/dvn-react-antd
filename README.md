@@ -8,14 +8,14 @@ form implementation for ReactJS with Ant Design.
 
 ## Installation
 
-It can be installed with **npm** `npm install dvn-antd` or **yarn** `yarn add dvn-antd`.
+It can be installed with **npm** `npm install dvn-react-antd` or **yarn** `yarn add dvn-react-antd`.
 
 ## Usage
 
 The form fields can be generated with **JavaScript** classes
 
 ```
-import { FieldText, Form } from "dvn-antd";
+import { FieldText, Form } from "dvn-react-antd";
 
 class SimpleForm extends React.Component {
 
@@ -47,7 +47,7 @@ class SimpleForm extends React.Component {
 or with **json** configuration
 
 ```
-import { FieldText, Form } from "dvn-antd";
+import { FieldText, Form } from "dvn-react-antd";
 
 export class SimpleForm extends React.Component {
 

@@ -1,8 +1,8 @@
 import { Icon } from 'antd';
 import * as cn from 'classnames';
+import { BaseField } from 'dvn-react-core';
+import { generateField } from 'dvn-react-core/dist/fields/FieldGenerator';
 import * as React from 'react';
-import { BaseField } from '../../../models/BaseField';
-import { generateInput } from '../../InputGenerator';
 
 export interface IProps {
   field: any
@@ -37,7 +37,7 @@ class FieldDisplay extends React.Component<IProps, IState> {
     };
 
     /* tslint:disable:no-empty */
-    const input = generateInput(field, this.state.value, [], isPending,
+    const input = generateField(field, this.state.value, [], isPending,
       (f: BaseField, v: any) => {
         this.setState({ value: v });
       }, () => {

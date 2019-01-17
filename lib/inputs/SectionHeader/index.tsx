@@ -1,25 +1,6 @@
+import { BaseField, InputGenerator, registerField, SectionHeader } from 'dvn-react-core';
 import * as React from 'react';
-import { BaseField, InputGenerator } from '../../models/BaseField';
-import { registerField } from '../InputGenerator';
 import { InputSectionHeader } from './InputSectionHeader';
-
-export class SectionHeader extends BaseField {
-
-  public static type = 'sectionHeader';
-
-  public type = 'sectionHeader';
-
-  public header: string;
-
-  public sectionDescription?: string;
-
-  constructor(id: string, header: string, sectionDescription?: string) {
-    super();
-    this.id = id;
-    this.header = header;
-    this.sectionDescription = sectionDescription;
-  }
-}
 
 const render: InputGenerator = (
   field: BaseField,
