@@ -8,6 +8,7 @@ export {
   defaultProps,
   equals,
   FormProps,
+  Language,
   generateState,
   handleExtraButtonClick,
   DateInput,
