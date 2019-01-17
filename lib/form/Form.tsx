@@ -5,7 +5,15 @@ import { generateField } from 'dvn-react-core/dist/fields/FieldGenerator';
 import { equals, FormProps, generateState, handleExtraButtonClick } from 'dvn-react-core/dist/form/Form';
 import { Language } from 'dvn-react-core/dist/form/FormContext';
 import * as React from 'react';
+
 import { colors } from '../constants';
+import '../inputs/DateInput';
+import '../inputs/MultipleChoice';
+import '../inputs/NumberInput';
+import '../inputs/RatingStars';
+import '../inputs/SectionHeader';
+import '../inputs/SingleChoice';
+import '../inputs/TextInput';
 
 import './Form.css';
 
