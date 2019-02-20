@@ -1,7 +1,7 @@
 # Devingen - Form Implementation with Antd Framework
 
-[![Build Status](https://travis-ci.org/devingen/js-antd.svg?branch=master)](https://travis-ci.org/devingen/js-antd)
-[![Coverage Status](https://coveralls.io/repos/github/devingen/js-antd/badge.svg?branch=master&service=github)](https://coveralls.io/github/devingen/js-antd?branch=master&service=github)
+[![Build Status](https://travis-ci.org/devingen/dvn-react-antd.svg?branch=master)](https://travis-ci.org/devingen/dvn-react-antd)
+[![Coverage Status](https://coveralls.io/repos/github/devingen/dvn-react-antd/badge.svg?branch=master&service=github)](https://coveralls.io/github/devingen/dvn-react-antd?branch=master&service=github)
 
 Devingen is a framework for form generation, validation and submit. This library is Devingen
 form implementation for ReactJS with Ant Design.

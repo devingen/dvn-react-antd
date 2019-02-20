@@ -16,14 +16,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/devingen/js-antd.git"
+    "url": "git+https://github.com/devingen/dvn-react-antd.git"
   },
   "author": "eluleci",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/devingen/js-antd/issues"
+    "url": "https://github.com/devingen/dvn-react-antd/issues"
   },
-  "homepage": "https://github.com/devingen/js-antd#readme",
+  "homepage": "https://github.com/devingen/dvn-react-antd#readme",
   "jest": {
     "collectCoverageFrom": [
       "lib/**/*.{js,jsx,ts,tsx}",
