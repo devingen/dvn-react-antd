@@ -46,7 +46,7 @@ class DynamicFieldNumberForm extends React.Component<ICommonFieldProps> {
 
         <FormItem {...commonProps} label={strings.field.description}>
           {simpleTextDecorator(getFieldDecorator, 'description',
-            strings.field.descriptionPlaceholder, data ? data.title : '', true, fieldConfig.descriptionMin, fieldConfig.descriptionMax, [], strings)(
+            strings.field.descriptionPlaceholder, data ? data.description : '', true, fieldConfig.descriptionMin, fieldConfig.descriptionMax, [], strings)(
             <Input
               type="text"
               autoComplete="off"

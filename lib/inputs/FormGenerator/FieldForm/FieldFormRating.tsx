@@ -58,7 +58,7 @@ class FieldFormRating extends React.Component<ICommonFieldProps> {
 
         <Form.Item {...commonProps} label={strings.field.description}>
           {simpleTextDecorator(getFieldDecorator, 'description',
-            strings.field.descriptionPlaceholder, data ? data.title : '', true, fieldConfig.descriptionMin, fieldConfig.descriptionMax, [], strings)(
+            strings.field.descriptionPlaceholder, data ? data.description : '', true, fieldConfig.descriptionMin, fieldConfig.descriptionMax, [], strings)(
             <Input
               type="text"
               autoComplete="off"
