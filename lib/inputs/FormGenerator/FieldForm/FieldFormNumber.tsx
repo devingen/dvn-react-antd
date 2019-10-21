@@ -27,14 +27,14 @@ class DynamicFieldNumberForm extends React.Component<ICommonFieldProps> {
   }
 
   public render() {
-    const { data, form, commonProps, disabled, strings } = this.props;
+    const { fieldConfig, data, form, commonProps, disabled, strings } = this.props;
     const { getFieldDecorator } = form;
 
     return (
       <Form layout="horizontal" onSubmit={() => this.handleSubmit()}>
         <FormItem {...commonProps} label={strings.field.question}>
           {simpleTextDecorator(getFieldDecorator,
-            'title', strings.field.question, data ? data.title : '', true, 3, 100, [], strings)(
+            'title', strings.field.question, data ? data.title : '', true, fieldConfig.titleMin, fieldConfig.titleMax, [], strings)(
             <Input
               type="text"
               autoComplete="off"
@@ -46,7 +46,7 @@ class DynamicFieldNumberForm extends React.Component<ICommonFieldProps> {
 
         <FormItem {...commonProps} label={strings.field.description}>
           {simpleTextDecorator(getFieldDecorator, 'description',
-            strings.field.descriptionPlaceholder, data ? data.description : '', false, 3, 100, [], strings)(
+            strings.field.descriptionPlaceholder, data ? data.title : '', true, fieldConfig.descriptionMin, fieldConfig.descriptionMax, [], strings)(
             <Input
               type="text"
               autoComplete="off"
@@ -122,7 +122,7 @@ class DynamicFieldNumberForm extends React.Component<ICommonFieldProps> {
 }
 
 export default Form.create({
-  onValuesChange(props: ICommonFieldProps, changedValues, allValues) {
+  onValuesChange(props: ICommonFieldProps, changedValues: any, allValues: any) {
     if (props.onChange) {
       props.onChange({ ...(props.data || emptyFieldData), ...allValues });
     }

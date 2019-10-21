@@ -2,6 +2,13 @@ import { BaseField, InputGenerator, registerField } from 'dvn-react-core';
 import * as React from 'react';
 import { InputFormGenerator } from './InputFormGenerator';
 
+export interface IFieldFormConfig {
+  descriptionMax: number;
+  descriptionMin: number;
+  titleMax: number;
+  titleMin: number;
+}
+
 export class FormGenerator extends BaseField {
 
   public static type = 'formGenerator';
@@ -14,11 +21,20 @@ export class FormGenerator extends BaseField {
 
   public strings: any;
 
-  constructor(id: string, language: string, inline: boolean) {
+  public fieldConfig: IFieldFormConfig;
+
+  constructor(id: string, language: string, inline: boolean, fieldConfig?: IFieldFormConfig) {
     super();
     this.id = id;
     this.language = language;
     this.inline = inline;
+    this.fieldConfig = {
+      descriptionMax: 100,
+      descriptionMin: 0,
+      titleMax: 100,
+      titleMin: 1,
+      ...(fieldConfig || {}),
+    };
   }
 }
 

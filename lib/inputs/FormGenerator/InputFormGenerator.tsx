@@ -77,6 +77,7 @@ export class InputFormGenerator extends React.Component<IProps, IState> {
         {(this.state.isAddingField || this.state.fieldBeingEdited) &&
         <FieldFormDialog
           field={this.state.fieldBeingEdited}
+          fieldConfig={fieldData.fieldConfig}
           fieldType={this.state.fieldType!}
           onSave={(newOrEditedField) => {
 

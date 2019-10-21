@@ -1,5 +1,6 @@
 import { BaseField, MultipleChoice, NumberInput, RatingStars, SingleChoice, TextInput } from 'dvn-react-core';
 import * as React from 'react';
+import { IFieldFormConfig } from '../index';
 import { convertToUniqueAlphanumberic } from '../utils';
 import FieldFormMultipleChoice from './FieldFormMultipleChoice';
 import FieldFormNumber from './FieldFormNumber';
@@ -17,6 +18,7 @@ export interface IProps {
 
   disabled: boolean
   strings: object
+  fieldConfig: IFieldFormConfig
 }
 
 export interface ICommonFieldProps {
@@ -32,12 +34,14 @@ export interface ICommonFieldProps {
 
   disabled: boolean
   strings: any
+
+  fieldConfig: IFieldFormConfig
 }
 
 class FieldForm extends React.Component<IProps> {
 
   public render() {
-    const { fieldType, fieldData, disabled, strings } = this.props;
+    const { fieldConfig, fieldType, fieldData, disabled, strings } = this.props;
 
     const commonProps = {
       hasFeedback: false,
@@ -58,8 +62,9 @@ class FieldForm extends React.Component<IProps> {
           strings={strings}
           commonProps={commonProps}
           onChange={this.props.onChange}
-          onSaveClick={(data) => this.onSaveClick(data)}
+          onSaveClick={(data: any) => this.onSaveClick(data)}
           onCancelClick={this.props.onCancelClick}
+          fieldConfig={fieldConfig}
         />
         }
 
@@ -70,8 +75,9 @@ class FieldForm extends React.Component<IProps> {
           disabled={disabled}
           commonProps={commonProps}
           onChange={this.props.onChange}
-          onSaveClick={(data) => this.onSaveClick(data)}
+          onSaveClick={(data: any) => this.onSaveClick(data)}
           onCancelClick={this.props.onCancelClick}
+          fieldConfig={fieldConfig}
         />
         }
 
@@ -82,8 +88,9 @@ class FieldForm extends React.Component<IProps> {
           disabled={disabled}
           commonProps={commonProps}
           onChange={this.props.onChange}
-          onSaveClick={(data) => this.onSaveClick(data)}
+          onSaveClick={(data: any) => this.onSaveClick(data)}
           onCancelClick={this.props.onCancelClick}
+          fieldConfig={fieldConfig}
         />
         }
 
@@ -94,8 +101,9 @@ class FieldForm extends React.Component<IProps> {
           strings={strings}
           commonProps={commonProps}
           onChange={this.props.onChange}
-          onSaveClick={(data) => this.onSaveClick(data)}
+          onSaveClick={(data: any) => this.onSaveClick(data)}
           onCancelClick={this.props.onCancelClick}
+          fieldConfig={fieldConfig}
         />
         }
 
@@ -106,8 +114,9 @@ class FieldForm extends React.Component<IProps> {
           disabled={disabled}
           commonProps={commonProps}
           onChange={this.props.onChange}
-          onSaveClick={(data) => this.onSaveClick(data)}
+          onSaveClick={(data: any) => this.onSaveClick(data)}
           onCancelClick={this.props.onCancelClick}
+          fieldConfig={fieldConfig}
         />
         }
 

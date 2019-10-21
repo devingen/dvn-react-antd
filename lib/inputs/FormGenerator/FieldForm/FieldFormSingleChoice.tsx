@@ -32,7 +32,7 @@ class FieldFormSingleChoice extends React.Component<ICommonFieldProps> {
   }
 
   public render() {
-    const { form, commonProps, data, disabled, strings } = this.props;
+    const { fieldConfig, form, commonProps, data, disabled, strings } = this.props;
     const { getFieldDecorator } = form;
 
     const disableOptionValues = !!data;
@@ -41,7 +41,7 @@ class FieldFormSingleChoice extends React.Component<ICommonFieldProps> {
       <Form layout="horizontal" onSubmit={() => this.handleSubmit()}>
         <FormItem {...commonProps} label={strings.field.question}>
           {simpleTextDecorator(getFieldDecorator,
-            'title', strings.field.question, data ? data.title : '', true, 3, 100, [], strings)(
+            'title', strings.field.question, data ? data.title : '', true, fieldConfig.titleMin, fieldConfig.titleMax, [], strings)(
             <Input
               type="text"
               autoComplete="off"
@@ -53,7 +53,7 @@ class FieldFormSingleChoice extends React.Component<ICommonFieldProps> {
 
         <FormItem {...commonProps} label={strings.field.description}>
           {simpleTextDecorator(getFieldDecorator, 'description',
-            strings.field.descriptionPlaceholder, data ? data.description : '', false, 3, 100, [], strings)(
+            strings.field.descriptionPlaceholder, data ? data.title : '', true, fieldConfig.descriptionMin, fieldConfig.descriptionMax, [], strings)(
             <Input
               type="text"
               autoComplete="off"
@@ -119,7 +119,7 @@ class FieldFormSingleChoice extends React.Component<ICommonFieldProps> {
 }
 
 export default Form.create({
-  onValuesChange(props: ICommonFieldProps, changedValues, allValues) {
+  onValuesChange(props: ICommonFieldProps, changedValues: any, allValues: any) {
     if (props.onChange) {
       props.onChange({ ...(props.data || emptyFieldData), ...allValues });
     }
@@ -253,7 +253,7 @@ class OptionList extends React.Component<IOptionListProps, IOptionListState> {
               placeholder={strings.field.singleChoice.label}
               style={{ flex: isNumeric(option.value) ? 8 : 10 }}
               value={option.label}
-              onChange={e => this.updateOptionLabel(option, e.target.value)}
+              onChange={(e: any) => this.updateOptionLabel(option, e.target.value)}
               disabled={disabled}
             />
 
@@ -265,7 +265,7 @@ class OptionList extends React.Component<IOptionListProps, IOptionListState> {
               value={option.value}
               disabled={disabled || disableOptionValues}
               style={{ flex: 2, marginLeft: 5 }}
-              onChange={e => this.setState({ optionValue: e.target.value })}
+              onChange={(e: any) => this.setState({ optionValue: e.target.value })}
             />
             }
 
@@ -307,8 +307,8 @@ class OptionList extends React.Component<IOptionListProps, IOptionListState> {
               autoComplete="off"
               placeholder={strings.field.singleChoice.label}
               value={this.state.optionLabel}
-              onChange={e => this.setState({ optionLabel: e.target.value })}
-              ref={(input) => {
+              onChange={(e: any) => this.setState({ optionLabel: e.target.value })}
+              ref={(input: any) => {
                 this.optionLabelInput = input;
               }}
               onPressEnter={() => this.onAddOptionClick()}
@@ -321,7 +321,7 @@ class OptionList extends React.Component<IOptionListProps, IOptionListState> {
               autoComplete="off"
               placeholder={strings.field.singleChoice.value}
               value={this.state.optionValue}
-              onChange={e => this.setState({ optionValue: e.target.value })}
+              onChange={(e: any) => this.setState({ optionValue: e.target.value })}
               onPressEnter={() => this.onAddOptionClick()}
               disabled={disabled}
             />

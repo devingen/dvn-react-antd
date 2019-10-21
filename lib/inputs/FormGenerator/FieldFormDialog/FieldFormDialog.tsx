@@ -8,6 +8,7 @@ import * as FieldFormNumber from '../FieldForm/FieldFormNumber';
 import * as FieldFormRating from '../FieldForm/FieldFormRating';
 import * as FieldFormSingleChoice from '../FieldForm/FieldFormSingleChoice';
 import * as FieldFormText from '../FieldForm/FieldFormText';
+import { IFieldFormConfig } from '../index';
 
 import './FieldFormDialog.css';
 
@@ -17,6 +18,7 @@ export interface IProps {
   onSave: (fieldData: any) => void
   onDismiss: () => void
   strings: any
+  fieldConfig: IFieldFormConfig
 }
 
 export interface IState {
@@ -49,7 +51,7 @@ class FieldFormDialog extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { fieldType, onDismiss, onSave, strings } = this.props;
+    const { fieldConfig, fieldType, onDismiss, onSave, strings } = this.props;
     const { field } = this.state;
 
     return (
@@ -85,6 +87,7 @@ class FieldFormDialog extends React.Component<IProps, IState> {
                 onCancelClick={() => onDismiss()}
                 onSaveClick={(f) => onSave(f)}
                 disabled={false}
+                fieldConfig={fieldConfig}
               />
             </div>
           </div>
