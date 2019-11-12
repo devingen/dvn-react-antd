@@ -95,6 +95,15 @@
       display: inline-block;
       overflow: hidden;
       // white-space: nowrap;
+
+      td, th {
+        padding: 4px;
+      }
+
+      img {
+        max-height: 100%;
+        max-width: 100%;
+      }
     }
   }
 

@@ -87,7 +87,8 @@
   },
   "dependencies": {
     "classnames": "^2.2.6",
-    "dvn-react-core": "0.0.9"
+    "dvn-react-core": "0.0.9",
+    "react-markdown": "^3.4.1"
   },
   "peerDependencies": {
     "antd": "^3.12.3",

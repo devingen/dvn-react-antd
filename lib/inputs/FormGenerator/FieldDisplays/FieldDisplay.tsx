@@ -2,6 +2,7 @@ import { Icon } from 'antd';
 import * as cn from 'classnames';
 import { BaseField, generateField } from 'dvn-react-core';
 import * as React from 'react';
+import * as ReactMarkdown from 'react-markdown';
 
 export interface IProps {
   field: any
@@ -100,7 +101,7 @@ class FieldDisplay extends React.Component<IProps, IState> {
 
                 {(layout === 'vertical' && field.description && field.description !== '') &&
                 <div>
-                  {field.description}
+                  <ReactMarkdown source={field.description} escapeHtml={false} />
                 </div>
                 }
               </label>
@@ -113,7 +114,7 @@ class FieldDisplay extends React.Component<IProps, IState> {
 
               {(layout === 'horizontal' && field.description && field.description !== '') &&
               <div className="dvn-form-label-right">
-                {field.description}
+                <ReactMarkdown source={field.description} escapeHtml={false} />
               </div>
               }
 
