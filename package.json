@@ -1,6 +1,6 @@
 {
   "name": "dvn-react-antd",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Devingen form implementation with antd framework.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
