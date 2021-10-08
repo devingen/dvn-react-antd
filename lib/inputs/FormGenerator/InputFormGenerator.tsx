@@ -61,7 +61,7 @@ export class InputFormGenerator extends React.Component<IProps, IState> {
     const error = hasError ? errors![0] : undefined;
 
     let order = 0;
-
+    const showOrder = fieldData.showOrder === undefined || fieldData.showOrder === true ? true : false;
     const strings = fieldData.strings || getStrings(language);
 
     return (
@@ -114,6 +114,7 @@ export class InputFormGenerator extends React.Component<IProps, IState> {
           return (
             <FieldDisplay
               key={field.id}
+              showOrder={showOrder}
               order={order}
               showControls={true}
               isPending={disabled || false}

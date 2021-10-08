@@ -23,7 +23,9 @@ export class FormGenerator extends BaseField {
 
   public fieldConfig: IFieldFormConfig;
 
-  constructor(id: string, language: string, inline: boolean, fieldConfig?: IFieldFormConfig) {
+  public showOrder?: boolean | undefined;
+
+  constructor(id: string, language: string, inline: boolean, fieldConfig?: IFieldFormConfig, showOrder?: boolean | undefined) {
     super();
     this.id = id;
     this.language = language;
@@ -35,6 +37,7 @@ export class FormGenerator extends BaseField {
       titleMin: 1,
       ...(fieldConfig || {}),
     };
+    this.showOrder = showOrder;
   }
 }
 
