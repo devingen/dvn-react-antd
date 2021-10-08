@@ -16,6 +16,7 @@ export interface IProps {
 
   isPending: boolean
   showControls: boolean
+  showOrder: boolean | undefined
 }
 
 interface IState {
@@ -29,7 +30,7 @@ class FieldDisplay extends React.Component<IProps, IState> {
   };
 
   public render() {
-    const { field, layout, order, showControls, isPending } = this.props;
+    const { field, layout, order, showControls, isPending, showOrder } = this.props;
 
     const iconStyle = {
       cursor: !isPending ? 'pointer' : 'inherit',
@@ -95,7 +96,7 @@ class FieldDisplay extends React.Component<IProps, IState> {
             })}>
               <label htmlFor={field.id}>
                 <b>
-                  {order && `${order}. `}
+                  {(order && showOrder) && `${order}. `}
                   {field.title}
                 </b>
 
